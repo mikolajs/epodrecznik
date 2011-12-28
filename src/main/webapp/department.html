@@ -1,0 +1,79 @@
+<!doctype HTML>
+<html>
+    
+<div class="lift:surround?with=default;at=content">
+    <head_merge> 
+        <script>
+            function isAdminValid(){
+                return false;
+            }
+            
+        </script>
+    </head_merge>
+  <h2>Administracja - przedmioty, działy, użytkownicy</h2>
+  
+   
+        <div id="subjectList" class="lift:Administration.subjectList">
+            <h3>Przedmioty:</h3>
+            <table>
+                <thead><tr><th>Nazwa</th><th>Skrót</th></tr></thead>
+                <tbody><tr id="subjectRow"><td></td><td></td><td></td></tr></tbody>
+            </table>
+            <input id="mkAddSubject" type="image" src="/images/addico.png" onclick="mkAddSubject();"/>
+        </div>
+  
+  <div id="subjectForm" class="lift:Administration.subjectForm?form=POST" style="display:none;">
+      <label for="subjectFormName">Pełna nazwa:</label><input id="subjectFormName"/><br/>
+      <label for="subjectFormShort">Skrót</label><input id="subjectFormShort"/><br/>
+      <input id="subjectFormSubmit"/><input id="subjectFormDelete"/>
+  </div>
+  
+  <div id="departmentList" class="lift:Administration.departmentList">
+        <h3>Działy:</h3>
+            <table>
+                <thead><tr><th>Nazwa</th><th>Strót</th><th>Przedmiot</th></tr></thead>
+                <tbody><tr><td></td><td></td><td></td></tr></tbody>
+            </table>
+        <input id="mkAddDepartment" type="image" src="/images/addico.png" onclick="mkAddDepartment();"/>
+  </div>
+  
+  <div id="departmentForm" class="lift:Administration.departmentForm?form=POST" style="display:none;">
+      <label for="departmentFormName">Pełna nazwa:</label><input id="departmentFormName"/><br/>
+      <label for="departmentFormShort">Skrót</label><input id="departmentFormShort"/><br/>
+      <label for="departmentFormSubject">Przedmiot:</label><select id="departmentFormSubject">
+          <option>1 przedmiot</option><option>2 przedmot</option><option>3 przedmot</option>
+        </select><br/>
+      <input id="departmentFormSubmit"/><input id="departmentFormDelete"/>
+  </div>
+  
+  
+   <div id="usersList" class="lift:Administration.usersList">
+        <h3>Użytkownicy:</h3>
+            <table>
+                <thead><tr><th>Nazwisko</th><th>Imię</th><th>Poziom</th><th>Karma</th></tr></thead>
+                <tbody><tr><td></td><td></td><td></td></tr></tbody>
+            </table>
+        <input id="mkAddUser" type="image" src="/images/addico.png" onclick="mkAddUser();"/>
+  </div>
+  
+  <div id="usersForm" class="lift:Administration.usersForm?form=POST" style="display:none;">
+      <label for="usersFormLastName">Nazwisko:</label><input id="usersFormLastName"/><br/>
+      <label for="usersFormFirstName">Imię:</label><input id="usersFormFirstName"/><br/>
+      <label for="usersFormLevel">Poziom:</label><select id="usersFormLevel">
+          <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+          <option>6</option><option>7</option><option>8</option><option>9</option>
+        </select><br/>
+      <input id="departmentFormSubmit"/><input id="departmentFormDelete"/>
+  </div>
+  
+  <div id="dataAdmin" class="lift:Administration.dataAdmin?form=POST">
+      <h3>Zmiana danych logowania administratora</h3>
+      <label for="adminEmail">Email:</label><input id="adminEmail"/><br/>
+      <label for="adminPassword1">Hasło:</label><input id="adminPassword1" type="password"/><br/>
+      <label for="adminPassword2">Powtórz:</label><input id="adminPassword2" type="password"/><br/>
+      <input id="adminSubmit"/>
+  </div>
+  
+</div>
+    
+</html>
