@@ -9,13 +9,12 @@
                             $(this).dblclick(function(){beginEditSubject(this);});
                         });
                         
-                        $('#departmentList').children('table').children('tbody').children('tr').each(function(){
+                        $('#departmentList').children('tbody').children('tr').each(function(){
                             $(this).dblclick(function(){beginEditDepartment(this);});
                         });
-                        $('#usersList').children('table').children('tbody').children('tr').each(function(){
+                        $('#usersList').children('tbody').children('tr').each(function(){
                             $(this).dblclick(function(){beginEditUsers(this);});
                         });
-  			
                     
                         $('#subjectForm').dialog({
                             autoOpen: false,
@@ -50,57 +49,15 @@
                     
             function beginEditUsers(elem){
                  $('#usersForm').dialog("open");
-                 $(elem).children('td').each(function(index) {
-                 	switch(index){
-                 		case 0:
-                 			$('#usersFormLastName').val(this.innerHTML);
-                 			break;
-                 		case 1:
-                 			$('#usersFormFirstName').val(this.innerHTML);
-                 			break;
-                 		case 2:
-                 			$('#usersFormEmail').val(this.innerHTML);
-                 			break;
-                 	    default:
-                 	        break;
-                 	}
-                 });
-                 
             }
             
             function beginEditDepartment(elem){
                 $('#departmentForm').dialog("open");
-                $(elem).children('td').each(function(index) {
-                 	switch(index){
-                 		case 0:
-                 			$('#departmentFormName').val(this.innerHTML);
-                 			break;
-                 		case 1:
-                 			$('#departmentFormShort').val(this.innerHTML);
-                 			break;
-                 		case 2:
-                 			$('#departmentFormSubject').val(this.innerHTML);
-                 			break;
-                 	    default:
-                 	        break;
-                 	}
-                 });
             }
             
             function beginEditSubject(elem){
+            	alert('open!');
                 $('#subjectForm').dialog("open");
-                $(elem).children('td').each(function(index) {
-                 	switch(index){
-                 		case 0:
-                 			$('#subjectFormName').val(this.innerHTML);
-                 			break;
-                 		case 1:
-                 			$('#subjectFormShort').val(this.innerHTML);
-                 			break;
-                 	    default:
-                 	        break;
-                 	}
-                 });
             }
             
             function mkAddSubject(){
@@ -120,10 +77,6 @@
             }
             
         </script>
-        <style>label { float:left; width: 200px; font-weight: bold;}
-        	  .buttonsForms {display:block;float:right;padding-right: 50px;}
-        	  .validationMassage  {clear:both;color:red;font-size: 11px;}
-        </style>
     </head_merge>
   <h2>Administracja - przedmioty, działy, użytkownicy</h2>
   
@@ -138,11 +91,10 @@
         </div>
   
   <div id="subjectForm" style="display:none;" title="Edycja przedmiotów">
-      <form  class="lift:Administration.subjectForm?form=POST" type="image">
+      <form  class="lift:Administration.subjectForm?" method="POST">
       <label for="subjectFormName">Pełna nazwa:</label><input id="subjectFormName"/><br/>
-      <label for="subjectFormShort">Skrót:</label><input id="subjectFormShort"/><br/>
-      <div class="buttonsForms"><input id="subjectFormSubmit"/><input id="subjectFormDelete"/></div>
-      <div class="validationMassage"></div>
+      <label for="subjectFormShort">Skrót</label><input id="subjectFormShort"/><br/>
+      <input id="subjectFormSubmit"/><input id="subjectFormDelete"/>
       </form>
   </div>
   
@@ -156,14 +108,13 @@
   </div>
   
   <div id="departmentForm"  style="display:none;" title="Edycja działów">
-      <form class="lift:Administration.departmentForm?form=POST">
+      <form class="lift:Administration.departmentForm" method="POST">
       <label for="departmentFormName">Pełna nazwa:</label><input id="departmentFormName"/><br/>
-      <label for="departmentFormShort">Skrót:</label><input id="departmentFormShort"/><br/>
+      <label for="departmentFormShort">Skrót</label><input id="departmentFormShort"/><br/>
       <label for="departmentFormSubject">Przedmiot:</label><select id="departmentFormSubject">
           <option>1 przedmiot</option><option>2 przedmot</option><option>3 przedmot</option>
         </select><br/>
-       <div class="buttonsForms"><input id="departmentFormSubmit"/><input id="departmentFormDelete"/></div>
-       <div class="validationMassage"></div>
+      <input id="departmentFormSubmit"/><input id="departmentFormDelete"/>
       </form>
   </div>
   
@@ -178,7 +129,7 @@
   </div>
   
   <div id="usersForm"  style="display:none;" title="Edycja użytkowników">
-      <form class="lift:Administration.usersForm?form=POST" >
+      <form class="lift:Administration.usersForm" method="POST">
       <label for="usersFormLastName">Nazwisko:</label><input id="usersFormLastName"/><br/>
       <label for="usersFormFirstName">Imię:</label><input id="usersFormFirstName"/><br/>
       <label for="usersFormEmail">Email:</label><input id="usersFormEmail"/><br/>
@@ -186,24 +137,22 @@
           <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
           <option>6</option><option>7</option><option>8</option><option>9</option>
         </select><br/>
-       <div class="buttonsForms"><input id="usersFormSubmit"/><input id="usersFormDelete"/></div>
-       <div class="validationMassage"></div>
+      <input id="usersFormSubmit"/><input id="usersFormDelete"/>
       </form>
   </div>
   
   <div id="dataAdmin" >
-      <fieldset style="width:400px;">
+      <fieldset>
       <legend>Zmiana danych logowania administratora</legend>
-      <form class="lift:Administration.dataAdmin?form=POST">
+      <form class="lift:Administration.dataAdmin" method="POST">
       <label for="adminEmail">Email:</label><input id="adminEmail"/><br/>
-      <label for="adminPassword">Hasło:</label><input id="adminPassword" type="password"/><br/>
-      <label for="adminPassword2">Powtórz:</label><input id="adminPassword2" class="passwordR" type="password"/><br/>
-       <div class="buttonsForms"><input id="adminSubmit"/></div>
-       <div class="validationMassage"></div>
+      <label for="adminPassword1">Hasło:</label><input id="adminPassword1" type="password"/><br/>
+      <label for="adminPassword2">Powtórz:</label><input id="adminPassword2" type="password"/><br/>
+      <input id="adminSubmit"/>
       </form>
       </fieldset>
   </div>
-  <br/>
+  
 </div>
     
 </html>
