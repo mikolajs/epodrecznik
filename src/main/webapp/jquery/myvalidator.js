@@ -1,4 +1,4 @@
-
+//element is a button in <form><div><button>
 function isValid(elem){
 	var massageName = "";
 	var massagename = "";
@@ -75,6 +75,6 @@ function isValid(elem){
 	if(massagePassR != "") massage += massagePassR + "<br/>";
 	if(massageEmail != "") massage += massageEmail + "<br/>";
 	var $massage =  $('<em>' + massage + '</em>');
-	$form.children('div.validationMassage').get(0).innerHTML = '<em>' + massage + '</em>'; //add($massage).css('background-color', 'gray');
+	$div.get(0).innerHTML = '<em>' + massage + '</em>'; //add($massage).css('background-color', 'gray');
 	return isOk;
 }

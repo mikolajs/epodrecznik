@@ -1,22 +1,48 @@
 <div class="lift:surround?with=default;at=content">
+	<head_merge>
+	<script class="lift:ThemeSn.slajdData" id="slajdList"></script>
+	<script class="lift:ThemeSn.departmentData" id="departmentData"></script>
+	<script type="text/javascript" src="/ckeditor/ckeditor.js"></script>
+	<script type="text/javascript" src="/jquery/myvalidator.js"></script>
+	<script type="text/javascript" src="/jquery/editslajds.js"></script>
+		<style>
+		#slajdChoise li { display:inline; padding:5px; font-weight: bold; font-size: 20px; 
+						border: solid 1px black;} 
+	    .highlightLi {  background-color: red; color:white;}
+		</style>
+	</head_merge>
+
   <h2>Edycja slajdów</h2>
-  
-    <div class="lift:Administration.userList">
-        <div id="shortnews">
-            <h3>Welcome to net.brosbit4u at</h3>
-            <span>The current time</span>
-            <p>Zawartość newsa</p>
-            <em><a href="">Edytuj</a></em>
-        </div>
+  <hr/>
+  <form class="lift:ThemeSn.formEdit?form=POST">
+    <input id="id" type="hidden" />
+  	<label for="titleTheme">Tytuł:</label><input id="titleTheme" class="Name"/><br/>
+  	<div class="validationMassage"></div>
+    <laber for="subjectTheme">Przedmiot:</laber><select id="subjectTheme"></select><br/>
+    <div>
+    <laber for="departmentTheme">Dział:</laber><select id="departmentTheme"></select><br/>
+    <input id="slajdsData" type="hidden" />
+    <input id="save" /><input id="cancel"/><input id="delete"/>
+    </div>
+  </form>
+  <hr/>
+  <div class=" tabsConainer">
+ 	 <div id="addSlajd">Dodaj nowy slajd: 
+  	<input type="radio" value="przed obecnym" name="addSlajd" /> przed obecnym 
+  	<input type="radio" value="po obecnym" name="addSlajd" checked="checked" id="radioAfter"/> po obecnym
+  	 <input type="image" src="/images/addico.png" onclick="addSlajd()" /></div>
+  	 <div id="deleteSlajd">Usuń akutalny slajd: 
+  	 <input type="image" src="/images/delico.png" onclick="delSlajd()" /></div>
+  <hr/>
+    
+    	<div id="slajdEditor">
+    	<ul id="slajdChoise"><li>1</li><li>3</li></ul>
+    	<br/>
+    	<textarea class="ckeditor" id="slajdText"></textarea>
+    	</div>
+        
+        
     </div>
   
-  <div class="lift:Admin.editUser?form=POST">
-      <fieldset>
-          <legend>Edycja użytkownika</legend>
-          <input id="editId"/><label for="editTitle">Tytuł:</label><input id="editTitle"/><br/>
-          <textarea id="editContent"/><br/>
-          <input id="editDelete"/><input id="editSave"/>
-          
-      </fieldset>
-  </div>
+  
 </div>

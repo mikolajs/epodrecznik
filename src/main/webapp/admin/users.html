@@ -1,0 +1,87 @@
+<!doctype HTML>
+<html>
+    
+<div class="lift:surround?with=admin;at=body">
+    <head_merge>
+        <script>
+            $(document).ready(function() {
+                        $('#usersList').children('table').children('tbody').children('tr').each(function(){
+                            $(this).dblclick(function(){beginEditUsers(this);});
+                        });
+                        
+                        $('#usersForm').dialog({
+                            autoOpen: false,
+                            height: 280,
+                            width: 500,
+                            modal: true,
+                            close: function(){
+                               
+                            }
+                        });
+                    });
+                    
+            function beginEditUsers(elem){
+                 $('#usersForm').dialog("open");
+                 $(elem).children('td').each(function(index) {
+                  switch(index){
+                  case 0:
+                  $('#usersFormLastName').val(this.innerHTML);
+                  break;
+                  case 1:
+                  $('#usersFormFirstName').val(this.innerHTML);
+                  break;
+                  case 2:
+                  $('#usersFormEmail').val(this.innerHTML);
+                  break;
+                  default:
+                  break;
+                  }
+                 });
+                 
+            }
+            
+            function mkAddUsers(){
+                 $('#usersForm').dialog("open");
+            }
+           
+        </script>
+        <style>label { float:left; width: 200px; font-weight: bold;}
+         .buttonsForms {display:block;float:right;padding-right: 50px;}
+         .validationMassage {clear:both;color:red;font-size: 11px;}
+        </style>
+    </head_merge>
+    <div class="row-3">
+  <h2>Użytkownicy</h2>
+ 
+  
+
+  
+   <div id="usersList" class="lift:Administration.usersList">
+        <h3>Użytkownicy:</h3>
+            <table>
+                <thead><tr><th>Nazwisko</th><th>Imię</th><th>Email</th><th>Poziom</th><th>Karma</th></tr></thead>
+                <tbody><tr><td></td><td></td><td></td><td></td></tr></tbody>
+            </table>
+        <input id="mkAddUser" type="image" src="/images/addico.png" onclick="mkAddUsers();"/>
+  </div>
+  
+  <div id="usersForm" style="display:none;" title="Edycja użytkowników">
+      <form class="lift:Administration.usersForm?form=POST" >
+      <label for="usersFormLastName">Nazwisko:</label><input id="usersFormLastName"/><br/>
+      <label for="usersFormFirstName">Imię:</label><input id="usersFormFirstName"/><br/>
+      <label for="usersFormEmail">Email:</label><input id="usersFormEmail"/><br/>
+      <label for="usersFormLevel">Poziom:</label><select id="usersFormLevel">
+          <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+          <option>6</option><option>7</option><option>8</option><option>9</option>
+        </select><br/>
+       <div class="buttonsForms"><input id="usersFormSubmit"/><input id="usersFormDelete"/></div>
+       <div class="validationMassage"></div>
+      </form>
+  </div>
+  
+  
+  <br/>
+</div>
+</div>
+    
+</html>

@@ -11,6 +11,7 @@ import _root_.net.liftweb.mapper.{DB, ConnectionManager, Schemifier, DefaultConn
 import _root_.java.sql.{Connection, DriverManager}
 import _root_.net.brosbit4u.model._
 import _root_.net.liftweb.mongodb._
+import scala.util.logging.Logged
 
 class Boot {
   def boot {
@@ -38,17 +39,26 @@ class Boot {
 	
 	val isAdmin = If(() => User.loggedIn_? && (User.currentUser.open_!.level.is < 1),
       () => RedirectResponse("/"))
-
+    val isModerator = If(() => User.loggedIn_? && (User.currentUser.open_!.level.is < 2),
+      () => RedirectResponse("/"))
+    val isUser = If(() => User.loggedIn_? ,
+      () => RedirectResponse("/"))
     // Build SiteMap
     def sitemap() = SiteMap(
 	  List(
       Menu("Wiadomości") / "index" >> LocGroup("public"), 
 	  Menu("Wybór tematu") / "subject" >> LocGroup("public"),
       Menu("Kontakt") / "contact" >> LocGroup("public"),
-	  Menu("Edycja") / "edit" / ** >> LocGroup("extra"),
-      Menu("Pokaz") / "slajdshow" / ** >> LocGroup("extra"),
-	  Menu("Użytkownicy") / "editusers" >> LocGroup("admin"),
-	  Menu("Przedmioty i działy") / "department" >> LocGroup("admin") ) :::
+      Menu("Moje tematy") / "editable" >> LocGroup("public"),
+	  Menu("Edycja") / "edit" / ** >> LocGroup("extra") >> Hidden,
+      Menu("Pokaz") / "slajdshow" / ** >> LocGroup("extra") >> Hidden,
+      Menu("Image upload") / "imagestorage" >> LocGroup("extra") >> Hidden >> isUser,
+      Menu("Administor") / "admin" / "admin" >> LocGroup("admin") >> isAdmin,
+      Menu("Przedmioty") / "admin" / "subjects" >> LocGroup("admin") >> isAdmin,
+      Menu("Działy") / "admin" / "departmetns" >> LocGroup("admin") >> isAdmin,
+      Menu("Użytkownicy") / "admin" / "users" >> LocGroup("admin") >> isAdmin,
+      Menu("Aktualności") / "admin" / "news" >> LocGroup("admin") >> isAdmin
+	  ) :::
         User.sitemap: _*)
 
     LiftRules.setSiteMapFunc(sitemap)
@@ -57,7 +67,7 @@ class Boot {
 		case RewriteRequest(
             ParsePath("edit" :: subjectId :: Nil, _, _,_), _, _) =>
           RewriteResponse(
-            "edit" :: Nil, Map("subjectId" -> subjectId)  )	
+            "edit" :: Nil, Map("id" -> subjectId)  )	
 	  })
     /*
      * Show the spinny image when an Ajax call starts

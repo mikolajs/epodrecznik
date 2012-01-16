@@ -1,4 +1,17 @@
+*.class
+*.jar
+*.*~
+*.log
+
 target/
 project/
 /.settings/
 /.externalToolBuilders/
+
+
+dist/*
+lib_managed/
+src_managed/
+
+# Scala-IDE specific
+.scala_dependencies

@@ -1,0 +1,30 @@
+<!doctype HTML>
+<html>
+    
+<div class="lift:surround?with=admin;at=body">
+    <head_merge>
+      
+    </head_merge>
+    <div class="row-3">
+  <h2>Administracja - Aktualności</h2>
+  
+    <div class="lift:Administration.shortNews rigthSide">
+            <h3>Lista </h3>
+            <ul>
+            <li><strong>Temat</strong> <span>Data</span> <em>Edytuj</em></li>
+            </ul>        
+    </div>
+  
+   <div class="lift:Administration.editNews?form=POST">
+      <fieldset>
+          <legend>Edycja newsów</legend>
+          <input id="editId"/><label for="editTitle">Tytuł:</label><input id="editTitle"/><br/>
+          <textarea id="editContent"/><br/>
+          <input id="editDelete"/><input id="editSave"/>
+          
+      </fieldset>
+  </div>
+  <br/>
+</div>
+    </div>
+</html>

@@ -1,0 +1,79 @@
+<!doctype HTML>
+<html>
+    
+<div class="lift:surround?with=admin;at=body">
+    <head_merge>
+        <script>
+            $(document).ready(function() {
+                        $('#subjectList').children('table').children('tbody').children('tr').each(function(){
+                            $(this).dblclick(function(){beginEditSubject(this);});
+                        });
+                    
+                        $('#subjectForm').dialog({
+                            autoOpen: false,
+                            height: 280,
+                            width: 500,
+                            modal: true,
+                            close: function(){
+                               
+                            }
+                        });
+                       
+                    });
+                    
+            
+            function beginEditSubject(elem){
+                $('#subjectForm').dialog("open");
+                $(elem).children('td').each(function(index) {
+                  switch(index){
+                  case 0:
+                  $('#subjectFormName').val(this.innerHTML);
+                  break;
+                  case 1:
+                  $('#subjectFormShort').val(this.innerHTML);
+                  break;
+                  default:
+                  break;
+                  }
+                 });
+            }
+            
+            function mkAddSubject(){
+                $('#subjectForm').dialog("open");
+            }
+            
+            
+        </script>
+        <style>label { float:left; width: 200px; font-weight: bold;}
+         .buttonsForms {display:block;float:right;padding-right: 50px;}
+         .validationMassage {clear:both;color:red;font-size: 11px;}
+        </style>
+    </head_merge>
+    <div class="row-3">
+  <h2>Administracja - Przedmioty</h2>
+  
+   
+        <div id="subjectList" class="lift:Administration.subjectList">
+            <h3>Przedmioty:</h3>
+            <table>
+                <thead><tr><th>Nazwa</th><th>Skrót</th></tr></thead>
+                <tbody><tr><td></td><td></td><td></td></tr></tbody>
+            </table>
+            <input id="mkAddSubject" type="image" src="/images/addico.png" onclick="mkAddSubject();"/>
+        </div>
+  
+  <div id="subjectForm" style="display:none;" title="Edycja przedmiotów">
+      <form class="lift:Administration.subjectForm?form=POST" type="image">
+      <label for="subjectFormName">Pełna nazwa:</label><input id="subjectFormName"/><br/>
+      <label for="subjectFormShort">Skrót:</label><input id="subjectFormShort"/><br/>
+      <div class="buttonsForms"><input id="subjectFormSubmit"/><input id="subjectFormDelete"/></div>
+      <div class="validationMassage"></div>
+      </form>
+  </div>
+  
+  
+  <br/>
+</div>
+</div>
+    
+</html>

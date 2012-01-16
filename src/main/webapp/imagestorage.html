@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
+        <script src="/jquery/jquery.min.js" type="text/javascript" charset="utf-8"></script> 
+        <script>
+      //<![CDATA[
+            $(document).ready( function() {
+                var top = window.top.document;
+                var errorMassage = $('#errorMassage').text();
+                if (errorMassage == "") {
+                    var tabsContainer = top.getElementById('tabs_container') 
+                    var id = document.getElementById('saveiconId').innerHTML;
+                    $(tabsContainer).children('div').children('fieldset').each( function() {
+                        var idField = $(this).attr('id');
+                        if(idField == id){
+                            var img = $(this).children('legend').children('img');
+                            var src = img.get(0).src;
+                            var array  = src.split('/');
+                            if (array.length == 0) alert('Error bad image link!');
+                            var iconName = array[array.length -1];
+                            if (iconName == "emptyissue.png") img.get(0).src = '/img/' + id + '/icon1.png';
+                            else {
+                                if (src && src.search(/\/img\/i[sp]_\d+\/icon\d+\.png/i) >= 0) {
+                                    var iconNum = parseInt(iconName.substring(4, iconName.length -4));
+                                    img.get(0).src = '/img/' + id + '/icon' + ++iconNum + '.png' ;
+                                }
+                            }
+                        } 
+                    }); 
+                } 
+                else {
+                    alert(errorMassage);
+                }
+            });
+          //]]>
+        </script>
+    </head>
+    <body >
+        <form class="lift:FileSn.uploadFile?form=POST" enctype="multipart/form-data" >
+            <label for="file">Wczytaj obraz:</label><input id="file" />
+            <input id="pathToFile" />
+            <input id="submit"/>
+        </div>
+    </body>
+</html>

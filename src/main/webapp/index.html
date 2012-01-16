@@ -1,23 +1,59 @@
-<div class="lift:surround?with=default;at=content">
-  <h2>Aktualności</h2>
-  
-    <div class="lift:Main.shortNews">
-        <div id="shortnews">
-            <h3>Welcome to net.brosbit4u at</h3>
-            <span>The current time</span>
-            <p>Zawartość newsa</p>
-            <em><a href="">Edytuj</a></em>
-        </div>
-    </div>
-  
-  <div class="lift:Main.editNews?form=POST">
-      <fieldset>
-          <legend>Edycja newsów</legend>
-          <input id="editId"/><label for="editTitle">Tytuł:</label><input id="editTitle"/><br/>
-          <textarea id="editContent"/><br/>
-          <input id="editDelete"/><input id="editSave"/>
-          
-      </fieldset>
-  </div>
+<div  class="lift:surround?with=default;at=body">
+
+	<div class="row-3">
+		<div class="container">
+
+			<div class="leftSide">
+				<div class="slider-wrapper theme-default">
+					<div id="slider" class="nivoSlider">
+						<img src="images/toystory.jpg" alt="" /> <a
+							href="http://dev7studios.com"><img src="images/up.jpg" alt=""
+							title="This is an example of a caption" />
+						</a> <img src="images/walle.jpg" alt="" data-transition="slideInLeft" />
+						<img src="images/nemo.jpg" alt="" title="#htmlcaption" />
+					</div>
+				</div>
+				
+				<div class="extra-box">
+					<div class="inner">
+						<h2>
+							<i><strong>ePodręcznik</strong> - platforma edukacyjna</i>
+						</h2>
+						<p>Platforma ma za zadanie dostarczyć narzędzi do toworzenia
+							pomocy naukowych</p>
+					</div>
+				</div>
+
+			</div>
+
+			<div class="lift:Main.shortNews rigthSide">
+				<h3>Aktualności</h3>
+				<div class="boxStyle">
+				<div class="img-box">
+					<img src="images/news_demo.jpg" alt="" />
+					<p>
+						<strong>Lorem ipsum dolor sit amet consectetuer</strong>
+						adipiscing elit, sed diam nonummy nibh euismod tincidunt ut
+						laoreet dolore magna aliquam erat volutpat.
+					</p>
+					<span>data</span> <em><a href="#">read more</a>
+					</em>
+				</div>
+                </div>
+			</div>
+
+
+
+		</div>
+	
+	
+	<script type="text/javascript" src="jquery/jquery.nivo.slider.js"></script>
+<script type="text/javascript">
+    $(window).load(function() {
+        $('#slider').nivoSlider();
+    });
+    </script>
+	
+</div>
 </div>
 
