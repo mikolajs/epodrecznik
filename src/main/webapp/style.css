@@ -53,6 +53,7 @@ ul, ol {
 	overflow:hidden;
 }
 .container { 
+	margin: auto;
 	width:100%;
 }
 
@@ -166,7 +167,7 @@ h3 {
 	font-weight:normal;
 	font-style:italic;
 	color:#fff;
-	background:url(images/title-bg.jpg) no-repeat 0 0;
+	background:url(images/title-bg.png) no-repeat 0 0;
 	width:350px;
 	height:46px;
 	line-height:46px;
@@ -174,6 +175,18 @@ h3 {
 	text-shadow:0 0 4px #ca591c;
 	position:relative;
 	z-index:2;
+}
+
+h4 {
+	font-family:"Times New Roman", Times, serif;
+	font-size:18px;
+	font-weight:normal;
+	font-style:italic;
+	color:#222;
+	text-indent:20px;
+	text-shadow:0 0 2px #bbb;
+	position:relative;
+	padding-bottom: 8px;
 }
 
 .link1 { 
@@ -305,19 +318,14 @@ h3 {
 	top: 2px;
 	
 }
-#header .row-1 .loginArea label {
-		height:46px;
-		overflow:hidden;
+#header .row-1 .loginArea a img {
+		vertical-align: middle;
 	}
-#header .row-1 .loginArea input {
-			color:#111;
-			border:1px solid #b1b1b1;
-			background:none;
-			padding:2px 0 2px 5px;
-			width:120px;
-		}
-#header .row-1 .loginArea input[type="submit"] {
+	
+#header .row-1 .loginArea a {
 	margin-top: 5px;
+	text-decoration: none;
+	font-size: 18px;
 	border: none;
 	width:128px;
 	color: #358305;
@@ -376,8 +384,17 @@ h3 {
 	.leftSide {
 		float: left;
 		padding:  10px 10px 10px 45px;
-	}	
-
+	}
+	/*=========== boxText ========= */	
+#boxText {
+	margin: 10px 10px 10px 10px;
+	padding: 10px;
+	background-color: white;
+	height: 600px ;
+	border-style: solid;
+	border-color: #254c12;
+	border-radius: 20px;
+}
 
 /*===== content =====*/
 #content .indent {

@@ -6,7 +6,6 @@ import java.util.Date
 import _root_.net.liftweb.util._
 import _root_.net.liftweb.common._
 import net.liftweb._
-//import _root_.scala.xml._
 import http.{S,SHtml}
 import mapper.{OrderBy,Descending}
 import net.brosbit4u.model._
@@ -14,6 +13,7 @@ import _root_.net.liftweb.mapper.By
 import _root_.net.liftweb.json.JsonDSL._
 import org.bson.types.ObjectId
 import Helpers._
+import scala.xml.Unparsed
 
 
 class Administration {
@@ -169,6 +169,7 @@ class Administration {
         var theNews = News.find(id).getOrElse(News.create)
         var title = theNews.title
         var content = theNews.content
+        var imgPath = theNews.imgPath
         
         def deleteNews(){
             var news = News.find(id).getOrElse(News.create)
@@ -182,7 +183,7 @@ class Administration {
                 val d = new Date()
                 news._id = d.getTime.toString
                 news.title = title 
-                news.content = content
+                news.content = Unparsed(content).toString()
                 if (id == "0") news.date = d.toString
                 news.save
             }
@@ -190,6 +191,7 @@ class Administration {
         
         "#editId" #> SHtml.text(id, id = _, "type"->"hidden") &
         "#editTitle" #> SHtml.text(title,title = _) &
+        "#editImage" #> SHtml.text(imgPath,imgPath= _ ,"type"->"hidden") &
         "#editContent" #> SHtml.textarea(content,content = _) &
         "#editDelete"#> SHtml.submit("Usuń",deleteNews) &
         "#editSave" #> SHtml.submit("Zapisz", saveNews)
@@ -198,10 +200,8 @@ class Administration {
      
       def shortNews() = {
         val news = News.findAll //OrderBy(News.date, Descending)
-        "li" #> news.map( item => {
-                "span" #> <span>{item.date.toString}</span> &
-                "strong" #> <strong>{item.title}</strong> &
-                "em" #> <a href={"/admin/news?id=" + item._id}> Edytuj</a>
+        "tbody" #> news.map( item => {
+                "tr" #> <tr><td>{item.title}</td><td><img src={item.imgPath} /></td><td>{item.content}</td><td>{item.date}</td></tr>
             })
     }
 

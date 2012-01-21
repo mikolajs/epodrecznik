@@ -47,15 +47,16 @@ class Boot {
     def sitemap() = SiteMap(
 	  List(
       Menu("Wiadomości") / "index" >> LocGroup("public"), 
-	  Menu("Wybór tematu") / "subject" >> LocGroup("public"),
+	  Menu("Wybór tematu") / "choiseslajd" >> LocGroup("public"),
       Menu("Kontakt") / "contact" >> LocGroup("public"),
       Menu("Moje tematy") / "editable" >> LocGroup("public"),
 	  Menu("Edycja") / "edit" / ** >> LocGroup("extra") >> Hidden,
       Menu("Pokaz") / "slajdshow" / ** >> LocGroup("extra") >> Hidden,
+      Menu("Image") / "img" / ** >> LocGroup("extra") >> Hidden,
       Menu("Image upload") / "imagestorage" >> LocGroup("extra") >> Hidden >> isUser,
-      Menu("Administor") / "admin" / "admin" >> LocGroup("admin") >> isAdmin,
+      Menu("Administrator") / "admin" / "admin" >> LocGroup("admin") >> isAdmin,
       Menu("Przedmioty") / "admin" / "subjects" >> LocGroup("admin") >> isAdmin,
-      Menu("Działy") / "admin" / "departmetns" >> LocGroup("admin") >> isAdmin,
+      Menu("Działy") / "admin" / "departments" >> LocGroup("admin") >> isAdmin,
       Menu("Użytkownicy") / "admin" / "users" >> LocGroup("admin") >> isAdmin,
       Menu("Aktualności") / "admin" / "news" >> LocGroup("admin") >> isAdmin
 	  ) :::

@@ -22,5 +22,15 @@ class Main {
             })
     }
     
+   def logInfo() = {
+     var isLoged = false
+     val currentUserName = User.currentUser match {
+       case Full(user) => isLoged = true; user.fullName
+       case _ => " Zaloguj"
+     }
+        if (isLoged) "#logInfo" #> <a title="WYLOGUJ!" href="/user_mgt/logout"><img src="/images/loged.png"/>{ currentUserName }</a>
+        else "#logInfo" #> <a href="/user_mgt/login"><img src="/images/nologed.png"/> { currentUserName }</a>
+      }
+    
    
 }
