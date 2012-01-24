@@ -47,11 +47,11 @@ class Boot {
     def sitemap() = SiteMap(
 	  List(
       Menu("Wiadomości") / "index" >> LocGroup("public"), 
-	  Menu("Wybór tematu") / "choiseslajd" >> LocGroup("public"),
+	  Menu("Wybór tematu") / "choiceslide" >> LocGroup("public"),
       Menu("Kontakt") / "contact" >> LocGroup("public"),
       Menu("Moje tematy") / "editable" >> LocGroup("public"),
 	  Menu("Edycja") / "edit" / ** >> LocGroup("extra") >> Hidden,
-      Menu("Pokaz") / "slajdshow" / ** >> LocGroup("extra") >> Hidden,
+      Menu("Pokaz") / "slideshow" / ** >> LocGroup("extra") >> Hidden,
       Menu("Image") / "img" / ** >> LocGroup("extra") >> Hidden,
       Menu("Image upload") / "imagestorage" >> LocGroup("extra") >> Hidden >> isUser,
       Menu("Administrator") / "admin" / "admin" >> LocGroup("admin") >> isAdmin,
@@ -68,7 +68,15 @@ class Boot {
 		case RewriteRequest(
             ParsePath("edit" :: subjectId :: Nil, _, _,_), _, _) =>
           RewriteResponse(
-            "edit" :: Nil, Map("id" -> subjectId)  )	
+            "edit" :: Nil, Map("id" -> subjectId)  )
+        case RewriteRequest(
+            ParsePath("slideshow" :: subjectId :: Nil, _, _,_), _, _) =>
+          RewriteResponse(
+            "slideshow" :: Nil, Map("id" -> subjectId)  )
+        case RewriteRequest(
+            ParsePath("img" :: imgId :: Nil, _, _,_), _, _) =>
+          RewriteResponse(
+            "img" :: Nil, Map("imgId" -> imgId)  )
 	  })
     /*
      * Show the spinny image when an Ajax call starts

@@ -204,6 +204,20 @@ class Administration {
                 "tr" #> <tr><td>{item.title}</td><td><img src={item.imgPath} /></td><td>{item.content}</td><td>{item.date}</td></tr>
             })
     }
+      
+    def contact() = {
+      var title = ""
+      var email = ""
+      var content = ""
+      def save() = {
+        //tu dodać wysyłanie Maila!!!!
+      }
+      
+      "#title" #> SHtml.text(title,title=_) &
+      "#email" #> SHtml.text(email, email= _) &
+      "#contact" #> SHtml.textarea(content, content = _) &
+      "#submit" #> SHtml.submit("WYŚLIJ",save)
+    }
 
 }
 

@@ -14,10 +14,10 @@ object Theme extends MongoDocumentMeta[Theme] {
 }
 case class Theme(var _id: ObjectId, var confirmed: Boolean, var referTo: String,
   var moderator: String, var author: String, var title: String, var department: String,
-  var date: String, var subject: String, var slajds: List[String])
+  var date: String, var subject: String, var slides: List[String])
   extends MongoDocument[Theme] {
   def meta = Theme
-  def slajdsListString = {
-    "[ " + slajds.map(s => "'%s'".format( s)).mkString(",") + "]"
+  def slidesListString = {
+    "[ " + slides.map(s => "'%s'".format( s)).mkString(",") + "]"
   }
 }
