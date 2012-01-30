@@ -1,48 +1,55 @@
 <div class="lift:surround?with=default;at=body">
 	<head_merge>
-	<script class="lift:ThemeSn.slajdData" id="slajdList"></script>
 	<script class="lift:ThemeSn.departmentData" id="departmentData"></script>
 	<script type="text/javascript" src="/ckeditor/ckeditor.js"></script>
-	<script type="text/javascript" src="/jquery/myvalidator.js"></script>
-	<script type="text/javascript" src="/jquery/editslajds.js"></script>
+	<script type="text/javascript" src="/jquery/editslides.js"></script>
 		<style>
-		#slajdChoise li { display:inline; padding:5px; font-weight: bold; font-size: 20px; 
+		#titleTheme {width: 300px;}
+		#slideChoice li { display:inline; padding:5px; font-weight: bold; font-size: 20px; 
 						border: solid 1px black;} 
 	    .highlightLi {  background-color: red; color:white;}
+	    
 		</style>
 	</head_merge>
-
+ <div class="row-3">
+        <div class="container">
+ <div id="boxText">
   <h2>Edycja slajdów</h2>
   <hr/>
   <form class="lift:ThemeSn.formEdit?form=POST">
     <input id="id" type="hidden" />
-  	<label for="titleTheme">Tytuł:</label><input id="titleTheme" class="Name"/><br/>
-  	<div class="validationMassage"></div>
-    <laber for="subjectTheme">Przedmiot:</laber><select id="subjectTheme"></select><br/>
-    <div>
-    <laber for="departmentTheme">Dział:</laber><select id="departmentTheme"></select><br/>
-    <input id="slajdsData" type="hidden" />
+  	<label for="titleTheme">Tytuł:</label><input id="titleTheme" class="Name"/><span class="validationMassage">massage</span><br/>
+  	
+  	<input id="departmentThemeHidden" type="hidden" />
+    <label for="subjectTheme">Przedmiot:</label><select id="subjectTheme"></select>
+    <label for="departmentTheme">Dział:</label><select id="departmentTheme"></select>
+    <input id="slidesData" type="hidden" />
     <input id="save" /><input id="cancel"/><input id="delete"/>
-    </div>
   </form>
   <hr/>
   <div class=" tabsConainer">
- 	 <div id="addSlajd">Dodaj nowy slajd: 
-  	<input type="radio" value="przed obecnym" name="addSlajd" /> przed obecnym 
-  	<input type="radio" value="po obecnym" name="addSlajd" checked="checked" id="radioAfter"/> po obecnym
-  	 <input type="image" src="/images/addico.png" onclick="addSlajd()" /></div>
-  	 <div id="deleteSlajd">Usuń akutalny slajd: 
-  	 <input type="image" src="/images/delico.png" onclick="delSlajd()" /></div>
+ 	 <div id="addslide">Dodaj nowy slajd: 
+  	<input type="radio" value="przed obecnym" name="addSlide" /> przed obecnym 
+  	<input type="radio" value="po obecnym" name="addSlide" checked="checked" id="radioAfter"/> po obecnym
+  	 <input type="image" src="/images/addico.png" onclick="addSlide()" /></div>
+  	 <div id="deleteSlide">Usuń akutalny slajd: 
+  	 <input type="image" src="/images/delico.png" onclick="delSlide()" /></div>
   <hr/>
+  <br/>
     
-    	<div id="slajdEditor">
-    	<ul id="slajdChoise"><li>1</li><li>3</li></ul>
+    	<div id="slideEditor">
+    	<ul id="slideChoice"><li>1</li><li>3</li></ul>
     	<br/>
-    	<textarea class="ckeditor" id="slajdText"></textarea>
+    	<textarea class="ckeditor" id="slideText"></textarea>
     	</div>
         
         
     </div>
-  
+  </div>
+  </div>
+  </div>
+  <div id="slidesHTML" class="lift:ThemeSn.slideData" style="display:none;">
+  <section id="slideHTML"></section>
+  </div>
   
 </div>

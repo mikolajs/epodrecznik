@@ -32,7 +32,10 @@ class ThemeSn {
   }
   
   def slideData() = {
-      "#slideList" #> <script>{Text("var slideList = " + theme.slidesListString )}</script> 
+      "#title" #> theme.title &
+      "#subject" #> theme.subject &
+      "#department" #> theme.department &
+      "#slideHTML" #>  Unparsed(theme.slides)  
   }
   
   
@@ -59,9 +62,14 @@ class ThemeSn {
         theme.title = title
         theme.subject = subject
         theme.department = department
-        if (ID == "0") theme.date = new Date().getTime().toString
-        val listData = slidesData.split("000000000o0000000000o0000000000").map(_.replace('\r',' ').replace('\n',' ')) //40 ^
-        theme.slides = listData.toList
+        if (ID == "0") {
+          theme.author = User.currentUser.get.id.is.toString
+          theme.dateAdd = new Date().getTime().toString
+        }
+        else theme.dateEdit = new Date().getTime().toString
+        val listData = Unparsed(slidesData)
+        theme.slides = listData.toString
+        theme.confirmed = if (isModerator)  true else false
        theme.save
       }
       S.redirectTo("/editable")
@@ -81,10 +89,11 @@ class ThemeSn {
     
     "#id" #> SHtml.text(ID, ID = _, "type"->"hidden") &
     "#titleTheme" #> SHtml.text(title, title= _,"class"->"Name") &
-    "#subjectTheme" #> SHtml.select(listSubject,Full(listSubject.head._2),nr => subject = listSubject(nr.toInt)._2,"onchange"->"changeDepartmentSelect();") &
-    "#departmentTheme" #> SHtml.select(("pusty","pusty")::Nil,Full("noting"),department = _) &
+    "#subjectTheme" #> SHtml.select(listSubject,Full(subject),nr => subject = listSubject(nr.toInt)._2,"onchange"->"changeDepartmentSelect();") &
+    "#departmentThemeHidden" #> SHtml.text(department, department = _, "type"->"hidden") &
+    "#departmentTheme" #> SHtml.select(("pusty","pusty")::Nil,Full("noting"),x => Unit) &
     "#slidesData" #> SHtml.text(slidesData, slidesData = _, "type"->"hidden") &
-    "#save" #> SHtml.button(<img src="/images/saveico.png"/>, saveData,"title"->"Zapisz","onclick"->"return createDataXML();") &
+    "#save" #> SHtml.button(<img src="/images/saveico.png"/>, saveData,"title"->"Zapisz","onclick"->"return createData();") &
     "#delete" #> (if(isModerator) SHtml.button(<img src="/images/delico.png"/>, deleteData,"title"->"Usuń") else <span></span>) &
     "#cancel" #> SHtml.button(<img src="/images/cancelico.png"/>, cancelAction,"title"->"Anuluj") 
   }
