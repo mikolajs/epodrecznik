@@ -2,6 +2,7 @@
 package net.brosbit4u.snippet
 
 import java.util.Date
+import scala.xml.Unparsed
 import _root_.net.liftweb.util._
 import _root_.net.liftweb.common._
 import net.liftweb._
@@ -13,14 +14,18 @@ import Helpers._
 
 class Main {
     
-    def shortNews() = {
-        val news = News.findAll //OrderBy(News.date, Descending)
-        ".boxStyle" #> news.map( item => {
-                "span" #> <span>{item.date.toString}</span> &
-                "p" #> <p><strong>{item.title}</strong><br/>{item.content}</p> &
-                "em" #> <a href={"/index?id=" + item._id}>Czytaj dalej...</a>
+    def showLinks() = {
+        val link = Link.findAll //OrderBy(News.date, Descending)
+        ".img-box" #> link.map( item => {
+                "img" #> <img src={item.imgPath} /> &
+                "p" #> <p><strong>{item.title}</strong><br/>{Unparsed(item.content)}</p> &
+                "em" #> <a href={item.link} target="_blanck">Idź do zasobów</a>
             })
     }
+    
+   def showLatest() = {
+     "dl" #> "Na razie pusto"
+   }
     
    def logInfo() = {
      var isLoged = false

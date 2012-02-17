@@ -12,6 +12,7 @@ import _root_.java.sql.{Connection, DriverManager}
 import _root_.net.brosbit4u.model._
 import _root_.net.liftweb.mongodb._
 import scala.util.logging.Logged
+import _root_.net.brosbit4u.api._
 
 class Boot {
   def boot {
@@ -36,6 +37,10 @@ class Boot {
       val u = User.create
       u.lastName("Administrator").level(0).password("123qwerty").email("mail@mail.org").validated(true).save
     }
+    
+     LiftRules.statelessDispatchTable.append({ 
+      case Req("image" :: id :: Nil, _, GetRequest) => () => ImageLoader.icon(id)
+    })
 	
 	val isAdmin = If(() => User.loggedIn_? && (User.currentUser.open_!.level.is < 1),
       () => RedirectResponse("/"))
@@ -51,8 +56,8 @@ class Boot {
       Menu("Kontakt") / "contact" >> LocGroup("public"),
       Menu("Moje tematy") / "editable" >> LocGroup("public"),
 	  Menu("Edycja") / "edit" / ** >> LocGroup("extra") >> Hidden,
+	  Menu("Moderacja") / "moderate"  >> LocGroup("extra") >> Hidden,
       Menu("Pokaz") / "slideshow" / ** >> LocGroup("extra") >> Hidden,
-      Menu("Image") / "img" / ** >> LocGroup("extra") >> Hidden,
       Menu("Image upload") / "imagestorage" >> LocGroup("extra") >> Hidden >> isUser,
       Menu("Administrator") / "admin" / "admin" >> LocGroup("admin") >> isAdmin,
       Menu("Przedmioty") / "admin" / "subjects" >> LocGroup("admin") >> isAdmin,
@@ -73,10 +78,6 @@ class Boot {
             ParsePath("slideshow" :: subjectId :: Nil, _, _,_), _, _) =>
           RewriteResponse(
             "slideshow" :: Nil, Map("id" -> subjectId)  )
-        case RewriteRequest(
-            ParsePath("img" :: imgId :: Nil, _, _,_), _, _) =>
-          RewriteResponse(
-            "img" :: Nil, Map("imgId" -> imgId)  )
 	  })
     /*
      * Show the spinny image when an Ajax call starts
@@ -92,6 +93,10 @@ class Boot {
   
      LiftRules.htmlProperties.default.set((r: Req) =>
       new Html5Properties(r.userAgent))
+      
+      //max file upload
+    LiftRules.maxMimeSize = 8 * 1024 * 1024
+    LiftRules.maxMimeFileSize = 8 * 1024 * 1024
 
     LiftRules.early.append(makeUtf8)
 

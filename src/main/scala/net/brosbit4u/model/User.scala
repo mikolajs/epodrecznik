@@ -4,6 +4,7 @@ package model {
 import _root_.net.liftweb.mapper._
 import _root_.net.liftweb.util._
 import _root_.net.liftweb.common._
+import _root_.net.liftweb.sitemap.Loc._
 
 /**
  * The singleton that has methods for accessing the database
@@ -20,6 +21,17 @@ object User extends User with MetaMegaProtoUser[User] {
   override def skipEmailValidation = true
   override def createUserMenuLoc = Empty
   override def editUserMenuLoc= Empty
+//  override def loginFirst = If(
+//    loggedIn_? _,
+//    () => {
+//      import net.liftweb.http.{RedirectWithState, RedirectState}
+//      val uri = Full("/editable")
+//      RedirectWithState(
+//        loginPageURL,
+//        RedirectState( ()=>{loginRedirect.set(uri)})
+//      )
+//    }
+//  )
 }
 
 /**

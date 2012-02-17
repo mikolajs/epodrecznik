@@ -1,16 +1,23 @@
-<div class="lift:surround?with=default;at=body">
-<div class="row-3">
-        <div class="container">
- <div id="boxText">
-  <h2>Napisz do nas</h2>
+<div class="lift:surround?with=default-other;at=body">
+
+
+ <div class="boxText">
+    <h2>
+<strong>Napisz</strong>
+do nas
+</h2>
   
-  <form class="lift:Administration.contact?form=POST">
-     
+  <form class="lift:Administration.contact?form=POST" id="contacts-form">
+     <fieldset>
+    <div class="col-1">
     <label for="theme">Temat:</label><input id="theme" type="text"/><label for="email">Email:</label><input type="text" id="email"/><br/>
+    </div>
+    <div class="col-2">
           <textarea id="content"></textarea><br/>
           <input id="save"  type="submit"/>
+          </div>
+          </fieldset>
     </form>
    </div>
-   </div>
-   </div>
+  
 </div>

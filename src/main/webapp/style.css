@@ -12,13 +12,12 @@ body {
 	line-height:1.125em;
 	color:#777;
 }
-/*
+
 img {
 	border:0; 
 	vertical-align:top; 
 	text-align:left;
 }
-*/
 object { 
 	vertical-align:top; 
 	outline:none;
@@ -53,7 +52,6 @@ ul, ol {
 	overflow:hidden;
 }
 .container { 
-	margin: auto;
 	width:100%;
 }
 
@@ -69,9 +67,28 @@ ul, ol {
 }
 
 #header {
-	height:171px;
+	
 	overflow:hidden;
 }
+	#content .mainContent {
+		float:right;
+		width:522px;
+		padding-bottom:2px;
+		position:relative;
+	}
+	#content .aside {
+		float:left;
+		width:350px;
+		display:inline;
+	}
+	#content .aside.left {
+		margin-right:20px;
+		
+	}
+	#content .aside.right {
+		margin-left:20px;
+	
+	}
 #footer {
 	height:68px;
 	overflow:hidden;
@@ -132,7 +149,7 @@ a:hover{
 
 h1 {
 	position:absolute;
-	left:258px;
+	left:58px;
 	top:29px;
 	font-size:53px;
 	line-height:1.2em;
@@ -177,18 +194,6 @@ h3 {
 	z-index:2;
 }
 
-h4 {
-	font-family:"Times New Roman", Times, serif;
-	font-size:18px;
-	font-weight:normal;
-	font-style:italic;
-	color:#222;
-	text-indent:20px;
-	text-shadow:0 0 2px #bbb;
-	position:relative;
-	padding-bottom: 8px;
-}
-
 .link1 { 
 	font-weight:bold;
 	color:#348e00;
@@ -199,8 +204,8 @@ h4 {
 /*==================boxes====================*/
 .extra-box {
 	background:url(images/extra-box.jpg) no-repeat 0 0;
-	width:500px;
-	height: 530px;
+	width:503px;
+	min-height:503px;
 	margin-bottom:30px;
 }
 	.extra-box .inner {
@@ -237,7 +242,7 @@ h4 {
 			font-size:18px;
 			line-height:1.2em;
 		}
-.boxStyle {
+.box {
 	border:1px solid #d8d8d8;
 	background:#fafafa;
 	padding:22px;
@@ -299,37 +304,43 @@ h4 {
 
 
 /*===== header =====*/
+
 #header .row-1 {
-	height:115px;
-	overflow:hidden;
-	background:url(images/header-tail-1.gif) 0 0 repeat-x;
+height:115px;
+overflow:hidden;
+background:url(images/header-tail-1.gif) 0 0 repeat-x;
 }
-	#header .row-1 .rss {
-		display:block;
-		position:absolute;
-		left:20px;
-		top:2px;
-	}
+#header .row-1 .rss {
+display:block;
+position:absolute;
+left:20px;
+top:2px;
+}
 /* ----------moje ---------------------*/
 #header .row-1 .loginArea {
-	position: absolute;
-	display: block;
-	right: 54px;
-	top: 2px;
-	
+position: absolute;
+display: block;
+right: 100px;
+top: 2px;
+
 }
 #header .row-1 .loginArea a img {
-		vertical-align: middle;
-	}
-	
+vertical-align: middle;
+}
+
 #header .row-1 .loginArea a {
-	margin-top: 5px;
-	text-decoration: none;
-	font-size: 18px;
-	border: none;
-	width:128px;
-	color: #358305;
-}		
+margin-top: 5px;
+text-decoration: none;
+font-size: 18px;
+border: none;
+width:128px;
+color: #358305;
+} 
+
+#header  .row-1 .container h1 {
+   left: 280px;
+}
+
 
 #header .row-2 {
 	height:57px;
@@ -341,14 +352,14 @@ h4 {
 	}
 		#header .nav li {
 			float:left;
-			background:url(images/divider.gif) no-repeat 0 0;
+			background:url() no-repeat 0 0;
 			padding:0 40px 0 41px;
 		}
 		#header .nav li.first {
 			background:none;
 			padding:0 40px 0 85px;
 		}
-			#header .nav li a {
+			#header .nav li a, #header .nav li span {
 				float:left;
 				padding:10px 0 10px 0;
 				font-family:"Times New Roman", Times, serif;
@@ -357,48 +368,22 @@ h4 {
 				text-decoration:none;
 				color:#646c71;
 			}
-			#header .nav li span {
-				float:left;
-				padding:10px 0 10px 0;
-				font-family:"Times New Roman", Times, serif;
-				font-size:21px;
-				font-style:italic;
-				text-decoration:none;
+			#header .nav li.current span  {
 				color:#000;
 				text-shadow:0 0 3px #fff;
 			}
-			
-#body .row-3 {
+#header .row-3 {
+	height:355px;
 	overflow:hidden;
 	background:url(images/header-tail-3.gif) 0 0 repeat-x;
 }
-	.rigthSide {
-		float: right;
-		padding: 10px 50px 10px 10px;
-		width: 350px;
-		height:800px;
-		line-height:1.2em;
-		color:#000;
-	}
-	
-	.leftSide {
-		float: left;
-		padding:  10px 10px 10px 45px;
-	}
-	/*=========== boxText ========= */	
-#boxText {
-	margin: 10px 10px 10px 10px;
-	padding: 10px;
-	background-color: white;
-	min-height: 600px ;
-	border-style: solid;
-	border-color: #254c12;
-	border-radius: 20px;
+#header .row-3 .slideBox {
+  padding: 15px;	
 }
-
 /*===== content =====*/
 #content .indent {
-	padding:47px 56px 51px 54px;
+	padding:20px 30px 20px 30px;
+	min-height: 400px;
 }
 	#content .article {
 		padding-bottom:40px;
@@ -479,7 +464,7 @@ h4 {
 	}
 	#contacts-form label {
 		display:block;
-		height:46px;
+		height:20px;
 		overflow:hidden;
 	}
 		#contacts-form input {
@@ -508,3 +493,4 @@ h4 {
 	float:right;}
 
 /*==========================================*/
+	

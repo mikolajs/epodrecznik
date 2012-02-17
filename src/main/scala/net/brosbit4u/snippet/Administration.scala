@@ -3,9 +3,10 @@
 package net.brosbit4u.snippet
 
 import java.util.Date
-import _root_.net.liftweb.util._
-import _root_.net.liftweb.common._
-import net.liftweb._
+import _root_.net.brosbit4u.lib.Formater
+import _root_.net.liftweb._
+import util._
+import common._
 import http.{S,SHtml}
 import mapper.{OrderBy,Descending}
 import net.brosbit4u.model._
@@ -64,39 +65,38 @@ class Administration {
     def departmentList() = {
         val depart = Department.findAll
         "tbody" #> depart.map(d => {
-                <tr><td>{d.name}</td><td>{d.short}</td><td>{d.subject}</td></tr>
+                <tr id={d._id.toString}><td>{d.name}</td><td>{d.subject}</td></tr>
             })
     }
 
     def departmentForm() = {
         var name = ""
-        var short = ""
         var subject = ""
+        var id = ""
 
         def deleteData() {
-            val departments = Department.findAll("short"-> short)
+            val departments = Department.findAll("name"-> name)
             if(departments.nonEmpty){
                 departments.head.delete
             }
         }
 
         def saveData() {
-            val departments = Department.findAll("short"-> short)
+            val departments = Department.findAll("name"-> name)
             if(departments.nonEmpty){
                 val dep = departments.head
                 dep.name = name
-                dep.short = short
                 dep.subject = subject
                 dep.save
             }
             else {
-                val dep = Department(new Date().getTime,short,name, subject)
+                val dep = Department(new Date().getTime,name, subject)
                 dep.save
             }
         }
-        val subjects = Subject.findAll.map(s =>(s.short,s.full))
+        val subjects = Subject.findAll.map(s =>(s.full,s.full))
+        "#departmentFormId" #> SHtml.text(id, id = _,"type"->"hidden") &
         "#departmentFormName" #> SHtml.text(name, name = _,"class"->"name","maxlenght"->"20") &
-        "#departmentFormShort" #> SHtml.text(short, short = _,"class"->"name","maxlenght"->"9") &
         "#departmentFormSubject" #> SHtml.select(subjects, Full(subjects.head._2),subject = _) &
         "#departmentFormSubmit"  #> SHtml.button(<img src="/images/saveico.png" />,saveData,"onclick"->"return isValid(this);") &
         "#departmentFormDelete" #> SHtml.button(<img src="/images/delico.png" />,deleteData)
@@ -105,38 +105,37 @@ class Administration {
     def subjectList() = {
         val subject = Subject.findAll
         "tbody" #> subject.map(s => {
-                <tr><td>{s.full}</td><td>{s.short}</td></tr>
+                <tr id={s._id.toString}><td>{s.full}</td></tr>
             })
     }
 
     def subjectForm() = {
-        var short = ""
         var full = ""
+        var id = ""
 
 
         def deleteData() {
-            val subjects = Subject.findAll("short"-> short)
+            val subjects = Subject.findAll("full"-> full)
             if(subjects.nonEmpty){
                 subjects.head.delete
             }
         }
 
         def saveData() {
-            val subjects = Subject.findAll("short"-> short)
+            val subjects = Subject.findAll("full"-> full)
             if(subjects.nonEmpty){
                 val sub = subjects.head
                 sub.full = full
-                sub.short = short
                 sub.save
             }
             else {
-                val sub = Subject((new Date()).getTime, short, full)
+                val sub = Subject((new Date()).getTime,  full)
                 sub.save
             }
         }
 
         "#subjectFormName" #> SHtml.text(full, full = _,"class"->"name","maxlenght"->"30") &
-        "#subjectFormShort" #> SHtml.text(short, short = _,"class"->"name","maxlenght"->"9") &
+        "#subjectFormId" #> SHtml.text(id, id = _,"type"->"hidden") &
         "#subjectFormSubmit"  #> SHtml.button(<img src="/images/saveico.png" />,saveData,"onclick"->"return isValid(this);") &
         "#subjectFormDelete" #> SHtml.button(<img src="/images/delico.png" />,deleteData)
 
@@ -164,44 +163,48 @@ class Administration {
 
     }
     
-     def editNews() = {
-        var id = S.param("id").openOr("0")
-        var theNews = News.find(id).getOrElse(News.create)
-        var title = theNews.title
-        var content = theNews.content
-        var imgPath = theNews.imgPath
+     def editLink() = {
+        var id = ""
+        var title = ""
+        var content = ""
+        var imgPath = ""
+        var link = ""
         
-        def deleteNews(){
-            var news = News.find(id).getOrElse(News.create)
+        def deleteLink(){
+            var news = Link.find(id).getOrElse(Link.create)
             if(id != "0") news.delete
             S.notice("Usunięto id=" + id)
         }
         
-        def saveNews(){
-            var news = News.find(id).getOrElse(News.create)
+        def saveLink(){
+            var news = Link.find(id).getOrElse(Link.create)
             if (title != "" && content != "") {
                 val d = new Date()
-                news._id = d.getTime.toString
+                if (id == "" || id == "0") {
+                  news._id = d.getTime.toString 
+                }
                 news.title = title 
                 news.content = Unparsed(content).toString()
-                if (id == "0") news.date = d.toString
+                news.imgPath = imgPath
+                news.link = link
                 news.save
             }
         }
         
         "#editId" #> SHtml.text(id, id = _, "type"->"hidden") &
         "#editTitle" #> SHtml.text(title,title = _) &
-        "#editImage" #> SHtml.text(imgPath,imgPath= _ ,"type"->"hidden") &
-        "#editContent" #> SHtml.textarea(content,content = _) &
-        "#editDelete"#> SHtml.submit("Usuń",deleteNews) &
-        "#editSave" #> SHtml.submit("Zapisz", saveNews)
+        "#pathImg" #> SHtml.text(imgPath,imgPath= _ ,"type"->"hidden") &
+        "#editContent" #> SHtml.textarea(content, content = _) &
+        "#editLink" #> SHtml.text(link, link = _) &
+        "#editDelete"#> SHtml.submit("Usuń",deleteLink) &
+        "#editSave" #> SHtml.submit("Zapisz", saveLink)
         
     }
      
-      def shortNews() = {
-        val news = News.findAll //OrderBy(News.date, Descending)
+      def shortLink() = {
+        val news = Link.findAll //OrderBy(Link.date, Descending)
         "tbody" #> news.map( item => {
-                "tr" #> <tr><td>{item.title}</td><td><img src={item.imgPath} /></td><td>{item.content}</td><td>{item.date}</td></tr>
+                "tr" #> <tr id={item._id.toString()} ><td>{item.title}</td><td><img src={item.imgPath} /></td><td>{Unparsed(item.content)}</td><td>{item.link}</td></tr>
             })
     }
       

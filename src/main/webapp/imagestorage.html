@@ -8,40 +8,23 @@
       //<![CDATA[
             $(document).ready( function() {
                 var top = window.top.document;
-                var errorMassage = $('#errorMassage').text();
-                if (errorMassage == "") {
-                    var tabsContainer = top.getElementById('tabs_container') 
-                    var id = document.getElementById('saveiconId').innerHTML;
-                    $(tabsContainer).children('div').children('fieldset').each( function() {
-                        var idField = $(this).attr('id');
-                        if(idField == id){
-                            var img = $(this).children('legend').children('img');
-                            var src = img.get(0).src;
-                            var array  = src.split('/');
-                            if (array.length == 0) alert('Error bad image link!');
-                            var iconName = array[array.length -1];
-                            if (iconName == "emptyissue.png") img.get(0).src = '/img/' + id + '/icon1.png';
-                            else {
-                                if (src && src.search(/\/img\/i[sp]_\d+\/icon\d+\.png/i) >= 0) {
-                                    var iconNum = parseInt(iconName.substring(4, iconName.length -4));
-                                    img.get(0).src = '/img/' + id + '/icon' + ++iconNum + '.png' ;
-                                }
-                            }
-                        } 
-                    }); 
-                } 
-                else {
-                    alert(errorMassage);
-                }
+                    var pathInput = top.getElementById('pathImg'); 
+                    var imgElem = top.getElementById('imagePreview');
+                    var pathStr = $('#path').val();
+                   $(pathInput).val(pathStr);
+                   $(imgElem).attr('src',pathStr);
+                    
             });
           //]]>
         </script>
     </head>
     <body >
-        <form class="lift:FileSn.uploadFile?form=POST" enctype="multipart/form-data" >
+         <form class="lift:FileSn.addNewsImg" method="post" enctype="multipart/form-data">
+            <img src="" style="max-height:40%;max-width:40%;" /></br>
             <label for="file">Wczytaj obraz:</label><input id="file" />
-            <input id="pathToFile" />
-            <input id="submit"/>
-        </div>
+            <input id="path" />
+            <input id="submit"/><br/>
+            
+        </form>
     </body>
 </html>

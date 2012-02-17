@@ -9,10 +9,11 @@
   <artifactId>net.brosbit4u</artifactId>
   <version>0.1</version>
   <packaging>war</packaging>
-  <name>OnlineBook</name>
-  <inceptionYear>2010</inceptionYear>
+  <name>ePodrecznik.edu.pl</name>
+  <inceptionYear>2012</inceptionYear>
   <properties>
     <scala.version>2.9.1</scala.version>
+    <lift.version>2.4</lift.version>
     <!-- Common plugin settings -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>${project.build.sourceEncoding}</project.reporting.outputEncoding>
@@ -47,7 +48,7 @@
     <dependency>
       <groupId>net.liftweb</groupId>
       <artifactId>lift-mapper_2.9.1</artifactId>
-      <version>2.4-M5</version>
+      <version>${lift.version}</version>
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
@@ -94,7 +95,7 @@
     <dependency>
   <groupId>net.liftweb</groupId>
   <artifactId>lift-mongodb_2.9.1</artifactId>
-  <version>2.4-M5</version>
+  <version>${lift.version}</version>
 </dependency>
   </dependencies>
 
@@ -174,14 +175,6 @@
         </executions>
         <configuration>
           <nosuffix>true</nosuffix>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-idea-plugin</artifactId>
-        <version>2.2</version>
-        <configuration>
-          <downloadSources>true</downloadSources>
         </configuration>
       </plugin>
       <plugin>

@@ -3,13 +3,20 @@
     
 <div class="lift:surround?with=admin;at=boxText">
     <head_merge>
-        <script type="text/javascript" src="/ckeditor/ckeditor.js"></script>
        
     <script >
+   
+       var oTable = $();
+         
+     
       $(document).ready(function() {
                         $('#newsList').children('table').children('tbody').children('tr').each(function(){
                             $(this).dblclick(function(){beginEditNews(this);});
                         });
+                        
+                         oTable = $('#dataTable').dataTable();
+                
+            
                         
                         $('#newsForm').dialog({
                             autoOpen: false,
@@ -22,18 +29,27 @@
                         });
                     });
                     
+                      
+                    
             function beginEditNews(elem){
                  $('#newsForm').dialog("open");
-                 $(elem).children('td').each(function(index) {
+                 $elem = $(elem);
+                 $('#editId').val($elem.attr('id'));
+                 
+                 $elem.children('td').each(function(index) {
                   switch(index){
                   case 0:
                   $('#editTitle').val(this.innerHTML);
                   break;
                   case 1:
-                  $('#editContent').val(this.innerHTML);
+                  var src = $('this').children('img').first().attr('src');
+                  $('#imagePreview').attr('src',src);
                   break;
                   case 2:
-                  $('#').val(this.innerHTML);
+                  $('#editContent').val(this.innerHTML);
+                  break;
+                  case 3:
+                  $('#editLink').val(this.innerHTML);
                   break;
                   default:
                   break;
@@ -44,44 +60,30 @@
             
             function mkAddNews(){
                  $('#newsForm').dialog("open");
-                 openCKEditor();
             }
             
-            function openCKEditor(){
-                 CKEDITOR.replace( 'editContent',{
-                width : 550, 
-                height:200,
-                toolbar : [ [ 'Source'],
-                [ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ],
-                [ 'Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat' ],
-                [ 'NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiLtr','BidiRtl' ],
-                [ 'HorizontalRule','SpecialChar' ] ,
-                [ 'Format','Font' ],
-                [ 'TextColor','BGColor' ] ]
-                });
-            }
+           
             </script>
     </head_merge>
    
-  <h2>Administracja - Aktualności</h2>
-  
-    <div class="lift:Administration.shortNews" id="newsList">
-            <h4>Lista </h4>
-            <table>
-            <tbody><tr><td></td><td>Temat</td><td>Treść</td> <td>Data</td><td></td></tr></tbody>
+  <h2>Administracja - Linki</h2>
+    <div class="lift:Administration.shortLink dataTable_wrapper" id="newsList">
+            
+            <table  id="dataTable" class="display">
+            <thead><tr><th>Temat</th><th>Obraz</th><th>Treść</th> <th>Link</th></tr></thead>
+            <tbody><tr><td></td><td></td><td></td> <td></td></tr></tbody>
             </table>    
              <input id="mkAddNews" type="image" src="/images/addico.png" onclick="mkAddNews();"/>    
     </div>
   
   <div id="newsForm" style="display:none;" title="Edycja newsów">
-   <form class="lift:Administration.editNews?form=POST"  >
+   <form class="lift:Administration.editLink?form=POST"  >
      
           <input id="editId"/><br/>
-          <label for="editTitle">Tytuł:</label><input id="editTitle"/><br/>
-          <input id="editImg"/>
-          <iframe src="/img" style="width:300px;height:100px;"></iframe><br/>
-          <input id="editImage"/><br/>
-          <textarea id="editContent" ><textarea></textarea><br/>
+          <label for="editTitle">Tytuł:</label><input id="editTitle"/><input id="pathImg" type="text" /><img src="" id="imagePreview"><br/>
+          <iframe src="/imagestorage" style="width:500px;height:30px;"></iframe><br/>
+          <label for="editLink">Link:</label><input id="editLink"/><br/>
+          <textarea id="editContent" ></textarea><br/>
           <input id="editDelete"/><input id="editSave"/>
           
      

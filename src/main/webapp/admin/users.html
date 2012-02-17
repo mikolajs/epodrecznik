@@ -4,10 +4,15 @@
 <div class="lift:surround?with=admin;at=boxText">
     <head_merge>
         <script>
+         var oTable = $();
             $(document).ready(function() {
                         $('#usersList').children('table').children('tbody').children('tr').each(function(){
                             $(this).dblclick(function(){beginEditUsers(this);});
                         });
+                        
+                           oTable = $('#dataTable').dataTable({
+                         "aoColumnDefs": [{ "bVisible": false, "aTargets": [ 2 ] }
+                        ]});
                         
                         $('#usersForm').dialog({
                             autoOpen: false,
@@ -54,11 +59,9 @@
   <h2>Użytkownicy</h2>
  
   
-
-  
-   <div id="usersList" class="lift:Administration.usersList">
-        <h4>Użytkownicy:</h4>
-            <table>
+   <div id="usersList" class="lift:Administration.usersList dataTable_wrapper">
+        
+            <table id="dataTable" class="display">
                 <thead><tr><th>Nazwisko</th><th>Imię</th><th>Email</th><th>Poziom</th><th>Karma</th></tr></thead>
                 <tbody><tr><td></td><td></td><td></td><td></td></tr></tbody>
             </table>

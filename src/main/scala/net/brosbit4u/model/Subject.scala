@@ -9,9 +9,9 @@ import java.util.Date
 object Subject extends MongoDocumentMeta[Subject] {
     override def collectionName = "subjects"
     override def formats = super.formats + new ObjectIdSerializer + new DateSerializer
-    def create = new Subject(0L,"","")
+    def create = new Subject(0L,"")
 }
 
-case class Subject(var _id:Long, var short:String, var full:String)  extends  MongoDocument[Subject] {
+case class Subject(var _id:Long, var full:String)  extends  MongoDocument[Subject] {
     def meta = Subject
 }

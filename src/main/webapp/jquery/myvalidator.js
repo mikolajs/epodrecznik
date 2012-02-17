@@ -68,13 +68,12 @@ function isValid(elem){
 		}
 	});
 	var massage = "";
-	var $div = $form.children('div.validationMassage');
+	var $massage = $('#validationMassage');
 	if(massageName != "") massage += massageName + "<br/>";
 	if(massagename != "") massage += massagename + "<br/>";
 	if(massagePass != "") massage += massagePass + "<br/>";
 	if(massagePassR != "") massage += massagePassR + "<br/>";
 	if(massageEmail != "") massage += massageEmail + "<br/>";
-	var $massage =  $('<em>' + massage + '</em>');
-	$div.get(0).innerHTML = '<em>' + massage + '</em>'; //add($massage).css('background-color', 'gray');
+	$massage.get(0).innerHTML = massage;
 	return isOk;
 }

@@ -3,16 +3,19 @@
 	var $slidesHTML = $();
 	
 		$(document).ready(function(){
+			
+			
 			CKEDITOR.replace( 'slideText',{
 				width : 900, 
-				height:300,
+				height: 300,
+				extraPlugins : 'youTube,addImage,formula',
         		toolbar : [ [ 'Source' ],
         		            [ 'Link','Unlink','Anchor' ],[ 'Maximize', 'ShowBlocks','-','About' ] ,
         		[ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ],
         		[ 'Find','Replace','-','SelectAll' ],
         		[ 'Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat' ],
         		[ 'NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiLtr','BidiRtl' ],
-        		[ 'Image','Flash', 'Table','HorizontalRule','SpecialChar' ] ,
+        		[ 'AddImage', 'YouTube', 'Formula', 'Table','HorizontalRule','SpecialChar','Iframe' ] ,
         		[ 'Styles','Format','Font','FontSize' ],
         		[ 'TextColor','BGColor' ] ]
     		});
@@ -55,7 +58,6 @@
 				$slideCh.append('<li>' + i.toString() + '</li>');
 				if(i == currentSlide) $slideCh.children().last().addClass('highlightLi');
 			} 
-			//bind click
 			$slideCh.children().click(function() {
 				insertFromCKEditor();
 				var $ul = $(this);
@@ -137,4 +139,26 @@
 			$('#slidesData').val(data);
 			return true;
 		}
+		//get url from iframe in CKEditor and insert it in url input in window massage
+		function getImageURLfromIFrame(elem){
+			var innerDoc = elem.contentDocument || elem.contentWindow.document;
+			var url  = innerDoc.getElementById('path').value;
+			$('.cke_dialog_ui_input_text').val(url);
+		}
+		
+		//for ascii to math
+		//var formula = document.getElementById("formulaEditor");
+		translateOnLoad=false;
+		function displayFormula() {
+
+		  var str = document.getElementById("formulaEditor").value;
+		  str = "`" + str + "`";
+		  var outnode = document.getElementById("formulaDisplay");
+		  var n = outnode.childNodes.length;
+		  for (var i=0; i<n; i++)
+		    outnode.removeChild(outnode.firstChild);
+		  outnode.appendChild(document.createTextNode(str));
+		  AMprocessNode(outnode);
+		}
+		//end ascii to math
 		

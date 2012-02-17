@@ -4,12 +4,14 @@
 <div class="lift:surround?with=admin;at=boxText">
     <head_merge>
         <script>
+        var oTable = $();
             $(document).ready(function() {
                         
                         $('#departmentList').children('table').children('tbody').children('tr').each(function(){
                             $(this).dblclick(function(){beginEditDepartment(this);});
                         });
-                       
+                         oTable = $('#dataTable').dataTable();
+                        
                         $('#departmentForm').dialog({
                             autoOpen: false,
                             height: 280,
@@ -23,15 +25,15 @@
             
             function beginEditDepartment(elem){
                 $('#departmentForm').dialog("open");
-                $(elem).children('td').each(function(index) {
+                 $elem = $(elem);
+                var id = $elem.attr('id');
+                $('#departmentFormId').val(id);
+                $elem.children('td').each(function(index) {
                   switch(index){
                   case 0:
                   $('#departmentFormName').val(this.innerHTML);
                   break;
                   case 1:
-                  $('#departmentFormShort').val(this.innerHTML);
-                  break;
-                  case 2:
                   $('#departmentFormSubject').val(this.innerHTML);
                   break;
                   default:
@@ -53,11 +55,10 @@
    
   <h2>Administracja - Działy</h2>
   
-  <div id="departmentList" class="lift:Administration.departmentList">
-        <h4>Działy:</h4>
-            <table>
-                <thead><tr><th>Nazwa</th><th>Strót</th><th>Przedmiot</th></tr></thead>
-                <tbody><tr><td></td><td></td><td></td></tr></tbody>
+  <div id="departmentList" class="lift:Administration.departmentList dataTable_wrapper" >
+            <table id="dataTable" class="display">
+                <thead><tr><th>Nazwa</th><th>Przedmiot</th></tr></thead>
+                <tbody><tr><td></td><td></td></tr></tbody>
             </table>
         <input id="mkAddDepartment" type="image" src="/images/addico.png" onclick="mkAddDepartment();"/>
   </div>
@@ -65,7 +66,7 @@
   <div id="departmentForm" style="display:none;" title="Edycja działów">
       <form class="lift:Administration.departmentForm?form=POST">
       <label for="departmentFormName">Pełna nazwa:</label><input id="departmentFormName"/><br/>
-      <label for="departmentFormShort">Skrót:</label><input id="departmentFormShort"/><br/>
+      <input id="departmentFormId"/><br/>
       <label for="departmentFormSubject">Przedmiot:</label><select id="departmentFormSubject">
           <option>1 przedmiot</option><option>2 przedmot</option><option>3 przedmot</option>
         </select><br/>
@@ -73,11 +74,6 @@
        <div class="validationMassage"></div>
       </form>
   </div>
-  
- 
-  
-
-  <br/>
  
 </div>
     

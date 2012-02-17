@@ -1,24 +1,36 @@
-<div class="lift:surround?with=default;at=body">
+<div class="lift:surround?with=default-other;at=body">
 	<head_merge>
 	<script class="lift:ThemeSn.departmentData" id="departmentData"></script>
 	<script type="text/javascript" src="/ckeditor/ckeditor.js"></script>
 	<script type="text/javascript" src="/jquery/editslides.js"></script>
+	<script type="text/javascript" src="/jquery/ASCIIMathML.js"></script>
 		<style>
+		div#cffm {
+   background-color:#fff;
+   font:12px sans-serif;
+   color:#000;
+   width: 100%;
+   height: 400;
+   overflow: none;
+}
 		#titleTheme {width: 300px;}
-		#slideChoice li { display:inline; padding:5px; font-weight: bold; font-size: 20px; 
-						border: solid 1px black;} 
-	    .highlightLi {  background-color: red; color:white;}
-	    
+		#slideChoice li { display:inline; padding: 5px !important; font-weight: bold; font-size: 15px; 
+						border: solid 1px black; background-image: none !important; } 
+		
+	    .highlightLi {  background-color: red !important; color:white;}
+	    #validationMassage { color: red; }
+	    #slidesHTML { position: relative; }
 		</style>
+	
+   
 	</head_merge>
- <div class="row-3">
-        <div class="container">
+ 
  <div id="boxText">
   <h2>Edycja slajdów</h2>
   <hr/>
   <form class="lift:ThemeSn.formEdit?form=POST">
     <input id="id" type="hidden" />
-  	<label for="titleTheme">Tytuł:</label><input id="titleTheme" class="Name"/><span class="validationMassage">massage</span><br/>
+  	<label for="titleTheme">Tytuł:</label><input id="titleTheme" class="Name"/><span id="validationMassage"></span><br/>
   	
   	<input id="departmentThemeHidden" type="hidden" />
     <label for="subjectTheme">Przedmiot:</label><select id="subjectTheme"></select>
@@ -38,16 +50,20 @@
   <br/>
     
     	<div id="slideEditor">
+    	<div id="slideList">
     	<ul id="slideChoice"><li>1</li><li>3</li></ul>
     	<br/>
+    	</div>
     	<textarea class="ckeditor" id="slideText"></textarea>
     	</div>
         
         
     </div>
+    <div id="previewSlide">
+    
+    </div>
   </div>
-  </div>
-  </div>
+  
   <div id="slidesHTML" class="lift:ThemeSn.slideData" style="display:none;">
   <section id="slideHTML"></section>
   </div>

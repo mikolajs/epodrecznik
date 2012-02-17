@@ -18,16 +18,19 @@
 package net.brosbit4u.snippet 
 
     import scala.xml.{ NodeSeq, Text }
-    import _root_.net.liftweb._
-    import util._
-    import common._
-    import Helpers._
-    import http.{ S, SHtml, FileParamHolder, RequestVar }
-    import java.util.Date
-    import java.awt.image.BufferedImage
-    import java.awt.Image
-    import javax.imageio.ImageIO
-    import java.io.{ File, ByteArrayInputStream, FileOutputStream }
+import _root_.net.liftweb._
+import util._
+import common._
+import Helpers._
+import http.{ S, SHtml, FileParamHolder, RequestVar }
+import java.util.Date
+import java.awt.image.BufferedImage
+import java.awt.Image
+import javax.imageio.ImageIO
+import java.io.{ File, ByteArrayInputStream, FileOutputStream }
+import com.mongodb.gridfs._
+import mongodb._
+import java.io.ByteArrayOutputStream
     /**
      * snipet ma dostarczać grafikę na stronę oraz obsługiwać zapis zdjęć i dostarczenie
      * ich do edytora - w przysłości obsługa plików statycznych
@@ -38,12 +41,16 @@ package net.brosbit4u.snippet
       val pathRootImages = "/home/ms/epodreczniki"
       val pathNewsImages = "/news"
 
+        
+        
       def addImg() = {
         var fileHold: Box[FileParamHolder] = Empty
         var mimeType = ""
+        var mimeTypeFull = ""
         def isCorrect = fileHold match {
           case Full(FileParamHolder(_, mime, _, data)) if mime.startsWith("image/") => {
             mimeType = "." + mime.split("/")(1)
+            mimeTypeFull = mime.toString
             S.notice(mime.toString) //tutaj do dać odczyt mime i rozszerzenie
             true
           }
@@ -120,17 +127,26 @@ package net.brosbit4u.snippet
       def addNewsImg() = {
         var fileHold: Box[FileParamHolder] = Empty
         var mimeType = ""
+        var mimeTypeFull = ""
          def isCorrect = fileHold match {
           case Full(FileParamHolder(_, mime, _, data)) if mime.startsWith("image/") => {
             mimeType = "." + mime.split("/")(1)
-            S.notice(mime.toString) //tutaj do dać odczyt mime i rozszerzenie
-            true
+            mimeTypeFull = mimeType.toString()
+            S.notice(mime.toString) 
+            if (mimeType == ".png" || mimeType == ".jpeg" || mimeType == ".gif") true
+            else {
+              println("Nieprawidłowy format pliku!")
+              S.error("Nieprawidłowy format pliku!")
+              false
+            }
           }
           case Full(_) => {
+            println("Nieprawidłowy format pliku!")
             S.error("Nieprawidłowy format pliku!")
             false
           }
           case _ => {
+            println("Brak pliku")
             S.error("Brak pliku?")
             false
           }
@@ -138,6 +154,23 @@ package net.brosbit4u.snippet
         
         def save() {
           if (isCorrect){
+           var fileName =  fileHold.get.fileName.split('.').dropRight(1).mkString
+           if (fileName.isEmpty) fileName = scala.util.Random.nextLong.toString
+           var imageBuf: BufferedImage = ImageIO.read(new ByteArrayInputStream(fileHold.get.file))
+           val imBox:Box[BufferedImage] = getImageBox(500, imageBuf)
+           var outputStream = new ByteArrayOutputStream()
+           ImageIO.write(imBox.get, mimeType.substring(1),outputStream)
+           val inputStream = new ByteArrayInputStream(outputStream.toByteArray())
+           MongoDB.use(DefaultMongoIdentifier) { db =>
+           val fs = new GridFS(db)
+           val inputFile = fs.createFile(inputStream)
+           inputFile.setContentType(mimeTypeFull)
+           inputFile.setFilename(fileName + mimeType)
+           inputFile.save
+           linkpath("/image/" + inputFile.getId().toString() + mimeType)
+           
+           }
+            /*
             val imgDir: File = new File(pathRootImages + pathNewsImages)
             val fileName =  fileHold.get.name
             
@@ -149,10 +182,10 @@ package net.brosbit4u.snippet
               S.notice("Plik został zapisany")
             } else {
               S.notice("Zapis nieudany")
-            }
+            }*/
           }
           
-        }
+        } 
         
         "img [src]" #> linkpath.is &
         "#path" #> SHtml.text(linkpath.is,x=>x,"type"->"hidden") &
