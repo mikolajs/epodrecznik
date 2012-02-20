@@ -41,31 +41,10 @@ CKEDITOR.plugins.add( 'formula',
 	
         onOk : function()
         {
-	  var imageNode = null;
-				if ( !this.fakeImage )
-				{
-					imageNode = CKEDITOR.dom.element.createFromHtml( '<cke:img></cke:img>', editor.document );
-				}
-				else
-				{
-					imageNode = this.iImageNode;
-				}
-				
-				 var dialog = this;
-		      var url = dialog.getValueOf('tab1','url');
-			imageNode.setAttribute('src',url);
-				var newFakeImage = editor.createFakeElement( imageNode, 'cke_img', 'img', true );
-				
-				newFakeImage = newFakeImage.setAttribute('src',url);
-				if ( this.fakeImage )
-				{
-					newFakeImage.replace( this.fakeImage );
-					editor.getSelection().selectElement( newFakeImage );
-				}
-				else
-					editor.insertElement( newFakeImage );
-        
-        },
+	 var mathFormula = document.getElementById('formulaDisplay').innerHTML;
+	 var div = CKEDITOR.dom.element.createFromHtml(mathFormula);
+	 editor.insertElement(div);
+        }
        
       };
     } );

@@ -46,7 +46,7 @@ CKEDITOR.plugins.add( 'addImage',
 	  var imageNode = null;
 				if ( !this.fakeImage )
 				{
-					imageNode = CKEDITOR.dom.element.createFromHtml( '<cke:img></cke:img>', editor.document );
+					imageNode = new CKEDITOR.dom.element( 'img', editor.document );
 				}
 				else
 				{
@@ -56,16 +56,7 @@ CKEDITOR.plugins.add( 'addImage',
 				 var dialog = this;
 		      var url = dialog.getValueOf('tab1','url');
 			imageNode.setAttribute('src',url);
-				var newFakeImage = editor.createFakeElement( imageNode, 'cke_img', 'img', true );
-				
-				newFakeImage = newFakeImage.setAttribute('src',url);
-				if ( this.fakeImage )
-				{
-					newFakeImage.replace( this.fakeImage );
-					editor.getSelection().selectElement( newFakeImage );
-				}
-				else
-					editor.insertElement( newFakeImage );
+					editor.insertElement( imageNode );
         
         },
        
