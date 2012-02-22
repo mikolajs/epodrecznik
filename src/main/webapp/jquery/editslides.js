@@ -134,7 +134,6 @@
 			insertFromCKEditor();
 			var dep = $('#departmentTheme').children('option:selected').val();
 			$('#departmentThemeHidden').val(dep);
-			alert(dep);
 			var data = $slidesHTML.get(0).innerHTML;
 			$('#slidesData').val(data);
 			return true;

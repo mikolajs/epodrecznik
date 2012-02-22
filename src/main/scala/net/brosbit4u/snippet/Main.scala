@@ -24,7 +24,12 @@ class Main {
     }
     
    def showLatest() = {
-     "dl" #> "Na razie pusto"
+     val newContentsList = NewContent.findAll
+     val contentList = if(newContentsList.isEmpty) Nil else newContentsList.head.content
+     "dl" #> contentList.map(item => {
+       "dt" #> item.date & 
+       "dd" #> <dd><strong>{item.info}</strong><img src={item.link} /></dd>
+     })
    }
     
    def logInfo() = {

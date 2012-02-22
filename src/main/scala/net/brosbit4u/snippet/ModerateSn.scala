@@ -8,7 +8,7 @@ import http.{S,SHtml}
 import common._
 import util._
 import mapper.{OrderBy,Descending}
-import net.brosbit4u.model._
+import _root_.net.brosbit4u.model._
 import json.JsonDSL._
 import json.JsonAST.JObject
 import json.JsonParser
@@ -17,8 +17,7 @@ import net.liftweb.http.js._
 import Helpers._
 import http.js.JsCmds._
 import http.js.JE._
-import net.liftweb.util.ToJsCmd
-
+import _root_.net.brosbit4u.lib._
 
 class ModerateSn {
 	 def showThemes() = {
@@ -34,11 +33,20 @@ class ModerateSn {
 	   else if (conf != "n") {
 	     Theme.find(conf) match {
 	       case Some(theme) => {
+	         //get original theme if exist, if is new use it
 	          val th = Theme.find(theme.referTo).getOrElse(theme)
 	          th.moderator = User.currentUser.get.id.toString
 	          th.referTo = "0"
 	          th.confirmed = true 
 	          th.save
+	          //add to database new content to show in index.html
+	          val newContList = NewContent.findAll
+	          val newCont = if(newContList.isEmpty) NewContent.create else newContList.head
+	          val cont = AddedContent(theme.title,"/slideshow/" + theme._id, Formater.formatDate(new Date()))
+	          newCont.content = cont::newCont.content
+	          if(newCont.content.length > 15) newCont.content = newCont.content.dropRight(1)
+	          newCont.save
+	          //delete copy if it's not new slide
 	          if (th._id != theme._id) theme.delete
 	       }
 	       case _ =>

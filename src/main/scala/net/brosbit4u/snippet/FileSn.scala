@@ -157,7 +157,8 @@ import java.io.ByteArrayOutputStream
            var fileName =  fileHold.get.fileName.split('.').dropRight(1).mkString
            if (fileName.isEmpty) fileName = scala.util.Random.nextLong.toString
            var imageBuf: BufferedImage = ImageIO.read(new ByteArrayInputStream(fileHold.get.file))
-           val imBox:Box[BufferedImage] = getImageBox(500, imageBuf)
+           var mime = mimeType(1)
+           val imBox:Box[BufferedImage] = getImageBox(500, imageBuf,mime)
            var outputStream = new ByteArrayOutputStream()
            ImageIO.write(imBox.get, mimeType.substring(1),outputStream)
            val inputStream = new ByteArrayInputStream(outputStream.toByteArray())
@@ -193,28 +194,29 @@ import java.io.ByteArrayOutputStream
         "#submit" #> SHtml.submit("Dodaj!", save) 
       } 
       
-      def getImageBox(maxSize:Int, imageBufIn: BufferedImage):Box[BufferedImage] = {
+      def getImageBox(maxSize:Int, imageBufIn: BufferedImage,mime:Char):Box[BufferedImage] = {
          var imageBuf: BufferedImage = imageBufIn
             //tutaj przeskalowanie
             var imBox: Box[BufferedImage] = Empty
             val w = imageBuf.getWidth
             val h = imageBuf.getHeight
+            val bufferedImageTYPE = if(mime == 'j') BufferedImage.TYPE_INT_RGB else BufferedImage.TYPE_INT_ARGB
             if (w > maxSize || h > maxSize) {
               if (w > h) {
                 val im: java.awt.Image = imageBuf.getScaledInstance(maxSize, (h.toDouble * maxSize.toDouble / w.toDouble).toInt, Image.SCALE_SMOOTH)
                 //val graf2D = imageBuf.createGraphics
                 //graf2D.scale(1.0, 500.0/w.toDouble)
                 //imageBuf.getGraphics.translate(500, (h.toDouble * 500.0/w.toDouble).toInt)
-                imBox = Full(new BufferedImage(maxSize, (h.toDouble * maxSize.toDouble / w.toDouble).toInt, BufferedImage.TYPE_INT_ARGB))
+                imBox = Full(new BufferedImage(maxSize, (h.toDouble * maxSize.toDouble / w.toDouble).toInt, bufferedImageTYPE))
                 imBox.get.getGraphics.drawImage(im, 0, 0, null)
                 //imageBuf = im.asInstanceOf[BufferedImage]
               } else {
                 val im: java.awt.Image = imageBuf.getScaledInstance((w.toDouble * maxSize.toDouble / h.toDouble).toInt, maxSize, Image.SCALE_SMOOTH)
-                imBox = Full(new BufferedImage((w.toDouble * maxSize.toDouble / h.toDouble).toInt, maxSize, BufferedImage.TYPE_INT_ARGB))
+                imBox = Full(new BufferedImage((w.toDouble * maxSize.toDouble / h.toDouble).toInt, maxSize, bufferedImageTYPE))
                 imBox.get.getGraphics.drawImage(im, 0, 0, null)
               }
             } else {
-              imBox = Full(new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB))
+              imBox = Full(new BufferedImage(w, h, bufferedImageTYPE))
               imBox.get.getGraphics.drawImage(imageBuf, 0, 0, null)
             }
          imBox

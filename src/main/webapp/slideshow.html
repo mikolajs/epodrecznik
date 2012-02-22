@@ -17,7 +17,12 @@
     <script>
     $(document).ready(function() {
         $.deck('.slide'); 
-    $.deck(['#slide-1','#slide-2','#slide-3']); 
+        var arrayId = new Array();
+       
+        $('#slides').children('section').each(function() {
+            arrayId.push('#' + this.id)
+        });
+    $.deck(arrayId); 
     $('#next-slide').click(function() {
             $.deck('next');
         }); 
