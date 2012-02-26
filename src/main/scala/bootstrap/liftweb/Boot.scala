@@ -55,9 +55,11 @@ class Boot {
 	  Menu("Wybór tematu") / "choiceslide" >> LocGroup("public"),
       Menu("Kontakt") / "contact" >> LocGroup("public"),
       Menu("Moje tematy") / "editable" >> LocGroup("public"),
+      Menu("Publikacja") / "ebooks" >> LocGroup("public"),
 	  Menu("Edycja") / "edit" / ** >> LocGroup("extra") >> Hidden,
 	  Menu("Moderacja") / "moderate"  >> LocGroup("extra") >> Hidden,
       Menu("Pokaz") / "slideshow" / ** >> LocGroup("extra") >> Hidden,
+      Menu("Edytuj książkę") / "ebook" / ** >> LocGroup("extra") >> Hidden,
       Menu("Image upload") / "imagestorage" >> LocGroup("extra") >> Hidden >> isUser,
       Menu("Administrator") / "admin" / "admin" >> LocGroup("admin") >> isAdmin,
       Menu("Przedmioty") / "admin" / "subjects" >> LocGroup("admin") >> isAdmin,
@@ -78,6 +80,10 @@ class Boot {
             ParsePath("slideshow" :: subjectId :: Nil, _, _,_), _, _) =>
           RewriteResponse(
             "slideshow" :: Nil, Map("id" -> subjectId)  )
+         case RewriteRequest(
+            ParsePath("ebook" :: ebookId :: Nil, _, _,_), _, _) =>
+          RewriteResponse(
+            "ebook" :: Nil, Map("id" -> ebookId)  )
 	  })
     /*
      * Show the spinny image when an Ajax call starts
