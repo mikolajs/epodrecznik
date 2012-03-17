@@ -16,23 +16,37 @@
              function selectSubject(elem){
                 oTable.fnFilter( elem.innerHTML,2);
              }
+             
+             function showAddBook(elem){
+                $(elem).hide(300);
+                $('#formAddBook').show(300);
+             }
+              function closeAddBook(){
+                $('#formAddBook').hide(300);
+                $('#iconAddBook').show(300);
+             }
        </script>
     </head_merge>
     
  <div id="boxText">
   <h2>Wybór publikacji</h2>
   
-  <div id="ebookList" class="lift:ThemeSn.bookList dataTable_wrapper">
+  <div id="ebookList" class="lift:EBookSn.ebookList dataTable_wrapper">
             <table id="dataTable" class="display" >
                 <thead><tr><th>Tytuł</th><th>Opis</th><th>Właściciel</th></tr></thead>
-                <tbody><tr><td><a href="">To jest tytuł</a></td><td></td></tr></tbody>
+                <tbody><tr><td><a href="">To jest tytuł</a></td><td id="descriptBook"></td><td id="ownerBook"></td></tr></tbody>
             </table>
-            <br/>
-            <br/>
-            <br/>
-        </div>
-  
-  
+            
+   </div>
+        <img src="/images/addico.png" id="iconAddBook" onclick="showAddBook(this)"/>
+        <div id="formAddBook" style="display:none;">
+  <form id="addBook" method="POST" class="lift:EBookSn.newBook">
+  <label for="title">Tytuł</label><input type="text" id="title" /><br/>
+  <label for="description">Opis</label><br/>
+  <textarea id="description"></textarea><br/>
+  <input type="submit" id="save" value="Zapisz!"/><input type="submit" onclick="return closeAddBook()" "id="Cancel" />
+  </form>
+  </div>
   <br/>
 </div>
     </div>

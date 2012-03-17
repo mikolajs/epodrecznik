@@ -24,7 +24,9 @@
 	<link href="ie_style.css" rel="stylesheet" type="text/css" />
 <![endif]-->
    <script type="text/javascript" >
-		$('.nav').children('li:fist').addClass('first');
+		$(document).ready(function() {
+        $('ul.nav').children('li.current').hide();
+        });
 </script>
 </head>
 <body id="page3">
