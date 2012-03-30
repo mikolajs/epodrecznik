@@ -41,10 +41,13 @@
         <img src="/images/addico.png" id="iconAddBook" onclick="showAddBook(this)"/>
         <div id="formAddBook" style="display:none;">
   <form id="addBook" method="POST" class="lift:EBookSn.newBook">
+  <fieldset>
+  <legend>Nowa książka</legend>
   <label for="title">Tytuł</label><input type="text" id="title" /><br/>
   <label for="description">Opis</label><br/>
   <textarea id="description"></textarea><br/>
-  <input type="submit" id="save" value="Zapisz!"/><input type="submit" onclick="return closeAddBook()" "id="Cancel" />
+  <input type="submit" id="save" value="Zapisz!"/><input type="submit" value="Anuluj" onclick="return closeAddBook()" "id="Cancel" />
+  </fieldset>
   </form>
   </div>
   <br/>

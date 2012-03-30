@@ -26,7 +26,7 @@ class Boot {
       LiftRules.unloadHooks.append(vendor.closeAllConnections_! _)
 
       DB.defineConnectionManager(DefaultConnectionIdentifier, vendor)
-      MongoDB.defineDb(DefaultMongoIdentifier, MongoAddress(MongoHost("127.0.0.1", 27017), "vregister"))
+      MongoDB.defineDb(DefaultMongoIdentifier, MongoAddress(MongoHost("127.0.0.1", 27017), "epodrecznik"))
     }
 
     // where to search snippet
@@ -81,9 +81,9 @@ class Boot {
           RewriteResponse(
             "slideshow" :: Nil, Map("id" -> subjectId)  )
          case RewriteRequest(
-            ParsePath("ebook" :: ebookId :: Nil, _, _,_), _, _) =>
+            ParsePath("ebook" :: ebookId :: chapter :: Nil, _, _,_), _, _) =>
           RewriteResponse(
-            "ebook" :: Nil, Map("id" -> ebookId)  )
+            "ebook" :: Nil, Map("id" -> ebookId, "chapter" -> chapter)  )
 	  })
     /*
      * Show the spinny image when an Ajax call starts
