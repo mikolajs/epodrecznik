@@ -1,7 +1,7 @@
 package net.brosbit4u.snippet
 
 import java.util.Date
-import scala.xml.{ Text, XML, Unparsed }
+import scala.xml.{ Text, XML, Unparsed, Elem, Null, TopScope }
 import _root_.net.liftweb._
 import http.{ S, SHtml }
 import common._
@@ -21,36 +21,19 @@ class EBookSn {
   val index = S.param("index").openOr("-1")
   val chapter = S.param("chapter").openOr("1")
   var ebook = if (id != "0") EBook.find(id).getOrElse(EBook.create) else EBook.create
-  val chapterInt = try {val ch = chapter.toInt -1; if(ch < 0) 0 else ch } finally {1} 
-  
-  //ebooks => add new book and redirect to edit
-  def newBook() = {
-    var title = ""
-    var description = ""
-    def save() {
-      User.currentUser match {
-        case Full(user) => {
-          val newBook = EBook.create
-          newBook.title = title
-          newBook.descript = description
-          newBook.owner = user.fullName
-          newBook.ownerID = user.id
-          newBook.save
-          S.redirectTo("/ebook/" + newBook._id.toString)
-        }
-        case _ => S.redirectTo("/user_mgt/login")
-      }
-    }
-    "#title" #> SHtml.text(title, title = _) &
-      "#description" #> SHtml.textarea(description, description = _) &
-      "#save" #> SHtml.submit("Zapisz", save)
+  val chapterInt = try { val ch = chapter.toInt - 1; if (ch < 0) 0 else ch } finally { 1 }
+  val userId = User.currentUser match {
+    case Full(u) => u.id.is
+    case _ => -1L
   }
+  val isOwner = if (ebook.ownerID.toLong == userId) true else false
+  val canEdit = if(isOwner) true else !(ebook.chapters(chapterInt).permission.filter(p => p.id.toLong == userId).isEmpty)
 
   //ebook => show title and description
   def ebookData() = {
     "h1 *" #> Text(ebook.title) &
-      "p" #> <p>{ ebook.descript }</p> &
-      "em" #> <em>{ ebook.owner }</em>
+    "p" #> <p>{ ebook.descript }</p> &
+    "em" #> <em>{ ebook.owner }</em>
   }
 
   def editBookTitle() = {
@@ -60,23 +43,15 @@ class EBookSn {
     def save() = {
 
       println("-------------save------------title-----------------")
-        EBook.find(id) match {
-          case Some(ebook) => {
-             if (isOwner(ebook.ownerID)) {
-            ebook.title = title
-            ebook.descript = descript
-            ebook.save
-            }
-             else saved = "Brak uprawnień"
-          }
-          case _ => {
-            println("----------------------no----boook-------------!!!!!!!!!!!----")
-            saved = "Nieudany zapis"
-          }
-        }
-      
-      Alert(saved) &
-        Run("closeMkEditTitle()")
+      if (isOwner) {
+        ebook.title = title
+        ebook.descript = descript
+        ebook.save
+      } else {
+        saved = "Brak uprawnień"
+        println("----------------------no----boook-------------!!!!!!!!!!!----")
+      }
+      Alert(saved)
     }
 
     val form = "#bookTitle" #> SHtml.text(title, title = _) &
@@ -84,223 +59,167 @@ class EBookSn {
       "#saveEditBook" #> SHtml.ajaxSubmit("Zapisz", save) andThen SHtml.makeFormsAjax
 
     "form" #> (in => form(in))
-
   }
+  
   //ebook => show chapter and subchapters tree and permisions and options for add chapters
   def ebookTree() = {
-   var index = 0
-    "li" #>  ebook.chapters.map(chapter => {
-       index += 1
-      <li><a href={"/ebook/" + id + "/" + index.toString }> {chapter.title}</a></li>
-      })
+    var index = 0
+    "li" #> ebook.chapters.map(chapter => {
+      index += 1
+      <li><a href={ "/ebook/" + id + "/" + index.toString }> { chapter.subchapters.head.title }</a></li>
+    })
   }
 
+  //action add new chapter
   def newChapter() = {
     var chapterTitle = ""
     var chapterIndex = ""
-    val list = (1 to 30).map(i=>(i.toString,i.toString))
-    
-    def save(){
+    val list = (1 to 30).map(i => (i.toString, i.toString))
+    def save() {
       var saved = "Zapisano"
-      println("-------------save------------new--chapter----------")
-        EBook.find(id) match {
-          case Some(ebook) => {
-             if (isOwner(ebook.ownerID)) {
-            var where = try {
-              //println("chapter index = " + chapterIndex )
-              var i = chapterIndex.toInt - 1
-              if (i  > ebook.chapters.size) ebook.chapters.size else i
-              } finally {0}
-            val chapter = Chapter(chapterTitle, "", Nil, Nil)
+      println("-------------save------------new--chapter----------" + chapterTitle)
+      if (isOwner) {
+        var where = try {
+          //println("chapter index = " + chapterIndex )
+          var i = chapterIndex.trim().toInt - 1
+          if (i > ebook.chapters.size) ebook.chapters.size else i
+        } finally { 0 }
+        
+        val subchapter = SubChapter(chapterTitle, "Pusty", 0)
+        val newChapter = Chapter(subchapter :: Nil, Nil)
 
-            ebook.chapters = (ebook.chapters.take(where) :+ chapter) ::: ebook.chapters.drop(where)
-            ebook.save
-            }
-             else saved = "Brak uprawnień"
-          }
-          case _ => {
-            println("----------------------no----book-------------!!!!!!!!!!!----")
-            saved = "Nieudany zapis"
-          }
-        }
-      
-      Alert(saved) &
-        Run("newChapter.insertAndClose()")
+        ebook.chapters = (ebook.chapters.take(where) :+ newChapter) ::: ebook.chapters.drop(where)
+        ebook.save
+      } else {
+        saved = "Brak uprawnień"
+        println("---------------------no----book-------------!!!!!!!!!!!----")
+      }
+      Alert(saved) 
     }
-    
+
     val form = "#chapterTitle" #> SHtml.text(chapterTitle, chapterTitle = _) &
       "#chapterIndex" #> SHtml.select(list, Full("1"), chapterIndex = _) &
       "#saveAddChapter" #> SHtml.ajaxSubmit("Zapisz", save) andThen SHtml.makeFormsAjax
 
     "form" #> (in => form(in))
   }
-  
-  def showChapterPermission()= {
-     if (chapterInt > ebook.chapters.size) {"li" #> <li>Nie ma takiego rozdziału!</li>}
-     else {
-        val id = User.currentUser.getOrElse(User.create).id
-        val isOwn = isOwner(id)
-        val editors = ebook.chapters(chapterInt ).permission
+
+  //admin can add user that can edit chapter
+  def showChapterPermission() = {
+    if (chapterInt >= ebook.chapters.size) {
+      "li" #> <span></span> &
+        "#addPermission" #> <span></span>
+    } else {
+
+      if (isOwner) {
+        val editors = ebook.chapters(chapterInt).permission
         "li" #> editors.map(editor => {
-          <li>{editor.email} {if(isOwn){ SHtml.a(()=> { println("----------------delete--------permision-------------")
-        	  											Run("permission.deleteUser(this)")},
-        	  									Text("Usuń"))} else <a></a>}</li>
+          <li>{ editor.email } {
+            SHtml.a(() => {
+              println("----------------delete--------permision-------------")
+              ebook.chapters(chapterInt).permission = editors.filterNot(e => e.email == editor.email)
+              Run("permission.deleteUser(this)")
+            }, Text(" Usuń"))
+          }</li>
         })
-     }
+      } else {
+        "li" #> <span></span> &
+          "#addPermission" #> <span></span>
+      }
+    }
   }
-  
+
   def formAddPermission() = {
-    
+
     var mail = ""
-    
-    def mkAddPermission(){
+
+    def mkAddPermission() {
       println("--------------------add -------permmission -----------------------")
-      val u = User.findAll(By(User.email,mail))
-      if (!u.isEmpty){
-        val owner = Person(mail,u.head.id.is)
+      mail = mail.trim()
+      val u = User.findAll(By(User.email, mail))
+      if (!u.isEmpty) {
+        val owner = Person(mail, u.head.id.is)
         val perm = ebook.chapters(chapterInt).permission
-        ebook.chapters(chapterInt).permission = owner::perm 
+        if (!perm.exists(p => p.email == mail)) ebook.chapters(chapterInt).permission = owner :: perm
         ebook.save
-        println("--------------------add -------permmission ---------saved--------------")
+        println("--------------------add -------permission ---------saved--------------")
       }
       if (!u.isEmpty) Alert("Dodano użytkownka: " + u.head.fullName) else Alert("Nie ma takiego użytkownika!") &
-      Run("permission.addUser()")
+        Run("permission.addUser()")
     }
-    
-    val form = "#addPermissionMail" #> SHtml.text(mail, mail = _ ) &
-    			"#addPermissionSubmit" #> SHtml.ajaxSubmit("Dodaj",mkAddPermission) andThen SHtml.makeFormsAjax
+
+    val form = "#addPermissionMail" #> SHtml.text(mail, mail = _) &
+      "#addPermissionSubmit" #> SHtml.ajaxSubmit("Dodaj", mkAddPermission) andThen SHtml.makeFormsAjax
     "form" #> (in => form(in))
   }
-  
-  
-  def chapterData() {
-    val levelsList = List(<h2></h2> , <h3></h3> , <h4></h4>, <h5></h5>)
-    val theChapter = ebook.chapters(chapterInt)
-    "h2" #> <h2>{theChapter.title}</h2> &
-    "#mainChapterContent" #> <div class="chapterContent">{theChapter.content}</div> &
-    "#subchapterContent" #> theChapter.subchapters.map(sub => {
-      val h = sub.level - 1
-      "h3" #> //?????????????????//
-    })
-  }
 
-  /*
-  //ebook => show forms for edit
-  def formEdit() = {
-    if (!canEdit) S.redirectTo("/user_mgt/login", S.redirectTo("/ebooks"))
+  //main data - chapter content
+  def chapterData() = {
+    if (ebook.chapters.size <= chapterInt) {
+      "#chapter" #> <h3> ROZDZIAŁ NIE ISTNIEJE! </h3> &
+        "#addSubchapter" #> <span></span>
+    } else {
+      val theChapter = ebook.chapters(chapterInt)
+      "#chapter" #> theChapter.subchapters.map(sub => {
+        val l = sub.level + 2
+        "h2" #> Elem(null, "h" + l.toString, Null, TopScope, Text(sub.title)) &
+          "#subChapterContent" #> <div class="chapterContent">{ sub.content }</div> &
+          "img" #> (if (canEdit) <img src="images/addico.png" onclick="editSubchapter"/> else <span></span>)
 
-    var ID = if(id == "0") "0" else ebook._id.toString
-    var title = ebook.title
-    var descript = ebook.descript
-
-
-    var i = -1;
-    val listSubject = Subject.findAll.map(s => {i+= 1;(i.toString,s.full)})
-    def saveData() {
-      if (!canEdit) S.redirectTo("/user_mgt/login")
-      //if not confirmed allow write to the same ebook!
-      val newEBook =  EBook.create
-        newEBook.title = title
-        newEBook.descript = descript
-        newEBook.save 
-
-      S.redirectTo("/editable")
-    }
-
-    def deleteData() {
-
-    }
-
-    def cancelAction() {
-      S.redirectTo("/editable")
-    }
-
-    "#id" #> SHtml.text(ID, ID = _, "type"->"hidden") &
-    "#titleEBook" #> SHtml.text(title, title= _,"class"->"Name") &
-    "#subjectEBook" #> SHtml.select(listSubject,Full(descript),nr => descript = descript,"onchange"->"changeDepartmentSelect();") &
-    "#save" #> SHtml.button(<img src="/images/saveico.png"/>, saveData,"title"->"Zapisz","onclick"->"return createData();") &
-    "#delete" #> SHtml.button(<img src="/images/delico.png"/>, deleteData,"title"->"Usuń") &
-    "#cancel" #> SHtml.button(<img src="/images/cancelico.png"/>, cancelAction,"title"->"Anuluj") 
-  } */
-
-  def ebookList() = {
-    val books = EBook.findAll
-    "tbody" #> books.map(book => "a" #> <a href={"/ebook/" + book._id.toString} >{ book.title } </a> &
-      "#descriptBook *" #> <p>{ book.descript }</p> &
-      "#ownerBook *" #> <em>{ book.owner }</em>)
-  }
-
-  def canEdit: Boolean = {
-    User.currentUser match {
-      case Full(user) => true
-      case _ => false
-    }
-  }
-
-  def isOwner(userId: Long): Boolean = {
-    User.currentUser match {
-      case Full(user) => if (user.id.is == userId) true else false
-      case _ => false
-    }
-  }
-
-  def formTitle = {
-    var title = ""
-    var ID = ""
-    var index = ""
-    var level = "1"
-    val listLevels = (1 to 4).map(x => (x.toString, x.toString))
-    "#id" #> SHtml.text(ID, ID = _, "type" -> "hidden") &
-      "#index" #> SHtml.text(index, index = _, "type" -> "hidden") &
-      "#title" #> SHtml.text(title, title = _) &
-      "#level" #> SHtml.select(listLevels, Full(level), nr => level = nr) &
-      "#save" #> SHtml.ajaxSubmit("Zapisz", () => {
-        println("++++++++++++++++++++++++ tytuł " + title + " id " + ID + " index " + index + " level " + level)
-        Alert("SAVE")
       }) &
-      "#delete" #> SHtml.ajaxSubmit("Usuń", () => {
-        println("----------------------- tytuł " + title + " id " + ID + " index " + index + " level " + level)
-        Alert("Delete")
-      }) andThen SHtml.makeFormsAjax
+        "#addSubchapter" #> (if (canEdit) <img src="images/addico.png" id="addSubchapter"/> else <span></span>)
+    }
   }
 
-  def formAddPermision() {
-    "#nic" #> ""
-  }
-
-  def formText() = {
-    var ID = ""
-    var index = ""
+  def formEditChapter() = {
+    var title = ""
     var content = ""
-    def saveData() {
+    var level = ""
+    var subchapterIndex = "-1"
 
+    def save() {
+      val subChIndInt = try { subchapterIndex.trim.toInt } finally { -1 }
+      val levelInt = try { level.trim.toInt } finally { -1 }
+      if (subChIndInt >= 0 && levelInt >= 0) {
+        if (subChIndInt == 0 && levelInt == 0 && canEdit) {
+          val subchapt = SubChapter(title,content,levelInt)
+          ebook.chapters(chapterInt).subchapters = ebook.chapters(chapterInt).subchapters.updated(subChIndInt,subchapt)
+          ebook.save
+        }
+      }
     }
-    "#id" #> SHtml.text(ID, ID = _, "type" -> "hidden") &
-      "#index" #> SHtml.text(index, index = _, "type" -> "hidden") &
-      "#editor" #> SHtml.text(content, content = _) &
-      "#save" #> SHtml.ajaxSubmit("Zapisz", saveData, "title" -> "Zapisz", "onclick" -> "return createData();") andThen SHtml.makeFormsAjax
-  }
 
-  def testAjax2 = {
-    var title = ""
-    var ID = ""
-    var index = ""
-    var level = "1"
-    val listLevels = (1 to 4).map(x => (x.toString, x.toString))
-    val form = "#id" #> SHtml.text(ID, ID = _, "type" -> "hidden") &
-      "#index" #> SHtml.text(index, index = _, "type" -> "hidden") &
-      "#title" #> SHtml.text(title, title = _) &
-      "#level" #> SHtml.select(listLevels, Full(level), nr => level = nr) &
-      "#save" #> SHtml.ajaxSubmit("Save", () => {
-        println("++++++++++++++++++++++++ tytuł " + title + " id " + ID + " index " + index + " level " + level)
-        Alert("SAVE")
-      }) &
-      "#delete" #> SHtml.ajaxSubmit("Delete", () => {
-        println("----------------------- tytuł " + title + " id " + ID + " index " + index + " level " + level)
-        Alert("Delete")
-      }) andThen SHtml.makeFormsAjax
-
-    "#test2" #> (in => form(in))
+    def delete() {
+      val subChIndInt = try { subchapterIndex.trim.toInt } finally { -1 }
+      val levelInt = try { level.trim.toInt } finally { -1 }
+      if (subChIndInt > 0 && levelInt > 0) {
+        //it mean delete chapter but index must be 0
+        if (subChIndInt == 0 ) {
+          if (levelInt == 0 && isOwner) {
+            ebook.chapters = ebook.chapters.take(chapterInt) ::: ebook.chapters.drop(chapterInt + 1)
+            ebook.save
+          } //else error
+        }
+        else {
+          //delete one subchapter
+          if(levelInt > 0 && levelInt < 5 && canEdit){
+            var sch =  ebook.chapters(chapterInt).subchapters
+            sch = sch.take(subChIndInt) ::: sch.drop(subChIndInt + 1)
+            ebook.chapters(chapterInt).subchapters = sch
+            ebook.save
+          } //else error
+        }
+      }
+    }
+    val list = List(("0", "0"), ("1", "1"), ("2", "2"), ("3", "3"), ("4", "4"))
+    val form = "#subchapterIndexForm" #> SHtml.text(subchapterIndex, subchapterIndex = _, "style" -> "display:none;") &
+      "#chapterTitleForm" #> SHtml.text(title, title = _) &
+      "#chapterLevelForm" #> SHtml.select(list, Full("0"), level = _) &
+      "#editor" #> SHtml.textarea(content, content = _) &
+      "#saveChapter" #> SHtml.submit("Zapisz", save) &
+      "#deleteChapter" #> SHtml.submit("Usuń", delete) andThen SHtml.makeFormsAjax
+      
+    "formEditSubchapter" #> (in => form(in))
   }
 
 }

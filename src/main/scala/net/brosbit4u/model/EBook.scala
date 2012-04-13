@@ -7,7 +7,7 @@ import org.bson.types.ObjectId
 
 case class SubChapter(var title:String, var content:String, var level:Int)
 case class Person(var email:String, var id:Long)
-case class Chapter(var title:String, var content:String, var subchapters:List[SubChapter], var permission:List[Person])
+case class Chapter( var subchapters:List[SubChapter], var permission:List[Person])
 
 object EBook extends MongoDocumentMeta[EBook] {
   override def collectionName = "ebook"
