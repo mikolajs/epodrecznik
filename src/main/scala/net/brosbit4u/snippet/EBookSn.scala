@@ -27,6 +27,7 @@ class EBookSn {
     case _ => -1L
   }
   val isOwner = if (ebook.ownerID.toLong == userId) true else false
+  //poniżej wywala się gdy czyta nie właściciel gdy nie ma jeszcze dodanego żadnego rozdziału
   val canEdit = if(isOwner) true else !(ebook.chapters(chapterInt).permission.filter(p => p.id.toLong == userId).isEmpty)
 
   //ebook => show title and description

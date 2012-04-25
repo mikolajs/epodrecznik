@@ -58,7 +58,7 @@
         <div id="subjectList" class="lift:Administration.subjectList dataTable_wrapper">
             
             <table id="dataTable" class="display">
-                <thead><tr><th>Nazwa</th></tr></thead>
+                <thead><tr><th>Nazwa</th><th>Poziom Edukacyjny</th></tr></thead>
                 <tbody><tr><td></td></tr></tbody>
             </table>
             <input id="mkAddSubject" type="image" src="/images/addico.png" onclick="mkAddSubject();"/>
@@ -67,6 +67,7 @@
   <div id="subjectForm" style="display:none;" title="Edycja przedmiotów">
       <form class="lift:Administration.subjectForm?form=POST" type="image">
       <label for="subjectFormName">Pełna nazwa:</label><input id="subjectFormName"/><br/>
+      <label>Poziom edukacyjny:</label><select id="subjectFormLevel"></select>
       <input id="subjectFormId"/><br/>
       <div class="buttonsForms"><input id="subjectFormSubmit"/><input id="subjectFormDelete"/></div>
       <div class="validationMassage"></div>

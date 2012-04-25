@@ -8,13 +8,16 @@
            $(document).ready(function() {
                 oTable = $('#dataTable').dataTable({
                     "aoColumnDefs": [
-                        { "bVisible": false, "aTargets": [ 2 ] }
+                        { "bVisible": false, "aTargets": [ 5 ] }
                     ]});
                 
              });
              
              function selectSubject(elem){
                 oTable.fnFilter( elem.innerHTML,2);
+             }
+             function selectLevel(elem){
+            	 oTable.fnFilter(elem.innerHTML,3);
              }
        </script>
     </head_merge>
@@ -23,12 +26,18 @@
   <h2>Wybór tematów</h2>
   
   <div class="lift:ThemeSn.subjectList" >
+  Wybierz przedmiot:
    <a href="" id="subjectList"></a></div>
+   <div id="levelList">Wybierz poziom edukacyjny:
+   <a href="#" onclick="selectLevel(this)">1</a>
+   <a href="#" onclick="selectLevel(this)">2</a>
+   <a href="#" onclick="selectLevel(this)">3</a>
+   <a href="#" onclick="selectLevel(this)">4</a></div>
   
   <div id="themeList" class="lift:ThemeSn.themeListConfirmed dataTable_wrapper">
             <table id="dataTable" class="display" >
-                <thead><tr><th>Tytuł</th><th>Dział</th><th>Przedmiot</th><th></th></tr></thead>
-                <tbody><tr><td><a href="">To jest tytuł</a></td><td></td><td></td></tr></tbody>
+                <thead><tr><th>Tytuł</th><th>Dział</th><th>Przedmiot</th><th>Poziom edukacyjny</th><th>Edytuj</th><th>Pusty?</th></tr></thead>
+                <tbody><tr><td><a href="">To jest tytuł</a></td><td></td><td></td><td></td></tr></tbody>
             </table>
             <br/>
             <br/>

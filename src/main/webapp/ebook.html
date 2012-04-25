@@ -7,284 +7,104 @@
 <script src="/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="/ckeditor/ckeditor.js"></script>
 <script type="text/javascript" src="/jquery/ASCIIMathML.js"></script>
- <script src="http://ajax.cdnjs.com/ajax/libs/underscore.js/1.1.6/underscore-min.js"></script>
-<script src="http://ajax.cdnjs.com/ajax/libs/backbone.js/0.3.3/backbone-min.js"></script>
-
-<script>
-  
-  
-  function getPathWithoutIdChapter(){
-    var path = window.location.toString();
-    var pathArray = path.split('/');
-    
-    var last = pathArray[pathArray.length - 1];
-    var toReturn = pathArray.join('/');
-    if (last.length < 5) toReturn = pathArray.slice(0,pathArray.length - 1);
-    return toReturn;
-  }
-  
-  $(document).ready(function(){
-  //-------------book info 
-  var titleInfo = new Object();
-    titleInfo.imgB = $("#imgEditBookTitle");
-    titleInfo.form =  $("#formEditBookTitle");
-    titleInfo.header = $('#bookHeader');
-    titleInfo.show = false; 
-    titleInfo.switchForm = function (){
-    titleInfo.form.toggle(100); 
-    titleInfo.header.toggle(100); 
-    if(titleInfo.show) {
-      titleInfo.show = false;
-      titleInfo.imgB.attr('src','/images/addico.png');
-    }
-    else {
-      titleInfo.show = true;
-      var title = titleInfo.header.children('h1').first().text();
-      var descript = titleInfo.header.children('p').first().text();
-      $('#bookDescription').val(descript);
-      $('#bookTitle').val(title);
-      titleInfo.imgB.attr('src','/images/delico.png');
-    }
-  }
-  
-    titleInfo.saveEditTitle = function(){
-     titleInfo.header.children('h1').first().text($('#bookTitle').val());
-     titleInfo.header.children('p').first().text($('#bookDescription').val());
-     titleInfo.switchForm();
-    }
-  titleInfo.init = function(){
-     titleInfo.form.hide();
-     titleInfo.imgB.click(titleInfo.switchForm);
-     $('#saveEditBook').click(titleInfo.saveEditTitle);
-  }
-  
-  titleInfo.init();
- 
-  //------------permission show hide
-  var permission = new Object();
-    permission.imgB = $("#showAddPermissionMail");
-    permission.form = $("#formAddPermissionMail");
-    permission.show = false;
-    permission.init = function(){
-      permission.form.hide();
-      permission.imgB.click(permission.switchForm);
-    }
-    permission.switchForm = function(){
-     permission.form.toggle(100);
-     if(permission.show) { 
-        permission.imgB.attr('src','/images/addico.png');
-        permission.show = false;
-     }
-     else {
-        permission.imgB.attr('src','/images/delico.png');
-        permission.show = true;
-     }
-    }
-  
-    permission.init();
-    
-    
-    //---------------------newChapter object
-     var newChapter = new Object();
-      newChapter.imgB = $('#addNewChapterImg');
-      newChapter.hForm = $('#formNewChapter');
-      newChapter.tree = $('#ebookTree');
-      newChapter.show = false;
-      newChapter.switchForm = function(){
-        newChapter.hForm.toggle(100);
-       if(newChapter.show) { 
-        newChapter.imgB.attr('src','/images/addico.png');
-        newChapter.show = false;
-     }
-     else {
-        newChapter.imgB.attr('src','/images/delico.png');
-        newChapter.hForm.get(0).reset();
-        newChapter.show = true;
-     }
-      }
-      newChapter.insertAndClose = function(){
-        var index = $('#chapterIndex').val();
-        var title = $('#chapterTitle').val();
-        var location = getPathWithoutIdChapter();
-        var size = newChapter.tree.children('li').size();
-        if (index > size) {
-          newChapter.tree.children('li').last().after('<li><a href="' + location + '/' + size + '">' + title + '</a></li>');
-        }
-        else {
-        newChapter.tree.children('li').each(function(i){
-            if (i + 1 == index) {
-              $(this).before('<li><a href="' + location + '/' + index + '">' + title + '</a></li>');
-            }
-          });
-        }
-        newChapter.switchForm();
-        return true;
-      }
-      newChapter.init = function(){
-        newChapter.imgB.click(newChapter.switchForm);
-        newChapter.hForm.hide();
-        $('#saveAddChapter').click(newChapter.insertAndClose);
-      }
-    newChapter.init();
-    
-   // --------------------- subchapter edit 
-   jQuery.fn.switchForm = function(){
-    
-   }
-   var chapterEdit = new Object(); 
-    chapterEdit.imgB = $();
-    chapterEdit.form = $('#formEditChapter');
-    chapterEdit.save = $('#saveChapter');
-    chapterEdit.saveForm = function() {
-      
-    }
-    chapterEdit.init =  function(){
-      chapterEdit.form.hide();
-    }
-   
-   chapterEdit.init();
-  });
- 
-  
-</script>
-<style>
-body {
-	background-color: gray;
-	margin: auto;
-	text-align: center;
-}
-.leftButton {
-  position:relative;
-  left: 510px;
-}
-#center {
-	background-color: white;
-	border: 1px solid black;
-	width: 1000px;
-	margin: auto;
-}
-
-.bookDescription {
-	font-family: 'Ubuntu', serif;
-}
-
-.chapterContent {
-	text-align: left;
-	padding: 0 20px 0 20px;
-}
-
-section {
-	margin: auto;
-}
-
-h1,h2,h3,h4,h5 {
-	margin: auto;
-	font-family: 'Arial', sans;
-}
-
-h1 {
-	font-size: 30px;
-}
-
-h2 {
-	font-size: 25px;
-}
-
-h3 {
-	font-size: 20px;
-}
-
-h4 {
-	font-size: 18px;
-}
-
-h5 {
-	font-size: 16px;
-}
-</style>
+<script src="/jquery/ebookedit.js"></script>
+<link rel="stylesheet" type="text/css" href="/style/ebook.css" />
 </head>
 <body>
 	<div id="center">
 
 		<div id="header" class="lift:EBookSn.ebookData">
-		   <div id="bookHeader">
-			<h1>Tytuł</h1>
-				<p>Krótki opis</p>
-				Właściciel: <em>Nazwisko</em> <br />
+			<div id="bookHeader">
+				<div id="bookHeaderContent">
+					<h1>Tytuł</h1>
+					<p>Krótki opis</p>
+					Właściciel: <em>Nazwisko</em> <br />
+				</div>
+				<form class="lift:EBookSn.editBookTitle" method="POST">
+					<fieldset>
+						<legend>Edycja</legend>
+						<label for="bookTitle">Tytuł:</label><input type="text"
+							id="bookTitle" /><br /> Opis:<br />
+						<textarea id="bookDescription"></textarea>
+						<br /> <input id="saveEditBook" class="saveButton" />
+					</fieldset>
+				</form>
+				<img src="/images/addico.png" class="leftButton"
+					id="imgEditBookTitle" />
 			</div>
-			<form class="lift:EBookSn.editBookTitle" method="POST" id="formEditBookTitle" >
-    <fieldset>
-    <legend>Edycja</legend>
-        <label for="bookTitle">Tytuł:</label><input type="text" id="bookTitle" /><br/>
-        Opis:<br/>
-        <textarea id="bookDescription"></textarea><br/>
-        <input id="saveEditBook" />
-        </fieldset>
-        </form>
-			<img src="/images/addico.png"  class="leftButton" id="imgEditBookTitle"/>
-			
 
-			<div  class="lift:EBookSn.ebookTree">
+			<div class="lift:EBookSn.ebookTree">
 				<ol id="ebookTree">
-					<li><a href="">Rozdział</a> </li>
+					<li><a href="">Rozdział</a></li>
 				</ol>
-				<form id="formNewChapter" class="lift:EBookSn.newChapter" method="POST">
-            <fieldset>
-            <legend>Dodaj nowy rozdział:</legend>
-              <label for="chapterTitle">Tytuł</label><input id="chapterTitle" type="text"/>
-              <select id="chapterIndex"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
-              </select> 
-              <input id="saveAddChapter" /> 
-              </fieldset>
-            </form>
-			</div>		    
-			<img id="addNewChapterImg" src="/images/addico.png" title="Dodaj rozdział" class="leftButton"/>
+				<form id="formNewChapter" class="lift:EBookSn.newChapter"
+					method="POST">
+					<fieldset>
+						<legend>Dodaj nowy rozdział:</legend>
+						<label for="chapterTitle">Tytuł</label><input id="chapterTitle"
+							type="text" /> <select id="chapterIndex"><option>1</option>
+							<option>2</option>
+							<option>3</option>
+							<option>4</option>
+							<option>5</option>
+						</select> <input id="saveAddChapter" />
+					</fieldset>
+				</form>
+			</div>
+			<img id="addNewChapterImg" src="/images/addico.png"
+				title="Dodaj rozdział" class="leftButton" />
 
 		</div>
 
-		<div id="editPermision">
+		<div id="editPermission">
+		<div>
 			Edytorzy:
 			<ul class="lift:EBookSn.showChapterPermission">
 				<li>Użyszkodnik <a href="">usuń</a>
 				</li>
 			</ul>
-			<form id="formAddPermissionMail" class="lift:EBookSn.formAddPermission" method="POST">
-			 <fieldset>
-			 <legend>Dodaj edytora</legend>
-				<input id="addPermissionMail" /> <input id="addPermissionSubmit" />
-			  </fieldset>
-			</form>
 		</div>
-      <img id="showAddPermissionMail" src="/images/addico.png" class="leftButton" />
+			<form id="formAddPermissionMail"
+				class="lift:EBookSn.formAddPermission" method="POST">
+				<fieldset>
+					<legend>Dodaj edytora</legend>
+					<input id="addPermissionMail" /> <input id="addPermissionSubmit" class="saveButton"/>
+				</fieldset>
+			</form>
+			<img id="showAddPermissionMail" src="/images/addico.png"
+			class="leftButton" />
+		</div>
+		
+
 		<div class="lift:EBookSn.chapterData">
-		  <div id="chapter" >
-			<h2>Rozdział</h2>
-			<p id="subChapterContent"> treść początku rodziału</p>
-			<img src="/images/addico.png" id="editChapter"/>
-		  </div>
-		  <img id="addSubchapter" />
+			<div id="chapter">
+				<h2>Rozdział</h2>
+				<p id="subChapterContent">treść początku rodziału</p>
+				<img src="/images/addico.png" id="editChapter" />
+			</div>
+			<img id="addSubchapter" />
 		</div>
 	</div>
 
 
 	<div id="formEditChapter">
 		<form class="lift:EBookSn.formEditChapter" method="POST">
-			 <label for="chapterTitleForm">Tytuł:</label><input type="text" value="" 3 id="chapterTitleForm" /> 
-			<label>Poziom:</label> <select id="chapterLevelForm">
-			  <option>0</option>
-			  <option>1</option>
+			<label for="chapterTitleForm">Tytuł:</label><input type="text"
+				value="" 3 id="chapterTitleForm" /> <label>Poziom:</label> <select
+				id="chapterLevelForm">
+				<option>0</option>
+				<option>1</option>
 				<option>2</option>
 				<option>3</option>
 				<option>4</option>
-			</select> 
-			<br/>
+			</select> <br />
 			<textarea id="editor"></textarea>
-			<input type="submit" id="saveChapter" /> 
-			<input type="submit" value="Anuluj" id="cancelChapter" />
-			<input type="submit" value="Usuń!" id="deleteChapter" />
+			<input type="submit" id="saveChapter" /> <input type="submit"
+				value="Anuluj" id="cancelChapter" /> <input type="submit"
+				value="Usuń!" id="deleteChapter" />
 		</form>
 	</div>
-	
+
 
 
 </body>

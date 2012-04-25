@@ -55,7 +55,7 @@ class ModerateSn {
 	   
 	   val themes = Theme.findAll("confirmed"->false)
 	   "tbody" #> themes.map(theme => <tr><td><a href={"/slideshow/"+theme._id.toString} target="_blank">{theme.title}</a></td>
-	   	<td>{theme.subject}</td> 
+	   	<td>{theme.subjectInfo}</td> 
 	   	<td>{if(theme.referTo.toString() == "0") <i>nowy</i> else <a href={"/slideshow/"+theme.referTo.toString} target="_blank">orginał</a>}</td>
 	   	<td> {SHtml.a(Text("usuń"), Confirm("Na pewno usunąć bezpowrotnie wpis?",RedirectTo("/moderate?del="+theme._id.toString)))}</td> 
     	<td> {SHtml.a(Text("zatwierdź"), Confirm("Na pewno zatwierdzić temat? Spowoduje to zatąpienie orginału.",RedirectTo("/moderate?conf="+theme._id.toString)))}</td></tr>)

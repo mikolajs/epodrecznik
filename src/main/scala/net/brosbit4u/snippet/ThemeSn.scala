@@ -7,7 +7,7 @@ import http.{S,SHtml}
 import common._
 import util._
 import mapper.{OrderBy,Descending}
-import net.brosbit4u.model._
+import _root_.net.brosbit4u.model._
 import mapper.By
 import json.JsonDSL._
 import json.JsonAST.JObject
@@ -21,7 +21,7 @@ class ThemeSn {
   
   def slideData() = {
       "#title" #> <span>{theme.title}</span> &
-      "#subject" #> <span>{theme.subject}</span> &
+      "#subject" #> <span>{theme.subjectInfo}</span> &
       "#department" #> <span>{theme.department}</span> &
       "#slideHTML" #>  Unparsed(theme.slides)  
   }
@@ -39,18 +39,19 @@ class ThemeSn {
     
     var ID = if(id == "0") "0" else theme._id.toString
     var title = theme.title
-    var subject = theme.subject
+    var subjectId = if(theme.subjectId != null) theme.subjectId.toString else ""
+    var subjectInfo = theme.subjectInfo
     var department = theme.department
     var slidesData = ""
     
-    var i = -1;
-    val listSubject = Subject.findAll.map(s => {i+= 1;(i.toString,s.full)})
+    val listSubject = Subject.findAll.map(s => {(s._id.toString ,s.full + " " + s.lev)})
     def saveData() {
       if (!canEdit) S.redirectTo("/user_mgt/login")
       //if not confirmed allow write to the same theme!
       val newTheme = if (theme.confirmed) Theme.create else theme
         newTheme.title = title
-        newTheme.subject = subject
+        newTheme.subjectId = new ObjectId(subjectId)
+        newTheme.subjectInfo = subjectInfo
         newTheme.department = department
         val edit = Edit(User.currentUser.get.id.is.toString,new Date().getTime().toString)
         newTheme.edit = edit::theme.edit
@@ -78,7 +79,7 @@ class ThemeSn {
     
     "#id" #> SHtml.text(ID, ID = _, "type"->"hidden") &
     "#titleTheme" #> SHtml.text(title, title= _,"class"->"Name") &
-    "#subjectTheme" #> SHtml.select(listSubject,Full(subject),nr => subject = listSubject(nr.toInt)._2,"onchange"->"changeDepartmentSelect();") &
+    "#subjectTheme" #> SHtml.select(listSubject,Full(subjectId),subjectId = _,"onchange"->"changeDepartmentSelect();") &
     "#departmentThemeHidden" #> SHtml.text(department, department = _, "type"->"hidden") &
     "#departmentTheme" #> SHtml.select(("pusty","pusty")::Nil,Full("noting"),x => Unit) &
     "#slidesData" #> SHtml.text(slidesData, slidesData = _, "type"->"hidden") &
@@ -98,7 +99,7 @@ class ThemeSn {
     val themes = Theme.findAll("confirmed"->true)
     val edit_? = canEdit 
     "tbody" #> themes.map(theme => <tr><td><a href={"/slideshow/"+theme._id.toString}>{theme.title}</a></td>
-    	<td>{theme.department}</td><td>{theme.subject}</td><td>{if(edit_?) <a href={"/edit/"+theme._id.toString}>edytuj</a> else <i></i>}</td></tr>)
+    	<td>{theme.department}</td><td>{theme.subjectInfo}</td><td>{if(edit_?) <a href={"/edit/"+theme._id.toString}>edytuj</a> else <i></i>}</td></tr>)
   }
   
   def themeListPrivate() =  {
@@ -115,7 +116,7 @@ class ThemeSn {
       myThemes = Theme.findAll("confirmed"->false).filter(them => them.edit.head.user == idUser.toString)
     }
     "tbody" #> myThemes.map(them =>  <tr><td><a href={"/slideshow/"+them._id.toString}>{them.title}</a></td>
-    	<td>{them.department}</td><td>{them.subject}</td><td>{<a href={"/edit/"+them._id.toString}>edytuj</a>}</td></tr>) &
+    	<td>{them.department}</td><td>{them.subjectInfo}</td><td>{<a href={"/edit/"+them._id.toString}>edytuj</a>}</td></tr>) &
     "#youCantInfo" #>  {if(idUser == 0) <h2>Musisz być zalogowany i mieć prawa edycji, aby móc dodawać tematy. <a href="/contact.html">Skontaktuj się z administratorem</a></h2>
     					else <span></span> }
     

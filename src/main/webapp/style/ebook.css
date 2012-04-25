@@ -1,0 +1,53 @@
+body {
+	background-color: gray;
+	margin: auto;
+	text-align: center;
+}
+.leftButton {
+  position:relative;
+  left: 510px;
+}
+#center {
+	background-color: white;
+	border: 1px solid black;
+	width: 1000px;
+	margin: auto;
+}
+
+.bookDescription {
+	font-family: 'Ubuntu', serif;
+}
+
+.chapterContent {
+	text-align: left;
+	padding: 0 20px 0 20px;
+}
+
+section {
+	margin: auto;
+}
+
+h1,h2,h3,h4,h5 {
+	margin: auto;
+	font-family: 'Arial', sans;
+}
+
+h1 {
+	font-size: 30px;
+}
+
+h2 {
+	font-size: 25px;
+}
+
+h3 {
+	font-size: 20px;
+}
+
+h4 {
+	font-size: 18px;
+}
+
+h5 {
+	font-size: 16px;
+}
