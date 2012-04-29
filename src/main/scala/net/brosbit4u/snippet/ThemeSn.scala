@@ -29,13 +29,14 @@ class ThemeSn {
   
   def departmentData() = {
     val depList = Department.findAll.map(d => (d.subject,d.name))
-    val listStr = Subject.findAll.map(s => s.full).map(s => depList.filter(_._1 == s).map(d => "'" + d._2 + "'")).map(l =>"[" + l.mkString(",") + "]").mkString(",")
+    val listStr = Subject.findAll.map(s => s.full).map(s => depList.filter(_._1 == s)
+        .map(d => "'" + d._2 + "'")).map(l =>"[" + l.mkString(",") + "]").mkString(",")
     "#departmentData" #> <script>{"var departmentData = [" + listStr + "]"}</script>
   }
   
   //edit slides 
   def formEdit() = {
-    if (!canEdit) S.redirectTo("/user_mgt/login", S.redirectTo("/editable"))
+    if (!canEdit) S.redirectTo("/user_mgt/login") //howto return to /editable.html???
     
     var ID = if(id == "0") "0" else theme._id.toString
     var title = theme.title
@@ -79,12 +80,15 @@ class ThemeSn {
     
     "#id" #> SHtml.text(ID, ID = _, "type"->"hidden") &
     "#titleTheme" #> SHtml.text(title, title= _,"class"->"Name") &
-    "#subjectTheme" #> SHtml.select(listSubject,Full(subjectId),subjectId = _,"onchange"->"changeDepartmentSelect();") &
+    "#subjectTheme" #> SHtml.select(listSubject,
+        Full(subjectId),subjectId = _,"onchange"->"changeDepartmentSelect();") &
     "#departmentThemeHidden" #> SHtml.text(department, department = _, "type"->"hidden") &
     "#departmentTheme" #> SHtml.select(("pusty","pusty")::Nil,Full("noting"),x => Unit) &
     "#slidesData" #> SHtml.text(slidesData, slidesData = _, "type"->"hidden") &
-    "#save" #> SHtml.button(<img src="/images/saveico.png"/>, saveData,"title"->"Zapisz","onclick"->"return createData();") &
-    "#delete" #> (if(isModerator) SHtml.button(<img src="/images/delico.png"/>, deleteData,"title"->"Usuń") else <span></span>) &
+    "#save" #> SHtml.button(<img src="/images/saveico.png"/>, saveData,"title"->"Zapisz",
+        "onclick"->"return createData();") &
+    "#delete" #> (if(isModerator) SHtml.button(<img src="/images/delico.png"/>, 
+        deleteData,"title"->"Usuń") else <span></span>) &
     "#cancel" #> SHtml.button(<img src="/images/cancelico.png"/>, cancelAction,"title"->"Anuluj") 
   }
   
@@ -99,7 +103,8 @@ class ThemeSn {
     val themes = Theme.findAll("confirmed"->true)
     val edit_? = canEdit 
     "tbody" #> themes.map(theme => <tr><td><a href={"/slideshow/"+theme._id.toString}>{theme.title}</a></td>
-    	<td>{theme.department}</td><td>{theme.subjectInfo}</td><td>{if(edit_?) <a href={"/edit/"+theme._id.toString}>edytuj</a> else <i></i>}</td></tr>)
+    	<td>{theme.department}</td><td>{theme.subjectInfo}</td><td>{if(edit_?)
+    	<a href={"/edit/"+theme._id.toString}>edytuj</a> else <i></i>}</td></tr>)
   }
   
   def themeListPrivate() =  {
@@ -116,8 +121,10 @@ class ThemeSn {
       myThemes = Theme.findAll("confirmed"->false).filter(them => them.edit.head.user == idUser.toString)
     }
     "tbody" #> myThemes.map(them =>  <tr><td><a href={"/slideshow/"+them._id.toString}>{them.title}</a></td>
-    	<td>{them.department}</td><td>{them.subjectInfo}</td><td>{<a href={"/edit/"+them._id.toString}>edytuj</a>}</td></tr>) &
-    "#youCantInfo" #>  {if(idUser == 0) <h2>Musisz być zalogowany i mieć prawa edycji, aby móc dodawać tematy. <a href="/contact.html">Skontaktuj się z administratorem</a></h2>
+    	<td>{them.department}</td><td>{them.subjectInfo}</td>
+<td>{<a href={"/edit/"+them._id.toString}>edytuj</a>}</td></tr>) &
+    "#youCantInfo" #>  {if(idUser == 0) <h2>Musisz być zalogowany i mieć prawa edycji, aby móc dodawać tematy.
+ <a href="/contact.html">Skontaktuj się z administratorem</a></h2>
     					else <span></span> }
     
   }
