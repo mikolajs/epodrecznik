@@ -11,6 +11,18 @@
                         { "bVisible": false, "aTargets": [ 5 ] }
                     ]});
                 
+            	    $('#dataTable').children('tbody').children('tr').children('td').each(function(index){
+            	    	if(index == 0){
+            	    	$(this).children('a').click(function(){
+                    	    var w = screen.width;
+                    	    window.open(this.href,'Pokaz slajdów','fullscreen=yes,width='+w.toString());
+                    	     return false;
+                    	    });
+            	    	}
+            	    });
+            	    		
+            	
+                
              });
              
              function selectSubject(elem){

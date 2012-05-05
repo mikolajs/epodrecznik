@@ -22,16 +22,25 @@ class ThemeSn {
   def slideData() = {
       "#title" #> <span>{theme.title}</span> &
       "#subject" #> <span>{theme.subjectInfo}</span> &
-      "#department" #> <span>{theme.department}</span> &
+      "#etap" #> <span>{theme.subjectLev.toString}</span> &
+      "#department" #> <span>{theme.departmentInfo}</span> &
       "#slideHTML" #>  Unparsed(theme.slides)  
   }
   
-  
+  /*
   def departmentData() = {
     val depList = Department.findAll.map(d => (d.subject,d.name))
     val listStr = Subject.findAll.map(s => s.full).map(s => depList.filter(_._1 == s)
         .map(d => "'" + d._2 + "'")).map(l =>"[" + l.mkString(",") + "]").mkString(",")
     "#departmentData" #> <script>{"var departmentData = [" + listStr + "]"}</script>
+  } */
+  
+  def departmentSelect() = {
+    val depList = Department.findAll
+    val optgroups = Subject.findAll.map(s => <optgroup id={s._id.toString} > 
+    	{depList.filter(d => s._id == d.subject)
+    	  .map(d=> <option value={d._id.toString}>{d.name}</option>)} </optgroup>)
+    <select id="departmentTheme">{optgroups}</select>
   }
   
   //edit slides 
@@ -41,21 +50,34 @@ class ThemeSn {
     var ID = if(id == "0") "0" else theme._id.toString
     var title = theme.title
     var subjectId = if(theme.subjectId != null) theme.subjectId.toString else ""
-    var subjectInfo = theme.subjectInfo
-    var department = theme.department
-    var slidesData = ""
+    var subjectLev = theme.subjectLev.toString
+    var departmentId = if(theme.departmentId != null) theme.departmentId.toString else ""
+    var departmentInfo = theme.departmentInfo
     
-    val listSubject = Subject.findAll.map(s => {(s._id.toString ,s.full + " " + s.lev)})
+    var slidesData = ""
+    //println("------------slides data -----------------\n" +slidesData)
+    
+    val listSubject = Subject.findAll.map(s => {(s._id.toString ,s.full)})
     def saveData() {
       if (!canEdit) S.redirectTo("/user_mgt/login")
       //if not confirmed allow write to the same theme!
       val newTheme = if (theme.confirmed) Theme.create else theme
         newTheme.title = title
         newTheme.subjectId = new ObjectId(subjectId)
-        newTheme.subjectInfo = subjectInfo
-        newTheme.department = department
-        val edit = Edit(User.currentUser.get.id.is.toString,new Date().getTime().toString)
-        newTheme.edit = edit::theme.edit
+        val sub =  Subject.find(new ObjectId(subjectId)).getOrElse(Subject.create);
+        newTheme.subjectInfo = sub.full
+        newTheme.subjectLev = subjectLev.toInt
+        newTheme.departmentId = new ObjectId(departmentId)
+        newTheme.departmentInfo = Department.find(departmentId).
+        	getOrElse(Department.create(new ObjectId(subjectId))).name
+        	
+        val userID = User.currentUser.get.id.is.toString
+   
+        newTheme.authors = if (newTheme.authors.exists(e => e.user == userID)) newTheme.authors.map(e => {
+        										if (e.user == userID) Edit(userID, new Date().getTime().toString)
+        										else e
+        										}) 
+        else Edit(userID,new Date().getTime().toString)::newTheme.authors
         newTheme.confirmed = false
         val listData = Unparsed(slidesData)
         newTheme.slides = listData.toString
@@ -77,16 +99,15 @@ class ThemeSn {
     def cancelAction() {
       S.redirectTo("/editable")
     }
-    
+    val levList = List(("1","I"),("2","II"),("3","III"),("4","IV"))
     "#id" #> SHtml.text(ID, ID = _, "type"->"hidden") &
     "#titleTheme" #> SHtml.text(title, title= _,"class"->"Name") &
-    "#subjectTheme" #> SHtml.select(listSubject,
-        Full(subjectId),subjectId = _,"onchange"->"changeDepartmentSelect();") &
-    "#departmentThemeHidden" #> SHtml.text(department, department = _, "type"->"hidden") &
-    "#departmentTheme" #> SHtml.select(("pusty","pusty")::Nil,Full("noting"),x => Unit) &
+    "#subjectTheme" #> SHtml.select(listSubject, Full(subjectId),subjectId = _) &
+    "#subjectLevel" #> SHtml.select(levList,Full(subjectLev),subjectLev = _) &
+    "#departmentThemeHidden" #> SHtml.text(departmentId, departmentId = _, "type"->"hidden") &
+    "#departmentTheme" #> departmentSelect() &
     "#slidesData" #> SHtml.text(slidesData, slidesData = _, "type"->"hidden") &
-    "#save" #> SHtml.button(<img src="/images/saveico.png"/>, saveData,"title"->"Zapisz",
-        "onclick"->"return createData();") &
+    "#save" #> SHtml.button(<img src="/images/saveico.png"/>, saveData,"title"->"Zapisz") &
     "#delete" #> (if(isModerator) SHtml.button(<img src="/images/delico.png"/>, 
         deleteData,"title"->"Usuń") else <span></span>) &
     "#cancel" #> SHtml.button(<img src="/images/cancelico.png"/>, cancelAction,"title"->"Anuluj") 
@@ -103,7 +124,7 @@ class ThemeSn {
     val themes = Theme.findAll("confirmed"->true)
     val edit_? = canEdit 
     "tbody" #> themes.map(theme => <tr><td><a href={"/slideshow/"+theme._id.toString}>{theme.title}</a></td>
-    	<td>{theme.department}</td><td>{theme.subjectInfo}</td><td>{if(edit_?)
+    	<td>{theme.departmentInfo}</td><td>{theme.subjectInfo}</td><td>{theme.subjectLev.toString}</td><td>{if(edit_?)
     	<a href={"/edit/"+theme._id.toString}>edytuj</a> else <i></i>}</td></tr>)
   }
   
@@ -118,10 +139,10 @@ class ThemeSn {
     }
     var myThemes:List[Theme] = Nil 
     if (idUser > 0) {
-      myThemes = Theme.findAll("confirmed"->false).filter(them => them.edit.head.user == idUser.toString)
+      myThemes = Theme.findAll("confirmed"->false).filter(them => them.authors.head.user == idUser.toString)
     }
     "tbody" #> myThemes.map(them =>  <tr><td><a href={"/slideshow/"+them._id.toString}>{them.title}</a></td>
-    	<td>{them.department}</td><td>{them.subjectInfo}</td>
+    	<td>{them.departmentInfo}</td><td>{them.subjectInfo}</td><td>{them.subjectLev.toString}</td>
 <td>{<a href={"/edit/"+them._id.toString}>edytuj</a>}</td></tr>) &
     "#youCantInfo" #>  {if(idUser == 0) <h2>Musisz być zalogowany i mieć prawa edycji, aby móc dodawać tematy.
  <a href="/contact.html">Skontaktuj się z administratorem</a></h2>

@@ -65,7 +65,7 @@ class Administration {
   def departmentList() = {
     val depart = Department.findAll
     "tbody" #> depart.map(d => {
-      <tr id={ d._id.toString }><td>{ d.name }</td><td id={ d.subject.toString }>{ d.subFull }</td><td>{ d.subLev.toString }</td></tr>
+      <tr id={ d._id.toString }><td>{ d.name }</td><td id={ d.subject.toString }>{ d.subFull }</td></tr>
     })
   }
 
@@ -89,12 +89,11 @@ class Administration {
         val sub = subOpt.get
         dep.subject = sub._id
         dep.subFull = sub.full
-        dep.subLev = sub.lev
         dep.save
       } else println("Error! Subject ID not found!")
     }
 
-    val subjects = Subject.findAll.map(s => (s._id.toString, s.full + " " + s.lev.toString))
+    val subjects = Subject.findAll.map(s => (s._id.toString, s.full))
     "#departmentFormId" #> SHtml.text(id, id = _, "type" -> "hidden") &
       "#departmentFormName" #> SHtml.text(name, name = _, "class" -> "name", "maxlenght" -> "20") &
       "#departmentFormSubject" #> SHtml.select(subjects,
@@ -106,17 +105,14 @@ class Administration {
   def subjectList() = {
     val subject = Subject.findAll
     "tbody" #> subject.map(s => {
-      <tr id={ s._id.toString }><td>{ s.full }</td><td>{ s.lev.toString }</td></tr>
+      <tr id={ s._id.toString }><td>{ s.full }</td></tr>
     })
   }
 
   def subjectForm() = {
     var full = ""
     var id = ""
-    var levStr = ""
-
     def deleteData() {
-      val levInt = levStr.toInt
       val subjectOpt = Subject.find("_id" -> id)
       if (subjectOpt.isDefined) {
         subjectOpt.get.delete
@@ -124,16 +120,12 @@ class Administration {
     }
 
     def saveData() {
-      val levInt = levStr.toInt
       val sub = Subject.find("_id" -> id).getOrElse(Subject.create)
       sub.full = full
-      sub.lev = levInt
       sub.save
     }
 
-    val levList = List(("1", "I"), ("2", "II"), ("3", "III"), ("4", "IV"))
     "#subjectFormName" #> SHtml.text(full, full = _, "class" -> "name", "maxlenght" -> "30") &
-      "#subjectFormLevel" #> SHtml.select(levList, Full(levList.head._2), levStr = _) &
       "#subjectFormId" #> SHtml.text(id, id = _, "type" -> "hidden") &
       "#subjectFormSubmit" #> SHtml.button(<img src="/images/saveico.png"/>, saveData, "onclick" -> "return isValid(this);") &
       "#subjectFormDelete" #> SHtml.button(<img src="/images/delico.png"/>, deleteData)

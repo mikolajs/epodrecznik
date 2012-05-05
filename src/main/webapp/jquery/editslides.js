@@ -1,13 +1,154 @@
-	var currentSlide = 1;
-	var slideSize = 0;
-	var $slidesHTML = $();
+	
+	function Slides(){
+		this.$slidesHTML = $('#slidesHTML');
+		this.$slidesDataInput = $('#slidesData');
+		this.$slideChoice = $('#slideChoice');
+		this.slideSize = 0;
+		this.currentSlide = 1;
+		var self = this;
+		this.insertFromCKEditor = function(){
+			var slideStr = '#slide-' + self.currentSlide.toString();
+			$(slideStr).empty().append(CKEDITOR.instances.slideText.getData());
+		}
+		
+		this.insertToCKEditor = function() {
+			var slideStr = '#slide-' + self.currentSlide.toString();
+			CKEDITOR.instances.slideText.setData($(slideStr).get(0).innerHTML);
+		}
+		
+		this.init = function() {
+			self.slideSize = self.$slidesHTML.children('section').length;
+			if(self.slideSize == 0){
+				self.$slidesHTML.append('<section class="slide" id="slide-1" >Dodaj</section>');
+				self.slideSize = 1;
+				self.currentSlide = 1;
+			}
+			self.createPage();
+			$('#save').click(self.createData);
+			$('#addSlideAction').click(self.addSlide);
+			$('#delSlideAction').click(self.delSlide);
+		}
+		
+		this.choiceSlide = function(){
+			self.insertFromCKEditor();
+			var $ul = $(this);
+			self.currentSlide = parseInt($ul.text());
+			self.createPage();
+		}
+		this.createPage = function(){
+			self.insertToCKEditor();
+			//usuwam wszystkie elementy listy (wyboru slajdu) 
+			self.$slideChoice.children().remove();
+			//dodaje elementy listy wyboru podświetlajac aktualny
+			for(i = 1; i <= self.slideSize; i++){
+				self.$slideChoice.append('<li>' + i.toString() + '</li>');
+				if(i == self.currentSlide) self.$slideChoice.children().last().addClass('highlightLi');
+			} 
+			self.$slideChoice.children().click(self.choiceSlide); 
+		}
+		
+		this.addSlide = function(){
+			self.insertFromCKEditor();
+
+			var isAfter = ($('#radioAfter').attr('checked') == 'checked');
+			
+			var slideStr = '#slide-' + self.currentSlide.toString();
+			if (isAfter) {
+				$(slideStr).after('<section class="slide" ></section>');
+				self.currentSlide++;
+			}
+			else $(slideStr).before('<section class="slide" ></section>');
+			self.slideSize++;
+			self.makeOrderIdSections();
+			self.createPage();
+		}
+		
+		this.delSlide = function(){
+			if (self.slideSize == 1) {
+				alert("Nie można usunąć ostatniego slajdu");
+				return;
+			}
+			if(confirm('Na pewno chcesz usunąć slajd nr ' + (self.currentSlide).toString() + ' ?')){
+				
+				var slideStr = '#slide-' + self.currentSlide.toString();
+				$(slideStr).remove();
+				self.makeOrderIdSections();
+				self.slideSize--;
+				if (self.currentSlide > self.slideSize) self.currentSlide = self.slideSize;
+				self.createPage();
+			}
+		}
+		//funkcja pomocnicza
+		this.makeOrderIdSections = function(){
+			self.$slidesHTML.children('section').each(function(index) {
+				$(this).attr('id','slide-' + (index+1));
+			});
+		}
+		this.createData =  function(){
+			if(!isValid(document.getElementById('save'))) return false;
+			
+			//zapisuje ostatnio edytowany slajd
+			self.insertFromCKEditor();
+			//var dep = $('#departmentTheme').children('option:selected').val();
+			//$('#departmentThemeHidden').val(dep); //to robi na bieżąco properties
+			var data = self.$slidesHTML.get(0).innerHTML;
+			$('#slidesData').val(data);
+			return true;
+		}
+		
+	}
+	
+	
+	
+	
+	function Properties(){
+		this.$departInput = $('#departmentThemeHidden');
+		//var $departInput = this.$departInput;
+		this.$departSelect = $('#departmentTheme');
+		//var $departSelect = this.$departSelect;
+		this.$subjectSelect = $('#subjectTheme');
+		//var $subjectSelect = this.$subjectSelect;
+		var self = this;
+		
+		this.init = function(){
+			var idSub = self.$subjectSelect.children('option:selected').val();
+			self.$departSelect.children().hide();
+			self.$departSelect.children('#'+idSub).show();
+			var idDep = self.$departInput.val();
+			if(idDep != "") {
+				self.$departSelect.children('optgroup:visible').children().each(function(){
+					var $opt = $(this);
+					if($opt.val() == idDep) $opt.attr('selected','selected');
+				});
+			}
+			else self.$departSelect.children('optgoup:visible').children().first().attr('selected','selected');
+			self.refreshDepartmentInput();
+		    self.$subjectSelect.change(self.refreshDepartmentSelect);
+			self.$departSelect.change(self.refreshDepartmentInput);
+		}
+		
+		this.refreshDepartmentSelect = function() {
+			var idSub = self.$subjectSelect.children('option:selected').val();
+			//alert(idSub);
+			self.$departSelect.children('optgroup').hide();
+			var idDep = $('#'+idSub).show().children().first().attr('selected','selected').val();
+			// self.$departSelect.children('optgroup').children().first().val();
+			self.$departInput.val(idDep);
+		}
+		
+		this.refreshDepartmentInput = function(){
+			var idDep = self.$departSelect.children('optgroup').children('option:selected').val();
+			self.$departInput.val(idDep);
+		}
+		
+	}
 	
 		$(document).ready(function(){
 			
 			
 			CKEDITOR.replace( 'slideText',{
 				width : 900, 
-				height: 300,
+				height: 500,
 				extraPlugins : 'youTube,addImage,formula',
         		toolbar : [ [ 'Source' ],
         		            [ 'Link','Unlink','Anchor' ],[ 'Maximize', 'ShowBlocks','-','About' ] ,
@@ -19,125 +160,17 @@
         		[ 'Styles','Format','Font','FontSize' ],
         		[ 'TextColor','BGColor' ] ]
     		});
-			//ładuje  zawartość działów 
-			changeDepartmentSelect();
-			//ustawienie początkowej wartości w select działu
-			var $depart = $('#departmentThemeHidden');
-			if($depart.val() != "") {
-				$('#departmentTheme').children('option').each(function(){
-					$opt = $(this);
-					if( $opt.val() == $depart.val()){
-						$opt.attr('selected','selected');
-					}
-				});
-			}
-				
-			$slidesHTML = $('#slidesHTML');
-			slideSize = $slidesHTML.children('section').length;
-			if(slideSize == 0) {
-				$slidesHTML.append('<section class="slide" id="slide-1" >Dodaj</section>');
-				slideSize = 1;
-				currentSlide = 1;
-			}
 			
-			createPage();
+			var properties = new Properties();
+			properties.init();
+			
+			var slides = new Slides();
+			slides.init();
+			
+			
 		});
+					
 		
-		function createPage(){
-			var slideStr = '#slide-' + currentSlide.toString();
-			var $slideSection = $(slideStr);
-			
-			//wstawiam treść akutalnego slajdu
-			CKEDITOR.instances.slideText.setData($slideSection.get(0).innerHTML.toString());
-			var $slideCh = $('#slideChoice');
-			//usuwam wszystkie elementy listy (wyboru slajdu) 
-			$slideCh.children().remove();
-			
-			//dodaje elementy listy wyboru podświetlajac aktualny
-			for(i = 1; i <= slideSize; i++){
-				$slideCh.append('<li>' + i.toString() + '</li>');
-				if(i == currentSlide) $slideCh.children().last().addClass('highlightLi');
-			} 
-			$slideCh.children().click(function() {
-				insertFromCKEditor();
-				var $ul = $(this);
-				currentSlide = parseInt($ul.text());
-				createPage();
-			}); 
-		}
-		
-		function insertFromCKEditor() {
-			var slideStr = '#slide-' + currentSlide.toString();
-			$(slideStr).empty().append(CKEDITOR.instances.slideText.getData());
-		}
-		
-		function insertToCKEditor() {
-			var slideStr = '#slide-' + currentSlide.toString();
-			CKEDITOR.instances.slideText.setData($(slideStr).get(0).innerHTML);
-		}
-		
-		function addSlide(){
-			insertFromCKEditor();
-
-			var isAfter = ($('#radioAfter').attr('checked') == 'checked');
-			
-			var slideStr = '#slide-' + currentSlide.toString();
-			if (isAfter) {
-				$(slideStr).after('<section class="slide" ></section>');
-				currentSlide++;
-			}
-			else $(slideStr).before('<section class="slide" ></section>');
-			slideSize++;
-			makeOrderIdSections();
-			createPage();
-		}
-		
-		function delSlide(){
-			if (slideSize == 1) {
-				alert("Nie można usunąć ostatniego slajdu");
-				return;
-			}
-			if(confirm('Na pewno chcesz usunąć slajd nr ' + (currentSlide).toString() + ' ?')){
-				
-				var slideStr = '#slide-' + currentSlide.toString();
-				$(slideStr).remove();
-				makeOrderIdSections();
-				slideSize--;
-				if (currentSlide > slideSize) currentSlide = slideSize;
-				createPage();
-			}
-		}
-		//funkcja pomocnicza
-		function makeOrderIdSections(){
-			$slidesHTML.children('section').each(function(index) {
-				$(this).attr('id','slide-' + (index+1));
-			});
-		}
-		
-		function changeDepartmentSelect(){
-			var nrSub = $('#subjectTheme').children('option:selected').val();
-			var $depTheme = $('#departmentTheme');
-			$depTheme.children().remove();
-			var themes = departmentData[nrSub];
-			for(i in themes){
-				$depTheme.append('<option value="'+ themes[i] +'">'+ themes[i] +'</option>');
-			}
-			//$depTheme.children('option').first().attr('selected','selected');
-			
-		}
-		
-		
-		function createData(){
-			if(!isValid(document.getElementById('save'))) return false;
-			
-			//zapisuje ostatnio edytowany slajd
-			insertFromCKEditor();
-			var dep = $('#departmentTheme').children('option:selected').val();
-			$('#departmentThemeHidden').val(dep);
-			var data = $slidesHTML.get(0).innerHTML;
-			$('#slidesData').val(data);
-			return true;
-		}
 		//get url from iframe in CKEditor and insert it in url input in window massage
 		function getImageURLfromIFrame(elem){
 			var innerDoc = elem.contentDocument || elem.contentWindow.document;

@@ -17,8 +17,8 @@ CKEDITOR.plugins.add( 'addImage',
     {
       return {
         title : 'Dodaj obrazek',
-        minWidth : 400,
-        minHeight : 300,
+        minWidth : 450,
+        minHeight : 400,
         contents :
         [
           {
@@ -34,7 +34,7 @@ CKEDITOR.plugins.add( 'addImage',
               },
 	      {
 	       type : 'html',
-	       html : '<iframe src="/imagestorage" width="390px" height="250px" frameborder="0" onload="getImageURLfromIFrame(this)" ></iframe>'
+	       html : '<iframe src="/imagestorage" width="100%" height="350px" frameborder="0" onload="getImageURLfromIFrame(this)" ></iframe>'
 	      }
             ]
           },

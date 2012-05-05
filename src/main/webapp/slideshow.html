@@ -33,8 +33,8 @@
        //     $.deck('next');
        // });   
       var h = window.innerHeight - 60;
-      $('#slides').css('height', h + 'px' );
-      
+      $('#slides').css('min-height', h + 'px' );
+     
       $.extend(true, $.deck.defaults, {
         selectors: {
         statusCurrent: '.deck-status-current',
@@ -73,6 +73,7 @@ body { background: url(/images/background.png) repeat; margin: 0 auto; }
     <li><a href="/index">podrecznik.edu.pl</a></li>
     <li>Temat: <span id="title">Jakiś temat</span></li>
     <li>Przedmiot: <span id="subject">Fizyka liceum</span></li>
+    <li>Etap:<span id="etap">3</span></li>
     <li>Dział: <span id="department">termodynamika</span></li>
     <li id="next-slide"><img src="/images/next.png"/></li>  
      </ul>  

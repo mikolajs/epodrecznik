@@ -1,6 +1,5 @@
 <div class="lift:surround?with=default-other;at=body">
 	<head_merge>
-	<script class="lift:ThemeSn.departmentData" id="departmentData"></script>
 	<script type="text/javascript" src="/ckeditor/ckeditor.js"></script>
 	<script type="text/javascript" src="/jquery/editslides.js"></script>
 	<script type="text/javascript" src="/jquery/ASCIIMathML.js"></script>
@@ -34,7 +33,8 @@
   	
   	<input id="departmentThemeHidden" type="hidden" />
     <label for="subjectTheme">Przedmiot:</label><select id="subjectTheme"></select>
-    <label for="departmentTheme">Dział:</label><select id="departmentTheme"></select>
+    <label for="subjectLevel">Etap edukacyjny:</label><select id="subjectLevel"></select>
+    <label for="departmentTheme">Dział:</label><select id="departmentTheme"><option>Pusty</option></select>
     <input id="slidesData" type="hidden" />
     <input id="save" /><input id="cancel"/><input id="delete"/>
   </form>
@@ -43,9 +43,9 @@
  	 <div id="addslide">Dodaj nowy slajd: 
   	<input type="radio" value="przed obecnym" name="addSlide" /> przed obecnym 
   	<input type="radio" value="po obecnym" name="addSlide" checked="checked" id="radioAfter"/> po obecnym
-  	 <input type="image" src="/images/addico.png" onclick="addSlide()" /></div>
+  	 <input type="image" src="/images/addico.png" id="addSlideAction" /></div>
   	 <div id="deleteSlide">Usuń akutalny slajd: 
-  	 <input type="image" src="/images/delico.png" onclick="delSlide()" /></div>
+  	 <input type="image" src="/images/delico.png" id="delSlideAction" /></div>
   <hr/>
   <br/>
     
@@ -65,7 +65,7 @@
   </div>
   
   <div id="slidesHTML" class="lift:ThemeSn.slideData" style="display:none;">
-  <section id="slideHTML"></section>
+   <section id="slideHTML"></section>
   </div>
   
 </div>

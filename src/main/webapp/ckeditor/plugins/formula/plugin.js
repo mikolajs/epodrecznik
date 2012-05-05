@@ -8,7 +8,7 @@ CKEDITOR.plugins.add( 'formula',
         
               editor.ui.addButton( 'Formula',
               {
-                label: 'Wczytaj obrazek',
+                label: 'Edytuj formułę',
                 command: 'formula',
                 icon: this.path + 'image.png'
               } );

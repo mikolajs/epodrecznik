@@ -42,7 +42,7 @@ class ModerateSn {
 	          //add to database new content to show in index.html
 	          val newContList = NewContent.findAll
 	          val newCont = if(newContList.isEmpty) NewContent.create else newContList.head
-	          val cont = AddedContent(theme.title,"/slideshow/" + theme._id, Formater.formatDate(new Date()))
+	          val cont = AddedContent(theme.title,"prezentacja" ,"/slideshow/" + theme._id, Formater.formatDate(new Date()))
 	          newCont.content = cont::newCont.content
 	          if(newCont.content.length > 15) newCont.content = newCont.content.dropRight(1)
 	          newCont.save
@@ -55,10 +55,10 @@ class ModerateSn {
 	   
 	   val themes = Theme.findAll("confirmed"->false)
 	   "tbody" #> themes.map(theme => <tr><td><a href={"/slideshow/"+theme._id.toString} target="_blank">{theme.title}</a></td>
-	   	<td>{theme.subjectInfo}</td> 
+	   	<td>{theme.subjectInfo}</td> <td>{theme.subjectLev.toString}</td>
 	   	<td>{if(theme.referTo.toString() == "0") <i>nowy</i> else <a href={"/slideshow/"+theme.referTo.toString} target="_blank">orginał</a>}</td>
 	   	<td> {SHtml.a(Text("usuń"), Confirm("Na pewno usunąć bezpowrotnie wpis?",RedirectTo("/moderate?del="+theme._id.toString)))}</td> 
-    	<td> {SHtml.a(Text("zatwierdź"), Confirm("Na pewno zatwierdzić temat? Spowoduje to zatąpienie orginału.",RedirectTo("/moderate?conf="+theme._id.toString)))}</td></tr>)
+    	<td> {SHtml.a(Text("zatwierdź"), Confirm("Na pewno zatwierdzić temat? Spowoduje to zastąpienie orginału.",RedirectTo("/moderate?conf="+theme._id.toString)))}</td></tr>)
   }
 	 
 	 

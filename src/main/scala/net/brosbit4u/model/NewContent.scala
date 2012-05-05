@@ -5,7 +5,7 @@ import _root_.net.liftweb.mongodb._
 import java.util.Date
 import org.bson.types.ObjectId
 
-case class AddedContent(info:String, link:String, date:String)
+case class AddedContent(info:String, what:String, link:String, date:String)
 
 object NewContent extends MongoDocumentMeta[NewContent] {
   override def collectionName = "newcontent"

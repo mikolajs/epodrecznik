@@ -5,6 +5,18 @@
     <head_merge> 
        <script>
            var oTable = $('#dataTable').dataTable();
+           $(document).ready(function(){
+        	    $('#dataTable').children('tbody').children('tr').children('td').each(function(index){
+        	    	if(index == 0){
+        	    	$(this).children('a').click(function(){
+                	    var w = screen.width;
+                	    window.open(this.href,'Pokaz slajdów','fullscreen=yes,width='+w.toString());
+                	     return false;
+                	    });
+        	    	}
+        	    });
+        	    		
+        	 });
        </script>
     </head_merge>
    
@@ -13,8 +25,8 @@
   
   <div id="subjectList" class="lift:ThemeSn.themeListPrivate dataTable_wrapper">
             <table id="dataTable" class="display" >
-                <thead><tr><th>Tytuł</th><th>Dział</th><th>Przedmiot</th><th>Poziom edukacyjny</th><th>Edytuj</th></tr></thead>
-                <tbody><tr><td></td><td></td><td></td></tr></tbody>
+                <thead><tr><th>Tytuł</th><th>Dział</th><th>Przedmiot</th><th>Etap edukacyjny</th><th>Edytuj</th></tr></thead>
+                <tbody><tr><td></td><td></td><td></td><td></td></tr></tbody>
             </table>
             <br/>
             <br/>

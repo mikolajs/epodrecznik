@@ -7,15 +7,15 @@ import org.bson.types.ObjectId
 
 case class Edit(user:String, date:String)
 
-
+//authors - latest is older
 object Theme extends MongoDocumentMeta[Theme] {
-  override def collectionName = "subjectSlajds"
+  override def collectionName = "slides"
   override def formats = super.formats + new ObjectIdSerializer + new DateSerializer
-  def create = new Theme(ObjectId.get, false, Nil, "", "","" , "", "Empty", null ,"")
+  def create = new Theme(ObjectId.get, false, Nil, "", "" ,null, "" , "" ,"Empty", 0,null ,"")
 }
-case class Theme(var _id: ObjectId,  var confirmed:Boolean, var edit: List[Edit], 
-				var title: String, var department: String, var referTo:String,
-				var moderator: String, var subjectInfo: String, var subjectId:ObjectId, var slides: String) 
+case class Theme(var _id: ObjectId,  var confirmed:Boolean, var authors: List[Edit], 
+				var title: String, var departmentInfo: String, var departmentId:ObjectId, var referTo:String,
+				var moderator: String, var subjectInfo: String, var subjectLev:Int, var subjectId:ObjectId, var slides: String) 
 				 extends MongoDocument[Theme] {
   def meta = Theme
 }
