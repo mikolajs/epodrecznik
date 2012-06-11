@@ -6,12 +6,11 @@
        <script>
            var oTable = $();
            $(document).ready(function() {
-                oTable = $('#dataTable').dataTable({
-                    "aoColumnDefs": [
-                        { "bVisible": false, "aTargets": [ 5 ] }
-                    ]});
-                
-            	    $('#dataTable').children('tbody').children('tr').children('td').each(function(index){
+                oTable = $('#dataTable').dataTable();
+                		
+                //błędna funkcja dodaje link tylko do pierwszego 
+            	    $('#dataTable').children('tbody').children('tr').each(function() {
+            	    	$(this).children('td').each(function(index){
             	    	if(index == 0){
             	    	$(this).children('a').click(function(){
                     	    var w = screen.width;
@@ -19,37 +18,48 @@
                     	     return false;
                     	    });
             	    	}
+            	    	});
             	    });
-            	    		
-            	
                 
              });
              
              function selectSubject(elem){
-                oTable.fnFilter( elem.innerHTML,2);
+            	 var val = $(elem).children(':selected').val();
+            	 if (val != 'Wszystkie') oTable.fnFilter(val,2);
+                oTable.fnFilter( '.+',2,true);
              }
              function selectLevel(elem){
-            	 oTable.fnFilter(elem.innerHTML,3);
+            	 var val = $(elem).children(':selected').val();
+            	 if (val != '0') oTable.fnFilter(val,3);
+            	 else oTable.fnFilter('.+',3,true);
              }
        </script>
+       <style>
+       .theSelects span { font-weight: bold; padding: 2px, 10px, 2px, 10px; font-size: 18px;  
+       	font-family: "Times New Roman", Times, serif; font-style: italic; }
+       </style>
     </head_merge>
     
  <div id="boxText">
   <h2>Wybór tematów</h2>
   
-  <div class="lift:ThemeSn.subjectList" >
-  Wybierz przedmiot:
-   <a href="" id="subjectList"></a></div>
-   <div id="levelList">Wybierz poziom edukacyjny:
-   <a href="#" onclick="selectLevel(this)">1</a>
-   <a href="#" onclick="selectLevel(this)">2</a>
-   <a href="#" onclick="selectLevel(this)">3</a>
-   <a href="#" onclick="selectLevel(this)">4</a></div>
+  <div class="lift:SlidesSn.subjectSelect theSelects" >
+  <span>Wybierz przedmiot:</span>
+   <select id="subjectSelect" onchange="selectSubject(this)"></select>
+ 	<span>Wybierz poziom edukacyjny:</span>
+   <select onchange="selectLevel(this)">
+   <option value="0">Wszystkie</option>
+   <option value="1">I</option>
+   <option value="2">II</option>
+   <option value="3">III</option>
+   <option value="4">IV</option>
+   </select>
+  </div>
   
-  <div id="themeList" class="lift:ThemeSn.themeListConfirmed dataTable_wrapper">
+  <div id="themeList" class="lift:SlidesSn.themeListConfirmed dataTable_wrapper">
             <table id="dataTable" class="display" >
-                <thead><tr><th>Tytuł</th><th>Dział</th><th>Przedmiot</th><th>Poziom edukacyjny</th><th>Edytuj</th><th>Pusty?</th></tr></thead>
-                <tbody><tr><td><a href="">To jest tytuł</a></td><td></td><td></td><td></td></tr></tbody>
+                <thead><tr><th>Tytuł</th><th>Dział</th><th>Przedmiot</th><th>Poziom edukacyjny</th><th>Edytuj</th></tr></thead>
+                <tbody><tr><td><a href="">To jest tytuł</a></td><td></td><td></td></tr></tbody>
             </table>
             <br/>
             <br/>

@@ -16,21 +16,26 @@ class Main {
     
     def showLinks() = {
         val link = Link.findAll //OrderBy(News.date, Descending)
-        ".img-box" #> link.map( item => {
-                "img" #> <img src={item.imgPath} /> &
-                "p" #> <p><strong>{item.title}</strong><br/>{Unparsed(item.content)}</p> &
-                "em" #> <a href={item.link} target="_blanck">Idź do zasobów</a>
+        "p" #> link.map( item => {
+                <p><a href={item.link} target="_blank"><img src={item.imgPath} />
+                <p><strong>{item.title}</strong><br/>{Unparsed(item.content)}</p> 
+                </a></p>
             })
     }
     
    def showLatest() = {
      val newContentsList = NewContent.findAll
      val contentList = if(newContentsList.isEmpty) Nil else newContentsList.head.content
-     "p" #> contentList.map(item => {     
-       "span" #> <span>{item.date}</span> & 
-       "strong" #> <strong>{item.info}</strong> &
-       "em" #> <em>{item.what}</em>
-       "a" #>  <a href={item.link}><img alt="-->" src="images/arrow1.gif" /> </a>
+     "p" #> contentList.map(item => { 
+       val p = item.what match {
+       		case "p" => "presentation.png"
+       		case "b" => "book.png"
+       		case _ => "nic"
+       	}
+       <p><a href={item.link}>
+       <img alt="x" src={"images/" + p} /><span>{item.date}</span> 
+       <strong>{item.info}</strong> 
+       </a></p>
      } )
    }
     

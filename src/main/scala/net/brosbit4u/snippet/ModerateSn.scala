@@ -25,40 +25,46 @@ class ModerateSn {
 	   val del = S.param("del").openOr("n")
 	   val conf = S.param("conf").openOr("n")
 	   if (del != "n") {
-	     Theme.find(del) match {
-	       case Some(theme) => if(!theme.confirmed)theme.delete
+	     Slide.find(del) match {
+	       case Some(slide) => if(!slide.confirmed)slide.delete
 	       case _ => 
 	     }
 	   }
 	   else if (conf != "n") {
-	     Theme.find(conf) match {
-	       case Some(theme) => {
-	         //get original theme if exist, if is new use it
-	          val th = Theme.find(theme.referTo).getOrElse(theme)
+	     Slide.find(conf) match {
+	       case Some(slide) => {
+	         //get original slide if exist, if is new use it
+	          val th = if(slide.referTo.getTime == 0L) slide else Slide.find(slide.referTo).getOrElse(slide)
 	          th.moderator = User.currentUser.get.id.toString
-	          th.referTo = "0"
+	          th.referTo = new ObjectId("000000000000000000000000")
 	          th.confirmed = true 
 	          th.save
 	          //add to database new content to show in index.html
 	          val newContList = NewContent.findAll
 	          val newCont = if(newContList.isEmpty) NewContent.create else newContList.head
-	          val cont = AddedContent(theme.title,"prezentacja" ,"/slideshow/" + theme._id, Formater.formatDate(new Date()))
-	          newCont.content = cont::newCont.content
+	          val link = "/slideshow/" + th._id.toString
+	          val cont = AddedContent(slide.title,"p" ,link, Formater.formatDate(new Date()))
+	          if(newCont.content.exists(c => c.link == link )) 
+	            newCont.content = newCont.content.map(c =>{
+	              if (c.link == link) cont
+	              else c
+	            } )
+	          else  newCont.content = cont::newCont.content
 	          if(newCont.content.length > 15) newCont.content = newCont.content.dropRight(1)
 	          newCont.save
 	          //delete copy if it's not new slide
-	          if (th._id != theme._id) theme.delete
+	          if (th._id != slide._id) slide.delete
 	       }
 	       case _ =>
 	     }
 	   }
 	   
-	   val themes = Theme.findAll("confirmed"->false)
-	   "tbody" #> themes.map(theme => <tr><td><a href={"/slideshow/"+theme._id.toString} target="_blank">{theme.title}</a></td>
-	   	<td>{theme.subjectInfo}</td> <td>{theme.subjectLev.toString}</td>
-	   	<td>{if(theme.referTo.toString() == "0") <i>nowy</i> else <a href={"/slideshow/"+theme.referTo.toString} target="_blank">orginał</a>}</td>
-	   	<td> {SHtml.a(Text("usuń"), Confirm("Na pewno usunąć bezpowrotnie wpis?",RedirectTo("/moderate?del="+theme._id.toString)))}</td> 
-    	<td> {SHtml.a(Text("zatwierdź"), Confirm("Na pewno zatwierdzić temat? Spowoduje to zastąpienie orginału.",RedirectTo("/moderate?conf="+theme._id.toString)))}</td></tr>)
+	   val themes = Slide.findAll("confirmed"->false)
+	   "tbody" #> themes.map(slide => <tr><td><a href={"/slideshow/"+slide._id.toString} target="_blank">{slide.title}</a></td>
+	   	<td>{slide.subjectInfo}</td> <td>{slide.subjectLev.toString}</td><td>{slide.departmentInfo}</td>
+	   	<td>{if(slide.referTo.toString == "000000000000000000000000") <i>nowy</i> else <a href={"/slideshow/"+slide.referTo.toString} target="_blank">orginał</a>}</td>
+	   	<td> {SHtml.a(Text("usuń"), Confirm("Na pewno usunąć bezpowrotnie wpis?",RedirectTo("/moderate?del="+slide._id.toString)))}</td> 
+    	<td> {SHtml.a(Text("zatwierdź"), Confirm("Na pewno zatwierdzić temat? Spowoduje to zastąpienie orginału.",RedirectTo("/moderate?conf="+slide._id.toString)))}</td></tr>)
   }
 	 
 	 

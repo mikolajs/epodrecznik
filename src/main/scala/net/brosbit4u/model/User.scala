@@ -18,7 +18,7 @@ object User extends User with MetaMegaProtoUser[User] {
   locale, timezone, password, textArea)
 
   // comment this line out to require email validations
-  override def skipEmailValidation = true
+  //override def skipEmailValidation = false
   override def createUserMenuLoc = Empty
   override def editUserMenuLoc= Empty
 //  override def loginFirst = If(

@@ -60,7 +60,7 @@ ul, ol {
 
 /*==== GLOBAL =====*/
 .container {
-	width:980px; 
+	width:1015px; 
 	margin:0 auto;
 	font-size:.75em;
 	position:relative;
@@ -117,8 +117,14 @@ input, select, textarea {
 }
 	.img-box img { 
 		float:left; 
-		margin:0 20px 0 0;
+		margin:0 10px 0 0;
 	}
+
+
+.img-box a {
+	color:rgb(119, 119, 119);
+	text-decoration: none;
+}
 
 .extra-wrap { 
 	overflow:hidden;
@@ -343,7 +349,7 @@ color: #358305;
 
 
 #header .row-2 {
-	height:57px;
+	height:37px;
 	overflow:hidden;
 	background:url(images/header-tail-2.gif) 0 0 repeat-x;
 }
@@ -361,7 +367,7 @@ color: #358305;
 		}
 			#header .nav li a, #header .nav li span {
 				float:left;
-				padding:10px 0 10px 0;
+				padding:0;
 				font-family:"Times New Roman", Times, serif;
 				font-size:21px;
 				font-style:italic;

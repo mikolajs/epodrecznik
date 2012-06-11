@@ -147,8 +147,8 @@
 			
 			
 			CKEDITOR.replace( 'slideText',{
-				width : 900, 
-				height: 500,
+				width : 950, 
+				height: 600,
 				extraPlugins : 'youTube,addImage,formula',
         		toolbar : [ [ 'Source' ],
         		            [ 'Link','Unlink','Anchor' ],[ 'Maximize', 'ShowBlocks','-','About' ] ,
@@ -160,6 +160,9 @@
         		[ 'Styles','Format','Font','FontSize' ],
         		[ 'TextColor','BGColor' ] ]
     		});
+			
+			CKEDITOR.config.setStyles = [];
+			CKEDITOR.config.contentsCss = '/deckjs/themes/style/neon_ckeditor.css';
 			
 			var properties = new Properties();
 			properties.init();
