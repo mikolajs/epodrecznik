@@ -37,10 +37,6 @@ class Boot {
       u.lastName("Administrator").level(0).password("123qwerty").email("mail@mail.org").validated(true).save
     }
 
-    LiftRules.statelessDispatchTable.append({
-      case Req("image" :: id :: Nil, _, GetRequest) => () => ImageLoader.icon(id)
-    })
-
     val isAdmin = If(() => User.loggedIn_? && (User.currentUser.open_!.level.is < 1),
       () => RedirectResponse("/"))
     val isModerator = If(() => User.loggedIn_? && (User.currentUser.open_!.level.is < 2),

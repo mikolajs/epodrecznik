@@ -20,55 +20,70 @@ import http.js.JE._
 import _root_.net.brosbit4u.lib._
 
 class ModerateSn {
-	 def showThemes() = {
+  
+	 def showSlides() = {
 	   if(!isModerator) S.redirectTo("/user_mgt/login")
-	   val del = S.param("del").openOr("n")
-	   val conf = S.param("conf").openOr("n")
-	   if (del != "n") {
-	     Slide.find(del) match {
-	       case Some(slide) => if(!slide.confirmed)slide.delete
+	   
+	   val deleteUrlParam = S.param("del").openOr("n")
+	   val confirmUrlParam = S.param("conf").openOr("n")
+	   
+	   if (deleteUrlParam != "n") deleteSlide(deleteUrlParam)
+	   else if (confirmUrlParam != "n") confirmSlide(confirmUrlParam)
+	   
+	   val slides = Slide.findAll("confirmed"->false)
+	   
+	   "tbody" #> slides.map(
+	       slide => <tr><td><a href={"/slideshow/"+slide._id.toString} target="_blank">{slide.title}</a></td>
+	   	<td>{slide.subjectInfo}</td> <td>{slide.subjectLev.toString}</td>
+	   	<td>{slide.departmentInfo}</td>
+	   	<td>{if(slide.referTo.toString == "000000000000000000000000") <i>nowy</i> 
+	   	  else <a href={"/slideshow/"+slide.referTo.toString} target="_blank">orginał</a>}</td>
+	   	<td> {SHtml.a(Text("usuń"), Confirm("Na pewno usunąć bezpowrotnie wpis?",
+	   	    RedirectTo("/moderate?del="+slide._id.toString)))}</td> 
+    	<td> {SHtml.a(Text("zatwierdź"), Confirm("Na pewno zatwierdzić temat? Spowoduje to zastąpienie orginału.",
+    	    RedirectTo("/moderate?conf="+slide._id.toString)))}</td></tr>
+    	)
+  }
+	 
+	 private def deleteSlide(slideId:String) { Slide.find(slideId) match {
+	       case Some(slide) => if(!slide.public) slide.delete
 	       case _ => 
 	     }
-	   }
-	   else if (conf != "n") {
-	     Slide.find(conf) match {
+	 }
+	 
+	 private def confirmSlide(slideId:String)  {
+	    Slide.find(slideId) match {
 	       case Some(slide) => {
-	         //get original slide if exist, if is new use it
-	          val th = if(slide.referTo.getTime == 0L) slide else Slide.find(slide.referTo).getOrElse(slide)
-	          th.moderator = User.currentUser.get.id.toString
-	          th.referTo = new ObjectId("000000000000000000000000")
-	          th.confirmed = true 
-	          th.save
-	          //add to database new content to show in index.html
-	          val newContList = NewContent.findAll
-	          val newCont = if(newContList.isEmpty) NewContent.create else newContList.head
-	          val link = "/slideshow/" + th._id.toString
-	          val cont = AddedContent(slide.title,"p" ,link, Formater.formatDate(new Date()))
-	          if(newCont.content.exists(c => c.link == link )) 
-	            newCont.content = newCont.content.map(c =>{
-	              if (c.link == link) cont
-	              else c
+	          val orginalPublicSlide = if(slide.referTo.getTime == 0L) slide else Slide.find(slide.referTo).getOrElse(slide)
+	          orginalPublicSlide.moderator = User.currentUser.get.id.toString
+	          orginalPublicSlide.referTo = new ObjectId("000000000000000000000000")
+	          orginalPublicSlide.public = true 
+	          orginalPublicSlide.save
+	          
+	          val lastAddedInDBList = LastAdded.findAll
+	          val lastAdded = if(lastAddedInDBList.isEmpty) LastAdded.create else lastAddedInDBList.head
+	          
+	          val link = "/slideshow/" + orginalPublicSlide._id.toString
+	          
+	          val newLastAddedItem = LastAddedItem(slide.title,"p" ,link, Formater.formatDate(new Date()))
+	          
+	          if(lastAdded.content.exists(content => content.link == link )) 
+	            lastAdded.content = lastAdded.content.map(content =>{
+	              if (content.link == link) newLastAddedItem
+	              else content
 	            } )
-	          else  newCont.content = cont::newCont.content
-	          if(newCont.content.length > 15) newCont.content = newCont.content.dropRight(1)
-	          newCont.save
-	          //delete copy if it's not new slide
-	          if (th._id != slide._id) slide.delete
+	          else  lastAdded.content = newLastAddedItem::lastAdded.content
+	          
+	          if(lastAdded.content.length > 15) lastAdded.content = lastAdded.content.dropRight(1)
+	          lastAdded.save
+	          
+	          if (orginalPublicSlide._id != slide._id) slide.delete
 	       }
 	       case _ =>
 	     }
-	   }
-	   
-	   val themes = Slide.findAll("confirmed"->false)
-	   "tbody" #> themes.map(slide => <tr><td><a href={"/slideshow/"+slide._id.toString} target="_blank">{slide.title}</a></td>
-	   	<td>{slide.subjectInfo}</td> <td>{slide.subjectLev.toString}</td><td>{slide.departmentInfo}</td>
-	   	<td>{if(slide.referTo.toString == "000000000000000000000000") <i>nowy</i> else <a href={"/slideshow/"+slide.referTo.toString} target="_blank">orginał</a>}</td>
-	   	<td> {SHtml.a(Text("usuń"), Confirm("Na pewno usunąć bezpowrotnie wpis?",RedirectTo("/moderate?del="+slide._id.toString)))}</td> 
-    	<td> {SHtml.a(Text("zatwierdź"), Confirm("Na pewno zatwierdzić temat? Spowoduje to zastąpienie orginału.",RedirectTo("/moderate?conf="+slide._id.toString)))}</td></tr>)
-  }
+	 }
 	 
-	 
-	 def isModerator():Boolean = {
+	 private def isModerator():Boolean = {
 	   User.currentUser match {
 	     case Full(user) => if (user.level.is < 2) true else false
 	     case _ => false

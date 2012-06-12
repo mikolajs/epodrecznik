@@ -60,44 +60,47 @@ class SlideSn extends BaseSlide {
     def saveData() {
       if (!canEdit) S.redirectTo("/user_mgt/login")
       //if not confirmed allow write to the same slide!
-      val newSlide = if (slide.confirmed) {
-        val t = Slide.create
-        t.referTo = slide._id
-        println("referTo = " + t.referTo.toString + " slide._id.toString = " + slide._id.toString)
-        t
-      } 
-      else slide
-        newSlide.title = title
-        newSlide.subjectId = new ObjectId(subjectId)
-        val sub =  Subject.find(new ObjectId(subjectId)).getOrElse(Subject.create);
-        newSlide.subjectInfo = sub.full
-        newSlide.subjectLev = subjectLev.toInt
-        newSlide.departmentId = new ObjectId(departmentId)
-        newSlide.departmentInfo = Department.find(new ObjectId(departmentId)).
-        	getOrElse(Department.create(new ObjectId(subjectId))).name
-        	
-        val userID = User.currentUser.get.id.is.toString
+      
+      val slidesContentHtml = Unparsed(slidesData)
+      
+      if(slide.public) {
+        slide = Slide.create
+        slideCont = SlideContent.create
+        slide.referTo = slideCont._id
+        slideCont.referTo = slide._id
+      }
+
+      slide.title = title
+      slide.subjectId = new ObjectId(subjectId)
+      val sub = Subject.find(new ObjectId(subjectId)).getOrElse(Subject.create);
+      slide.subjectInfo = sub.full
+      slide.subjectLev = subjectLev.toInt
+      slide.departmentId = new ObjectId(departmentId)
+      slide.departmentInfo = Department.find(new ObjectId(departmentId)).
+        getOrElse(Department.create(new ObjectId(subjectId))).name
+  
+      val userID = User.currentUser.get.id.is.toString
    
-        newSlide.authors = if (newSlide.authors.exists(e => e.user == userID)) newSlide.authors.map(e => {
+      slide.authors = if (slide.authors.exists(e => e.user == userID)) slide.authors.map(e => {
         										if (e.user == userID) Edit(userID, new Date().getTime().toString)
         										else e
         										}) 
-        else Edit(userID,new Date().getTime().toString)::newSlide.authors
-        newSlide.confirmed = false
-        val listData = Unparsed(slidesData)
-        newSlide.slides = listData.toString
-        newSlide.save 
+        			  else Edit(userID,new Date().getTime().toString)::slide.authors
+       slide.public = false
+       slideCont.slides = slidesContentHtml.toString
+       slide.save 
+       slideCont.save
       
-      S.redirectTo("/editable")
+      S.redirectTo("/editableslides") //!important must refresh page
     }
     
     def deleteData() {
       slide = if (ID != "0") Slide.find(ID).getOrElse(Slide.create) else Slide.create
-      if (slide.confirmed) {
+      if (slide.public) {
     	  if(isModerator) {
-        //może kiedyś dodać zamiast usuwania zapis do backupu? albo tylko admin mógłby usuwać?
+    		  slideCont.delete
     		  slide.delete
-    		  S.redirectTo("/editable")
+    		  S.redirectTo("/editableslides")
     	  }
       } 
       else {
@@ -107,7 +110,7 @@ class SlideSn extends BaseSlide {
              case Full(user) => if(idAuthor == user.id.is) slide.delReq = true
              case _ => 
            }
-           S.redirectTo("/editable")
+           S.redirectTo("/editableslides")
           
         }
       }
@@ -116,6 +119,7 @@ class SlideSn extends BaseSlide {
     def cancelAction() {
       S.redirectTo("/editable")
     }
+    
     val levList = List(("1","I"),("2","II"),("3","III"),("4","IV"))
     "#id" #> SHtml.text(ID, ID = _, "type"->"hidden") &
     "#titleTheme" #> SHtml.text(title, title= _,"class"->"Name") &

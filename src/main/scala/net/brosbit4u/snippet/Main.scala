@@ -24,8 +24,8 @@ class Main {
     }
     
    def showLatest() = {
-     val newContentsList = NewContent.findAll
-     val contentList = if(newContentsList.isEmpty) Nil else newContentsList.head.content
+     val lastAddedList = LastAdded.findAll
+     val contentList = if(lastAddedList.isEmpty) Nil else lastAddedList.head.content
      "p" #> contentList.map(item => { 
        val p = item.what match {
        		case "p" => "presentation.png"
