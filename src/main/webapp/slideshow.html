@@ -7,9 +7,8 @@
     <link rel="stylesheet" href="/deckjs/core/deck.core.css">
     <link rel="stylesheet" href="/deckjs/extensions/status/deck.status.css" >
    
-    
-    <!-- Theme CSS files (menu swaps these out) -->
-    <link rel="stylesheet" id="style-theme-link" href="/deckjs/themes/style/neon.css">
+   
+	<link rel="stylesheet"  type="text/css" id="style-theme-link" href="/deckjs/themes/style/neon.css">
     <link rel="stylesheet" id="transition-theme-link" href="/deckjs/themes/transition/horizontal-slide.css">
     <script src="/jquery/jquery.min.js"></script>
     <script src="/deckjs/core/deck.core.js"></script>
@@ -47,6 +46,7 @@
     }
     
     $(document).ready(function() {
+    	
         $.deck('.slide'); 
         var arrayId = new Array();
        
@@ -78,11 +78,70 @@
     	 if(isOld()) alert("Zawartość może nie wyglądać prawidłowo. Użyj nowszej przeglądarki, najlepiej Firefox.");
     	 else {
     		if( $('math').length > 0){
-    			alert("Prezentacja zawiera wzory. Ich obsługa wymaga użycia przeglądarki Firefox");
+    			alert("Prezentacja może zawierać wzory. Ich obsługa wymaga użycia przeglądarki Firefox");
     		}
     	 }
      }
     });
+    
+    var fontSize = 1.2;
+    
+    function enlargeTemplate(){
+    	fontSize += 0.1;
+    	imageSize = 1.1;
+    	var slideContener = document.getElementById('slides');
+    	slideContener.style.fontSize = fontSize+"em";
+    	changeFontSpanSize(imageSize);
+    	$(slideContener).find('img').each(function(){
+    		this.width =  this.width * imageSize;
+    		this.style.heigth = 'auto';
+    	});
+    	
+    }
+    
+    function whittleTemplate(){
+    	fontSize -= 0.1;
+    	imageSize = 0.9;
+    	var slideContener = document.getElementById('slides');
+    	slideContener.style.fontSize = fontSize+"em";
+    	changeFontSpanSize(imageSize);
+    	$(slideContener).find('img').each(function(){
+    		this.width =  this.width * imageSize;
+    		this.style.heigth = 'auto';
+    	});   
+    }
+    
+    function changeFontSpanSize(resize){
+    	var slideContener = document.getElementById('slides');
+    	$(slideContener).find('span').each(function(){
+    		$span = $(this);
+    		var fontSizeStyle = $span.css('font-size');
+			fontSizeStyle = fontSizeStyle.substring(0, fontSizeStyle.length - 2);
+			fontSizeStyle *= resize;
+			$span.css('font-size',fontSizeStyle.toString() + 'px');
+    	});
+    }
+    
+    var styleId = 0;
+    function changeTemplate(){
+    	var link = document.getElementById('style-theme-link');
+    	switch(styleId) {
+    	case 0: 
+    		link.setAttribute('href', '/deckjs/themes/style/swiss.css');
+    		styleId = 1;
+    	    break;
+    	case 1: 
+    		link.setAttribute('href', '/deckjs/themes/style/web-2.0.css');
+    		styleId = 2;
+    	    break;
+    	case 2: 
+    		link.setAttribute('href', '/deckjs/themes/style/neon.css');
+    		styleId = 0;
+    	    break;
+    	default:
+    	    break;
+    	}
+    }
     </script>
     <style>
     
@@ -96,22 +155,26 @@ body { background: url(/images/background.png) repeat; margin: 0 auto; }
                 color: #eee; margin: 0 auto; border 0 0 2px 0 solid red;
                 }
 #header  > ul { position: relative; top 0; margin: 0; padding: 0; }
-#header  > ul > li { display: inline; decoration: none; vertical-align: middle; border: 0 3px 0 3px 0; padding: 0 5px 0 5px;
-                                font: 15px serif; color: green; }
+#header  > ul > li { display: inline; decoration: none; vertical-align: middle; 
+							border: 0 3px 0 3px 0; padding: 0 5px 0 5px;
+                             font: 12px serif; color: green; }
                                 
-#header >  ul > li > span { font: 18px sans; color: #eee; padding:0;}
-#header > ul > li > a { color: orange; text-decoration: none; font: 22px sans; vertical-align: middle;}
+#header >  ul > li > span { font: 15px sans; color: #eee; padding:0;}
+#header > ul > li > a { color: orange; text-decoration: none; font: 16px sans; vertical-align: middle;}
 #header >  ul > li > img { vertical-align: middle; padding: 0; }
 #slides { position: relative; top: 35px; }                                
     
     </style>
 </head>
-<body class="lift:SlideSn.slideData">
+<body class="lift:ShowSlideSn.slideData">
 <div id="header">
    <ul>
     <li id="previous-slide"><img src="/images/previous.png"/></li>
     <li><a href="/index">podrecznik.edu.pl</a></li>
     <li>Temat: <span id="title">Jakiś temat</span></li>
+    <li id="small-slide"><img src="/images/minus.png" onclick="whittleTemplate()"/></li>
+    <li id="change-slide"><img src="/images/change.png" onclick="changeTemplate()"/></li>
+    <li id="large-slide"><img src="/images/plus.png" onclick="enlargeTemplate()"/></li>
     <li>Przedmiot: <span id="subject">Fizyka liceum</span></li>
     <li>Etap:<span id="etap">3</span></li>
     <li>Dział: <span id="department">termodynamika</span></li>

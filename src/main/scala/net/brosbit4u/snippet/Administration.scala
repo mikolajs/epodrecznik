@@ -15,6 +15,7 @@ import _root_.net.liftweb.json.JsonDSL._
 import org.bson.types.ObjectId
 import Helpers._
 import scala.xml.Unparsed
+import net.brosbit4u.lib.MailConfig
 
 class Administration {
 
@@ -22,7 +23,7 @@ class Administration {
     val users = User.findAll.filter(u => u.level.is != 0)
     "tbody" #> users.map(u => {
       <tr>
-        <td>{ u.lastName.is }</td><td>{ u.firstName.is }</td><td>{ u.email.is }</td>
+        <td id={"id" + u.id.toString}>{ u.lastName.is }</td><td>{ u.firstName.is }</td><td>{ u.email.is }</td>
         <td>{ u.level.is.toString }</td><td>{ u.karma.is.toString }</td>
       </tr>
     })
@@ -199,19 +200,23 @@ class Administration {
     })
   }
 
-  def contact() = {
-    var title = ""
+ def mailConfigure() = {
+    var host = ""
     var email = ""
-    var content = ""
-    def save() = {
-      //tu dodać wysyłanie Maila!!!!
+    var password = ""
+    val mailConf = new MailConfig
+    val tuple = mailConf.getConfigTuple
+    host = tuple._1
+    email = tuple._2
+    def save() = {     
+      mailConf.configureMailer(host, email, password)
     }
-
-    "#title" #> SHtml.text(title, title = _) &
+    
+      "#host" #> SHtml.text(host, host = _) &
       "#email" #> SHtml.text(email, email = _) &
-      "#contact" #> SHtml.textarea(content, content = _) &
-      "#submit" #> SHtml.submit("WYŚLIJ", save)
-  }
+      "#password" #> SHtml.text(password, password = _, "type" -> "password") &
+      "#submit" #> SHtml.submit("Zapisz", save)
+ }
 
 }
 

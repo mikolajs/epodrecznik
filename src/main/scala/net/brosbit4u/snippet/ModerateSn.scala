@@ -24,13 +24,12 @@ class ModerateSn {
 	 def showSlides() = {
 	   if(!isModerator) S.redirectTo("/user_mgt/login")
 	   
-	   val deleteUrlParam = S.param("del").openOr("n")
+
 	   val confirmUrlParam = S.param("conf").openOr("n")
 	   
-	   if (deleteUrlParam != "n") deleteSlide(deleteUrlParam)
-	   else if (confirmUrlParam != "n") confirmSlide(confirmUrlParam)
+	   if (confirmUrlParam != "n") confirmSlide(confirmUrlParam)
 	   
-	   val slides = Slide.findAll("confirmed"->false)
+	   val slides = Slide.findAll("public"->false)
 	   
 	   "tbody" #> slides.map(
 	       slide => <tr><td><a href={"/slideshow/"+slide._id.toString} target="_blank">{slide.title}</a></td>
@@ -38,50 +37,85 @@ class ModerateSn {
 	   	<td>{slide.departmentInfo}</td>
 	   	<td>{if(slide.referTo.toString == "000000000000000000000000") <i>nowy</i> 
 	   	  else <a href={"/slideshow/"+slide.referTo.toString} target="_blank">orginał</a>}</td>
-	   	<td> {SHtml.a(Text("usuń"), Confirm("Na pewno usunąć bezpowrotnie wpis?",
-	   	    RedirectTo("/moderate?del="+slide._id.toString)))}</td> 
     	<td> {SHtml.a(Text("zatwierdź"), Confirm("Na pewno zatwierdzić temat? Spowoduje to zastąpienie orginału.",
     	    RedirectTo("/moderate?conf="+slide._id.toString)))}</td></tr>
     	)
   }
-	 
-	 private def deleteSlide(slideId:String) { Slide.find(slideId) match {
-	       case Some(slide) => if(!slide.public) slide.delete
-	       case _ => 
-	     }
-	 }
-	 
+	
 	 private def confirmSlide(slideId:String)  {
 	    Slide.find(slideId) match {
 	       case Some(slide) => {
-	          val orginalPublicSlide = if(slide.referTo.getTime == 0L) slide else Slide.find(slide.referTo).getOrElse(slide)
-	          orginalPublicSlide.moderator = User.currentUser.get.id.toString
-	          orginalPublicSlide.referTo = new ObjectId("000000000000000000000000")
-	          orginalPublicSlide.public = true 
-	          orginalPublicSlide.save
-	          
-	          val lastAddedInDBList = LastAdded.findAll
-	          val lastAdded = if(lastAddedInDBList.isEmpty) LastAdded.create else lastAddedInDBList.head
-	          
-	          val link = "/slideshow/" + orginalPublicSlide._id.toString
-	          
-	          val newLastAddedItem = LastAddedItem(slide.title,"p" ,link, Formater.formatDate(new Date()))
-	          
-	          if(lastAdded.content.exists(content => content.link == link )) 
-	            lastAdded.content = lastAdded.content.map(content =>{
-	              if (content.link == link) newLastAddedItem
-	              else content
-	            } )
-	          else  lastAdded.content = newLastAddedItem::lastAdded.content
-	          
-	          if(lastAdded.content.length > 15) lastAdded.content = lastAdded.content.dropRight(1)
-	          lastAdded.save
-	          
-	          if (orginalPublicSlide._id != slide._id) slide.delete
+	          //look for original public slide if is first slide orginal is itself
+	          if(slide.referTo.getTime == 0L) setAndSaveNewSlide(slide)
+	          else {
+	               Slide.find(slide.referTo) match {
+	                     case Some(publicSlide) => alterPublicSlideAndDeletePrivate(publicSlide, slide)
+	                     case _ => setAndSaveNewSlide(slide)
+	               }
+	          }  
 	       }
 	       case _ =>
 	     }
 	 }
+	 
+	 private def setAndSaveNewSlide(slide:Slide){
+	      slide.public = true
+	      slide.moderator = User.currentUser.get.id.toString
+	      slide.save
+	      appendLastAdded(slide)
+	 }
+	 
+	 private def appendLastAdded(slide:Slide){
+		 val lastAddedInDBList = LastAdded.findAll
+		 val lastAdded = if(lastAddedInDBList.isEmpty) LastAdded.create else lastAddedInDBList.head
+
+		 val link = "/slideshow/" + slide._id.toString
+		 val newLastAddedItem = LastAddedItem(slide.title,"p" ,link, Formater.formatDate(new Date()))
+
+		lastAdded.content = newLastAddedItem::lastAdded.content
+
+		if(lastAdded.content.length > 15) lastAdded.content = lastAdded.content.dropRight(1)
+		lastAdded.save
+	 }
+
+    private def alterPublicSlideAndDeletePrivate(publicSlide: Slide, privateSlide: Slide) {
+
+        publicSlide.moderator = User.currentUser.get.id.toString
+        SlideContent.find(publicSlide.slides) match {
+            case Some(slideCont) => slideCont.delete
+            case _ =>
+        }
+        publicSlide.referTo = new ObjectId("000000000000000000000000")
+        publicSlide.public = true
+        publicSlide.title = privateSlide.title
+        publicSlide.departmentId = privateSlide.departmentId
+        publicSlide.departmentInfo = privateSlide.departmentInfo
+        publicSlide.subjectId = privateSlide.subjectId
+        publicSlide.subjectInfo = privateSlide.subjectInfo
+        publicSlide.subjectLev = privateSlide.subjectLev
+        publicSlide.authors = privateSlide.authors
+        publicSlide.slides = privateSlide.slides
+
+        privateSlide.delete
+        publicSlide.save
+        checkLastAddedAndAppend(publicSlide)
+    }
+	 
+	 private def checkLastAddedAndAppend(slide:Slide){
+	      
+	          val lastAddedInDBList = LastAdded.findAll
+	          val lastAdded = if(lastAddedInDBList.isEmpty) LastAdded.create else lastAddedInDBList.head
+          
+	          val link = "/slideshow/" + slide._id.toString	          
+	          val newLastAddedItem = LastAddedItem(slide.title,"p" ,link, Formater.formatDate(new Date()))
+	          
+	          var newLastAddedContent = lastAdded.content.filter(content => content.link != link )
+	          newLastAddedContent =  newLastAddedItem::newLastAddedContent
+	          if (newLastAddedContent.length > 15) newLastAddedContent = newLastAddedContent.dropRight(1)
+	          lastAdded.content = newLastAddedContent
+	          lastAdded.save
+	 }
+	 
 	 
 	 private def isModerator():Boolean = {
 	   User.currentUser match {
@@ -89,4 +123,5 @@ class ModerateSn {
 	     case _ => false
 	   }
 	 }
+	
 }

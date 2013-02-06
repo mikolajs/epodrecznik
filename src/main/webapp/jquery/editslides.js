@@ -27,6 +27,7 @@
 			$('#save').click(self.createData);
 			$('#addSlideAction').click(self.addSlide);
 			$('#delSlideAction').click(self.delSlide);
+			
 		}
 		
 		this.choiceSlide = function(){
@@ -147,8 +148,8 @@
 			
 			
 			CKEDITOR.replace( 'slideText',{
-				width : 950, 
-				height: 600,
+				width : 990, 
+				height: 650,
 				extraPlugins : 'youTube,addImage,formula',
         		toolbar : [ [ 'Source' ],
         		            [ 'Link','Unlink','Anchor' ],[ 'Maximize', 'ShowBlocks','-','About' ] ,
@@ -163,6 +164,7 @@
 			
 			CKEDITOR.config.setStyles = [];
 			CKEDITOR.config.contentsCss = '/deckjs/themes/style/neon_ckeditor.css';
+			CKEDITOR.config.disableNativeSpellChecker = false;
 			
 			var properties = new Properties();
 			properties.init();

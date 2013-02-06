@@ -16,10 +16,10 @@ class Main {
     
     def showLinks() = {
         val link = Link.findAll //OrderBy(News.date, Descending)
-        "p" #> link.map( item => {
-                <p><a href={item.link} target="_blank"><img src={item.imgPath} />
-                <p><strong>{item.title}</strong><br/>{Unparsed(item.content)}</p> 
-                </a></p>
+        ".img-box" #> link.map( item => {
+                <div class="img-box"><p><a href={item.link} target="_blank"><img src={item.imgPath} />
+                <strong>{item.title}</strong><br/>{Unparsed(item.content)}
+                </a></p></div>
             })
     }
     

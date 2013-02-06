@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2011   Mikołaj Sochacki mikolajsochacki AT gmail.com
+ *   This file is part of E-Podrecznik.edu.pl 
+ *   LICENCE: GNU AFFERO GENERAL PUBLIC LICENS Version 3 (AGPLv3)
+ *   See: <http://www.gnu.org/licenses/>.
+ */
+
 package bootstrap.liftweb
 
 import _root_.net.liftweb.util._
@@ -13,6 +20,7 @@ import _root_.net.brosbit4u.model._
 import _root_.net.liftweb.mongodb._
 import scala.util.logging.Logged
 import _root_.net.brosbit4u.api._
+import _root_.net.brosbit4u.lib._
 
 class Boot {
   def boot {
@@ -31,6 +39,10 @@ class Boot {
     // where to search snippet
     LiftRules.addToPackages("net.brosbit4u")
     Schemifier.schemify(true, Schemifier.infoF _ , User)
+    
+    LiftRules.statelessDispatchTable.append({
+      case Req("image" :: id :: Nil, _, GetRequest) => () => ImageLoader.icon(id)
+    })
 
     if (DB.runQuery("select * from users where lastname = 'Administrator'")._2.isEmpty) {
       val u = User.create
@@ -47,30 +59,31 @@ class Boot {
     def sitemap() = SiteMap(
       List(
         Menu("Wiadomości") / "index" >> LocGroup("public"),
-        Menu("Wybór tematu") / "choiceslide" >> LocGroup("public"),
+        Menu("Prezentacje") / "choiceslide" >> LocGroup("public"),
         Menu("Kontakt") / "contact" >> LocGroup("public"),
-        Menu("Moje tematy") / "editableslides" >> LocGroup("public"),
-        Menu("Publikacja") / "ebooks" >> LocGroup("public"),
+        Menu("Publikacja") / "ebooks" >> LocGroup("public") >> Hidden,
         Menu("Edycja Slajdów") / "editslide" / ** >> LocGroup("extra") >> Hidden,
-        Menu("Moderacja") / "moderate" >> LocGroup("extra") >> Hidden,
+        Menu("Moderacja") / "moderate" >> LocGroup("extra") >> Hidden >> isModerator,
         Menu("Pokaz") / "slideshow" / ** >> LocGroup("extra") >> Hidden,
         Menu("Czytaj") / "ebook" / ** >> LocGroup("extra") >> Hidden,
-        Menu("Image upload") / "imagestorage" >> LocGroup("extra") >> Hidden >> isUser,
+        Menu("Image upload") / "imgstorage" >> LocGroup("extra") >> Hidden >> isUser,
         Menu("Edytuj książkę") / "ebookedit" >> LocGroup("extra") >> Hidden >> isUser,
         Menu("Administrator") / "admin" / "admin" >> LocGroup("admin") >> isAdmin,
         Menu("Przedmioty") / "admin" / "subjects" >> LocGroup("admin") >> isAdmin,
         Menu("Działy") / "admin" / "departments" >> LocGroup("admin") >> isAdmin,
         Menu("Użytkownicy") / "admin" / "users" >> LocGroup("admin") >> isAdmin,
-        Menu("Aktualności") / "admin" / "news" >> LocGroup("admin") >> isAdmin) :::
+        Menu("Aktualności") / "admin" / "news" >> LocGroup("admin") >> isAdmin,
+        Menu("GC") / "admin" / "gc" >> LocGroup("admin") >> isAdmin,
+        Menu("Static") / "static" / ** >> LocGroup("extra") >> Hidden) :::
         User.sitemap: _*)
 
     LiftRules.setSiteMapFunc(sitemap)
 
     LiftRules.statelessRewrite.prepend(NamedPF("ClassRewrite") {
       case RewriteRequest(
-        ParsePath("edit" :: subjectId :: Nil, _, _, _), _, _) =>
+        ParsePath("editslide" :: subjectId :: Nil, _, _, _), _, _) =>
         RewriteResponse(
-          "edit" :: Nil, Map("id" -> subjectId))
+          "editslide" :: Nil, Map("id" -> subjectId))
       case RewriteRequest(
         ParsePath("slideshow" :: subjectId :: Nil, _, _, _), _, _) =>
         RewriteResponse(
@@ -96,8 +109,10 @@ class Boot {
       new Html5Properties(r.userAgent))
 
     //max file upload
-    LiftRules.maxMimeSize = 8 * 1024 * 1024
-    LiftRules.maxMimeFileSize = 8 * 1024 * 1024
+    LiftRules.maxMimeSize = 16 * 1024 * 1024
+    LiftRules.maxMimeFileSize = 16 * 1024 * 1024
+    
+    { new MailConfig().autoConfigure() }
 
     LiftRules.early.append(makeUtf8)
 

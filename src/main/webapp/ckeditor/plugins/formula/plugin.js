@@ -36,6 +36,17 @@ CKEDITOR.plugins.add( 'formula',
 	      }
             ]
           },
+          {
+            id : 'tab2',
+            label : 'Pomoc',
+            elements :
+            [
+	      {
+	       type : 'html',
+	       html : '<iframe src="/static/asciitomathhelp.html" width="420px" height="420px" ></iframe>'
+	      }
+            ]
+          },
           
         ],
 	

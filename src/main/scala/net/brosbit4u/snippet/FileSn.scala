@@ -163,27 +163,13 @@ import java.io.ByteArrayOutputStream
            ImageIO.write(imBox.get, mimeType.substring(1),outputStream)
            val inputStream = new ByteArrayInputStream(outputStream.toByteArray())
            MongoDB.use(DefaultMongoIdentifier) { db =>
-           val fs = new GridFS(db)
-           val inputFile = fs.createFile(inputStream)
-           inputFile.setContentType(mimeTypeFull)
-           inputFile.setFilename(fileName + mimeType)
-           inputFile.save
-           linkpath("/image/" + inputFile.getId().toString() + mimeType)
-           
+             val fs = new GridFS(db)
+             val inputFile = fs.createFile(inputStream)
+             inputFile.setContentType(mimeTypeFull)
+             inputFile.setFilename(fileName + mimeType)
+             inputFile.save
+             linkpath("/image/" + inputFile.getId().toString() + mimeType)   
            }
-            /*
-            val imgDir: File = new File(pathRootImages + pathNewsImages)
-            val fileName =  fileHold.get.name
-            
-            val link = imgDir.getAbsolutePath + "/" + fileName
-            var imageBuf: BufferedImage = ImageIO.read(new ByteArrayInputStream(fileHold.get.file))
-            val imBox:Box[BufferedImage] = getImageBox(500, imageBuf)
-             if (ImageIO.write(imBox.get, mimeType.substring(1), new File(imgDir, fileName))) {
-              linkpath(serverPath + "images/news/" + fileName)
-              S.notice("Plik został zapisany")
-            } else {
-              S.notice("Zapis nieudany")
-            }*/
           }
           
         } 
@@ -230,12 +216,7 @@ import java.io.ByteArrayOutputStream
         }
       }
 
-      //niezaimlpementowane - zrobić osobny moduł dla crona
-      def cleanImages(node: NodeSeq): NodeSeq = {
-        //przeszukiwanie wszystkich Post, Page i Comments i wyszukanie wszystkich 
-        val n = <h1>Nieużywane obrazki  zostały usunięte</h1>
-        n
-      }
+     
     }
     
     

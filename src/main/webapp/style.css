@@ -52,6 +52,7 @@ ul, ol {
 	overflow:hidden;
 }
 .container { 
+	
 	width:100%;
 }
 
@@ -93,6 +94,7 @@ ul, ol {
 	height:68px;
 	overflow:hidden;
 	background:url(images/footer-bg.gif) 0 0 repeat-x #358305;
+	text-align: center;
 }
 
 
@@ -388,7 +390,7 @@ color: #358305;
 }
 /*===== content =====*/
 #content .indent {
-	padding:20px 30px 20px 30px;
+	padding:20px 10px 20px 10px;
 	min-height: 400px;
 }
 	#content .article {
@@ -490,13 +492,11 @@ color: #358305;
 			height:107px;
 			margin-bottom:18px;
 		}
-.v{
-	position:relative;
-	float:left;
-	}
+		
 .vlinks{
 	position:relative;
 	float:right;}
 
 /*==========================================*/
-	
+ label {width:150px;}
+ textarea {width:450px; height: 100px;}

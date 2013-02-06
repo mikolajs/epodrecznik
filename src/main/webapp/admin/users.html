@@ -10,9 +10,7 @@
                             $(this).dblclick(function(){beginEditUsers(this);});
                         });
                         
-                           oTable = $('#dataTable').dataTable({
-                         "aoColumnDefs": [{ "bVisible": false, "aTargets": [ 2 ] }
-                        ]});
+                           oTable = $('#dataTable').dataTable();   
                         
                         $('#usersForm').dialog({
                             autoOpen: false,
@@ -30,6 +28,8 @@
                  $(elem).children('td').each(function(index) {
                   switch(index){
                   case 0:
+                	 var idUser = this.id.toString().substring(2);
+                  $('#usersFormId').val(idUser);
                   $('#usersFormLastName').val(this.innerHTML);
                   break;
                   case 1:
@@ -38,6 +38,9 @@
                   case 2:
                   $('#usersFormEmail').val(this.innerHTML);
                   break;
+                  case 3:
+               		var selectString = '#usersFormLevel option:contains(' + this.innerHTML + ')';
+                  $(selectString).prop('selected',true);
                   default:
                   break;
                   }
@@ -63,13 +66,14 @@
         
             <table id="dataTable" class="display">
                 <thead><tr><th>Nazwisko</th><th>Imię</th><th>Email</th><th>Poziom</th><th>Karma</th></tr></thead>
-                <tbody><tr><td></td><td></td><td></td><td></td></tr></tbody>
+                <tbody><tr><td></td><td></td><td></td><td></td><td></td></tr></tbody>
             </table>
         <input id="mkAddUser" type="image" src="/images/addico.png" onclick="mkAddUsers();"/>
   </div>
   
   <div id="usersForm" style="display:none;" title="Edycja użytkowników">
       <form class="lift:Administration.usersForm?form=POST" >
+      <label for="usersFormId">Id</label><input id="usersFormId" /><br/>
       <label for="usersFormLastName">Nazwisko:</label><input id="usersFormLastName"/><br/>
       <label for="usersFormFirstName">Imię:</label><input id="usersFormFirstName"/><br/>
       <label for="usersFormEmail">Email:</label><input id="usersFormEmail"/><br/>

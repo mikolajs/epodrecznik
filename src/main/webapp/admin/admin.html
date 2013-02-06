@@ -5,9 +5,15 @@
     <head_merge>
         <script>
                     
-            function isAdminValid(){
-                return false;
-            }
+           function checkPasswords(elem) {
+        	   $elem = $(elem);
+        	   var pass1 = $elem.children('input.pass1').first().val();
+        	   var pass2 = $elem.children('input.pass2').first().val();
+        	   if(pass1.length > 5) return  (pass1  == pass2);
+        	   else return false;
+           }
+            
+            
             
         </script>
         <style>label { float:left; width: 200px; font-weight: bold;}
@@ -22,12 +28,24 @@
   <div id="dataAdmin" >
       <fieldset style="width:400px;">
       <legend>Zmiana danych logowania administratora</legend>
-      <form class="lift:Administration.dataAdmin?form=POST">
+      <form class="lift:Administration.dataAdmin?form=POST" onsubmit="return checkPasswords(this)">
       <label for="adminEmail">Email:</label><input id="adminEmail"/><br/>
-      <label for="adminPassword">Hasło:</label><input id="adminPassword" type="password"/><br/>
-      <label for="adminPassword2">Powtórz:</label><input id="adminPassword2" class="passwordR" type="password"/><br/>
-       <div class="buttonsForms"><input id="adminSubmit"/></div>
-       <div class="validationMassage"></div>
+      <label for="adminPassword">Hasło:</label><input id="adminPassword" class="pass1" type="password"/><br/>
+      <label for="adminPassword2">Powtórz:</label><input id="adminPassword2" class="pass2" type="password"/><br/>
+      <input id="adminSubmit" style="float:rigth;"/>
+      </form>
+      </fieldset>
+  </div>
+  <br/><hr/><br/>
+  <div id="mailData" >
+      <fieldset style="width:400px;">
+      <legend>Konfiguracja maila wychodzącego</legend>
+      <form class="lift:Administration.mailConfigure?form=POST" onsubmit="return checkPasswords(this)">
+      <label for="host">SMTP host:</label><input id="host"/><br/>
+      <label for="email">Email:</label><input id="email"/><br/>
+      <label for="password">Hasło:</label><input id="password" class="pass1" type="password"/><br/>
+      <label for="password2">Powtórz:</label><input id="password2" class="pass2" type="password"/><br/>
+       <input id="submit"style="float:rigth;"/>
       </form>
       </fieldset>
   </div>

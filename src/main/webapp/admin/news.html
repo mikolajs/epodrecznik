@@ -42,7 +42,7 @@
                   $('#editTitle').val(this.innerHTML);
                   break;
                   case 1:
-                  var src = $('this').children('img').first().attr('src');
+                  var src = $(this).children('img').first().attr('src');
                   $('#imagePreview').attr('src',src);
                   break;
                   case 2:
@@ -62,6 +62,12 @@
                  $('#newsForm').dialog("open");
             }
             
+          //get url from iframe in CKEditor and insert it in url input in window massage
+    		function getImageURLfromIFrame(elem){
+    			var innerDoc = elem.contentDocument || elem.contentWindow.document;
+    			var url  = innerDoc.getElementById('path').value;
+    			$('#pathImg').val(url);
+    		}
            
             </script>
     </head_merge>
@@ -79,12 +85,13 @@
   <div id="newsForm" style="display:none;" title="Edycja newsów">
    <form class="lift:Administration.editLink?form=POST"  >
      
-          <input id="editId"/><br/>
-          <label for="editTitle">Tytuł:</label><input id="editTitle"/><input id="pathImg" type="text" /><img src="" id="imagePreview"><br/>
-          <iframe src="/imagestorage" style="width:500px;height:30px;"></iframe><br/>
-          <label for="editLink">Link:</label><input id="editLink"/><br/>
-          <textarea id="editContent" ></textarea><br/>
-          <input id="editDelete"/><input id="editSave"/>
+          <input id="editId"/>
+          <p><label for="editTitle">Tytuł:</label><input width="200px" id="editTitle"/>
+          <input id="pathImg" type="text" /><img src="" id="imagePreview"></p>
+          <iframe src="/imgstorage" style="width:500px;height:100px;" onload="getImageURLfromIFrame(this)"></iframe>
+          <p><label for="editLink">Link:</label><input width="200px" id="editLink"/></p>
+          <p><label for="editContent">Opis:</label><textarea id="editContent" width="200px" ></textarea></p>
+          <p><input id="editDelete"/><input id="editSave"/></p>
           
      
       </form>

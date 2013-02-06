@@ -24,7 +24,7 @@ class SlidesSn extends BaseSlide {
     val edit_? = canEdit 
     "tbody *" #> slides.map(slide => <tr><td><a href={"/slideshow/"+slide._id.toString}>{slide.title}</a></td>
     	<td>{slide.departmentInfo}</td><td>{slide.subjectInfo}</td><td>{slide.subjectLev.toString}</td><td>{if(edit_?)
-    	<a href={"/edit/"+slide._id.toString}>edytuj</a> else <i></i>}</td></tr>)
+    	<a href={"/editslide/"+slide._id.toString}>edytuj</a> else <i></i>}</td></tr>)
   }
   
   def slidesListPrivate() =  {
@@ -44,7 +44,7 @@ class SlidesSn extends BaseSlide {
       <tr><td><a href={"/slideshow/"+slide._id.toString}>{slide.title}</a></td>
       <td>{slide.departmentInfo}</td><td>{slide.subjectInfo}</td>
       <td>{slide.subjectLev.toString}</td>
-      <td>{<a href={"/edit/"+slide._id.toString}>edytuj</a>}</td></tr>) &
+      <td>{<a href={"/editslide/"+slide._id.toString}>edytuj</a>}</td></tr>) &
     "#youCantInfo" #>  {if(idUser == 0) <h2>Musisz być zalogowany i mieć prawa edycji, aby móc dodawać tematy.
     	<a href="/contact.html">Skontaktuj się z administratorem</a></h2>
     					else <span></span> }

@@ -20,6 +20,16 @@ class BaseSlide {
       } 
   }
   
+  def isOwner(authors:List[Edit]) = {
+    User.currentUser match {
+      case Full(user) => {
+        if(authors.isEmpty) true
+        else authors.head.user == user.id.toString
+      }
+      case _ => false
+    }
+  }
+  
   def isModerator = User.currentUser match {
     case Full(user) => if (user.level.is < 2) true else false
     case _ => false
@@ -29,4 +39,5 @@ class BaseSlide {
     case Full(user) => user.level.is == 0
     case _ => false
   }
+  
 }
