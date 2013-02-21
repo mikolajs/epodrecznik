@@ -102,78 +102,8 @@
 	
 	
 	
-	function Properties(){
-		this.$departInput = $('#departmentThemeHidden');
-		//var $departInput = this.$departInput;
-		this.$departSelect = $('#departmentTheme');
-		//var $departSelect = this.$departSelect;
-		this.$subjectSelect = $('#subjectTheme');
-		//var $subjectSelect = this.$subjectSelect;
-		var self = this;
-		
-		this.init = function(){
-			var idSub = self.$subjectSelect.children('option:selected').val();
-			self.$departSelect.children().hide();
-			self.$departSelect.children('#'+idSub).show();
-			var idDep = self.$departInput.val();
-			if(idDep != "") {
-				self.$departSelect.children('optgroup:visible').children().each(function(){
-					var $opt = $(this);
-					if($opt.val() == idDep) $opt.attr('selected','selected');
-				});
-			}
-			else self.$departSelect.children('optgoup:visible').children().first().attr('selected','selected');
-			self.refreshDepartmentInput();
-		    self.$subjectSelect.change(self.refreshDepartmentSelect);
-			self.$departSelect.change(self.refreshDepartmentInput);
-		}
-		
-		this.refreshDepartmentSelect = function() {
-			var idSub = self.$subjectSelect.children('option:selected').val();
-			//alert(idSub);
-			self.$departSelect.children('optgroup').hide();
-			var idDep = $('#'+idSub).show().children().first().attr('selected','selected').val();
-			// self.$departSelect.children('optgroup').children().first().val();
-			self.$departInput.val(idDep);
-		}
-		
-		this.refreshDepartmentInput = function(){
-			var idDep = self.$departSelect.children('optgroup').children('option:selected').val();
-			self.$departInput.val(idDep);
-		}
-		
-	}
 	
-		$(document).ready(function(){
-			
-			
-			CKEDITOR.replace( 'slideText',{
-				width : 990, 
-				height: 650,
-				extraPlugins : 'youTube,addImage,formula',
-        		toolbar : [ [ 'Source' ],
-        		            [ 'Link','Unlink','Anchor' ],[ 'Maximize', 'ShowBlocks','-','About' ] ,
-        		[ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ],
-        		[ 'Find','Replace','-','SelectAll' ],
-        		[ 'Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat' ],
-        		[ 'NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiLtr','BidiRtl' ],
-        		[ 'AddImage', 'YouTube', 'Formula', 'Table','HorizontalRule','SpecialChar','Iframe' ] ,
-        		[ 'Styles','Format','Font','FontSize' ],
-        		[ 'TextColor','BGColor' ] ]
-    		});
-			
-			CKEDITOR.config.setStyles = [];
-			CKEDITOR.config.contentsCss = '/deckjs/themes/style/neon_ckeditor.css';
-			CKEDITOR.config.disableNativeSpellChecker = false;
-			
-			var properties = new Properties();
-			properties.init();
-			
-			var slides = new Slides();
-			slides.init();
-			
-			
-		});
+		
 					
 		
 		//get url from iframe in CKEditor and insert it in url input in window massage

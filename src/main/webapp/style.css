@@ -361,7 +361,7 @@ color: #358305;
 		#header .nav li {
 			float:left;
 			background:url() no-repeat 0 0;
-			padding:0 40px 0 41px;
+			padding:0 20px 0 21px;
 		}
 		#header .nav li.first {
 			background:none;

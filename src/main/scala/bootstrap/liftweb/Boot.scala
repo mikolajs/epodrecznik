@@ -14,30 +14,38 @@ import _root_.net.liftweb.http.provider._
 import _root_.net.liftweb.sitemap._
 import _root_.net.liftweb.sitemap.Loc._
 import Helpers._
-import _root_.net.liftweb.mapper.{ DB, ConnectionManager, Schemifier, DefaultConnectionIdentifier, StandardDBVendor }
+import _root_.net.liftweb.mapper.{ DB, ConnectionManager, ConnectionIdentifier, 
+    Schemifier, DefaultConnectionIdentifier, StandardDBVendor }
 import _root_.java.sql.{ Connection, DriverManager }
-import _root_.net.brosbit4u.model._
+import pl.brosbit.model._
 import _root_.net.liftweb.mongodb._
 import scala.util.logging.Logged
-import _root_.net.brosbit4u.api._
-import _root_.net.brosbit4u.lib._
+import pl.brosbit.api._
+import pl.brosbit.lib._
+
+object DBVendor extends ConnectionManager {
+  def newConnection(name: ConnectionIdentifier): Box[Connection] = {
+    try {
+       Class.forName("org.h2.Driver")
+      val dm = DriverManager.getConnection("jdbc:h2:epodrecznik")
+      Full(dm)
+    } catch {
+      case e: Exception => e.printStackTrace; Empty
+    }
+  }
+  def releaseConnection(conn: Connection) { conn.close }
+}
 
 class Boot {
-  def boot {
-    if (!DB.jndiJdbcConnAvailable_?) {
-      val vendor =
-        new StandardDBVendor(Props.get("db.driver") openOr "org.h2.Driver",
-          Props.get("db.url") openOr
-            "jdbc:h2:lift_proto.db;AUTO_SERVER=TRUE",
-          Props.get("db.user"), Props.get("db.password"))
+    def boot {
+		DB.defineConnectionManager(DefaultConnectionIdentifier, DBVendor)
 
-      LiftRules.unloadHooks.append(vendor.closeAllConnections_! _)
-      DB.defineConnectionManager(DefaultConnectionIdentifier, vendor)
+ 
       MongoDB.defineDb(DefaultMongoIdentifier, MongoAddress(MongoHost("127.0.0.1", 27017), "epodrecznik"))
-    }
+    
 
     // where to search snippet
-    LiftRules.addToPackages("net.brosbit4u")
+    LiftRules.addToPackages("pl.brosbit")
     Schemifier.schemify(true, Schemifier.infoF _ , User)
     
     LiftRules.statelessDispatchTable.append({
@@ -46,52 +54,89 @@ class Boot {
 
     if (DB.runQuery("select * from users where lastname = 'Administrator'")._2.isEmpty) {
       val u = User.create
-      u.lastName("Administrator").level(0).password("123qwerty").email("mail@mail.org").validated(true).save
+      u.lastName("Administrator").role("a").password("123qwerty").email("mail@mail.org").validated(true).save
     }
 
-    val isAdmin = If(() => User.loggedIn_? && (User.currentUser.open_!.level.is < 1),
+    val isAdmin = If(() => User.loggedIn_? && (User.currentUser.open_!.role.is == "a"),
       () => RedirectResponse("/"))
-    val isModerator = If(() => User.loggedIn_? && (User.currentUser.open_!.level.is < 2),
-      () => RedirectResponse("/"))
+    val isModerator = If(() => if(User.loggedIn_?){
+        val r = User.currentUser.open_!.role.is
+        (r == "m" || r == "a") } 
+    	else {false}, () => RedirectResponse("/"))
+    	
+    val isTeacher = If(() => if(User.loggedIn_?) {
+         val r = User.currentUser.open_!.role.is
+        (r == "t" || r == "m" || r == "a") } 
+    	else {false}, () => RedirectResponse("/"))
+    	
     val isUser = If(() => User.loggedIn_?,
       () => RedirectResponse("/"))
     // Build SiteMap
     def sitemap() = SiteMap(
       List(
         Menu("Wiadomości") / "index" >> LocGroup("public"),
-        Menu("Prezentacje") / "choiceslide" >> LocGroup("public"),
+        Menu("Encyklopedia") / "dictionary" >> LocGroup("public"),
+        Menu("Lekcje") / "lessons" >> LocGroup("public"),
         Menu("Kontakt") / "contact" >> LocGroup("public"),
-        Menu("Publikacja") / "ebooks" >> LocGroup("public") >> Hidden,
-        Menu("Edycja Slajdów") / "editslide" / ** >> LocGroup("extra") >> Hidden,
+        Menu("Tworzenie lekcji") / "resources" / "lessons" >> LocGroup("resource") >> isTeacher,        
+        Menu("Filmy") / "resources" / "videos" >> LocGroup("resource") >> isTeacher,
+        Menu("Grafika") / "resources" / "images" >> LocGroup("resource") >> isTeacher,
+        Menu("Artykuły") / "resources" / "documents" >> LocGroup("resource") >> isTeacher,
+        Menu("Zadania") / "resources" / "quizes" >> LocGroup("resource") >> isTeacher,
+        Menu("Prezentacje") / "resources" / "slides" >> LocGroup("resource") >> isTeacher,
+        Menu("Edycja lekcji") / "resources" / "editlesson" / ** >> LocGroup("extra") >> Hidden >> isTeacher,
+        Menu("Edycja haseł") / "resources" / "editdictionary" / ** >> LocGroup("extra") >> Hidden >> isTeacher,
+        Menu("Edycja Slajdów") / "resources" / "editslide" / ** >> LocGroup("extra") >> Hidden >> isTeacher,
+        Menu("Edycja quizów") / "resources" / "editquiz" / ** >> LocGroup("extra") >> Hidden >> isTeacher,
+        Menu("Edytuj książkę") / "resources" / "editdocument" / ** >> LocGroup("extra") >> Hidden >> isTeacher,    
+        Menu("Pokaz") / "slide" / ** >> LocGroup("extra") >> Hidden,
+        Menu("Czytaj") / "document" / ** >> LocGroup("extra") >> Hidden,
+        Menu("Czytaj") / "quiz" / ** >> LocGroup("extra") >> Hidden,
+        Menu("Image upload") / "imgstorage" >> LocGroup("extra") >> Hidden >> isTeacher,
         Menu("Moderacja") / "moderate" >> LocGroup("extra") >> Hidden >> isModerator,
-        Menu("Pokaz") / "slideshow" / ** >> LocGroup("extra") >> Hidden,
-        Menu("Czytaj") / "ebook" / ** >> LocGroup("extra") >> Hidden,
-        Menu("Image upload") / "imgstorage" >> LocGroup("extra") >> Hidden >> isUser,
-        Menu("Edytuj książkę") / "ebookedit" >> LocGroup("extra") >> Hidden >> isUser,
         Menu("Administrator") / "admin" / "admin" >> LocGroup("admin") >> isAdmin,
         Menu("Przedmioty") / "admin" / "subjects" >> LocGroup("admin") >> isAdmin,
         Menu("Działy") / "admin" / "departments" >> LocGroup("admin") >> isAdmin,
         Menu("Użytkownicy") / "admin" / "users" >> LocGroup("admin") >> isAdmin,
         Menu("Aktualności") / "admin" / "news" >> LocGroup("admin") >> isAdmin,
-        Menu("GC") / "admin" / "gc" >> LocGroup("admin") >> isAdmin,
-        Menu("Static") / "static" / ** >> LocGroup("extra") >> Hidden) :::
+        Menu("GC") / "admin" / "gc" >> LocGroup("admin") >> isAdmin) :::
         User.sitemap: _*)
 
     LiftRules.setSiteMapFunc(sitemap)
 
     LiftRules.statelessRewrite.prepend(NamedPF("ClassRewrite") {
       case RewriteRequest(
-        ParsePath("editslide" :: subjectId :: Nil, _, _, _), _, _) =>
+        ParsePath("resources" :: "editslide" :: subjectId :: Nil, _, _, _), _, _) =>
         RewriteResponse(
-          "editslide" :: Nil, Map("id" -> subjectId))
+          "resources" :: "editslide" :: Nil, Map("id" -> subjectId))
       case RewriteRequest(
-        ParsePath("slideshow" :: subjectId :: Nil, _, _, _), _, _) =>
+        ParsePath("resources" :: "editdictionary" :: entryId :: Nil, _, _, _), _, _) =>
         RewriteResponse(
-          "slideshow" :: Nil, Map("id" -> subjectId))
+          "resources" :: "editdictionary" :: Nil, Map("id" -> entryId))
       case RewriteRequest(
-        ParsePath("ebook" :: ebookId :: chapter :: Nil, _, _, _), _, _) =>
+        ParsePath("resources" :: "editdocument" :: entryId :: Nil, _, _, _), _, _) =>
         RewriteResponse(
-          "ebook" :: Nil, Map("id" -> ebookId, "chapter" -> chapter))
+          "resources" :: "editdocument" :: Nil, Map("id" -> entryId))
+      case RewriteRequest(
+        ParsePath("resources" :: "editquiz" :: entryId :: Nil, _, _, _), _, _) =>
+        RewriteResponse(
+          "resources" :: "editquiz" :: Nil, Map("id" -> entryId))
+      case RewriteRequest(
+        ParsePath("resources" :: "editlesson" :: entryId :: Nil, _, _, _), _, _) =>
+        RewriteResponse(
+          "resources" :: "editlesson" :: Nil, Map("id" -> entryId))
+      case RewriteRequest(
+        ParsePath("slide" :: subjectId :: Nil, _, _, _), _, _) =>
+        RewriteResponse(
+          "slide" :: Nil, Map("id" -> subjectId))
+      case RewriteRequest(
+        ParsePath("document" :: documentId :: Nil, _, _, _), _, _) =>
+        RewriteResponse(
+          "document" :: Nil, Map("id" -> documentId))
+      case RewriteRequest(
+        ParsePath("quiz" :: quizId :: Nil, _, _, _), _, _) =>
+        RewriteResponse(
+          "quiz" :: Nil, Map("id" -> quizId))
     })
     /*
      * Show the spinny image when an Ajax call starts

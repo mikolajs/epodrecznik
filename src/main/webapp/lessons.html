@@ -1,0 +1,108 @@
+<!doctype HTML>
+<html>
+    
+<div class="lift:surround?with=default-other;at=body">
+    <head_merge> 
+     
+       <script>
+           var oTable = $();
+           var oTablePrivate = $();
+           $(document).ready(function() {
+                oTable = $('#dataTable').dataTable({
+        			"sPaginationType": "two_button",
+        			"bFilter": true,
+        			"iDisplayLength": 20,
+        			"bLengthChange": true,
+        		    "oLanguage": {
+        		        "sSearch": "Filtruj wiersze: ",
+        		        "sZeroRecords": "Brak danych do wyświetlenia",
+        		        "sInfoEmpty": "Brak danych do wyświetlenia",
+        		        "sEmptyTable": "Brak danych do wyświetlenia",
+        		        "sInfo": "Widzisz wiersze od _START_ do _END_  z wszystkich _TOTAL_",
+        		        "oPaginate": {
+        		        	"sPrevious": "Poprzednie",
+        			        "sNext": "Następne",
+        			        "sFirst": "Początek",
+        			        "sLast": "Koniec",
+        		        },
+        		        "sInfoFiltered": " - odfiltrowano z _MAX_ wierszy",
+        		        "sLengthMenu": 'Pokaż <select>'+
+        		        '<option value="20">20</option>'+
+        		        '<option value="50">50</option>'+
+        		        '<option value="100">100</option>'+
+        		        '<option value="-1">całość</option>'+
+        		        '</select> wierszy'
+        		    }
+        		      });
+                
+               
+                		
+                //zmienić!
+            	    $('#dataTable').children('tbody').children('tr').each(function() {
+            	    	$(this).children('td').each(function(index){
+            	    	if(index == 0){
+            	    	$(this).children('a').click(function(){
+                    	    var w = screen.width;
+                    	    window.open(this.href,'Pokaz slajdów','fullscreen=yes,width='+w.toString());
+                    	     return false;
+                    	    });
+            	    	}
+            	    	});
+            	    });
+                
+                
+             });
+             
+             function selectSubject(elem){
+            	 var val = $(elem).children(':selected').val();
+            	 if (val != 'Wszystkie') oTable.fnFilter(val,2);
+            	 else oTable.fnFilter( '.+',2,true);
+             }
+             function selectLevel(elem){
+            	 var val = $(elem).children(':selected').val();
+            	 if (val != '0') oTable.fnFilter(val,3);
+            	 else oTable.fnFilter('.+',3,true);
+             }
+       </script>
+       <style>
+       .theSelects span { font-weight: bold; padding: 2px, 10px, 2px, 10px; font-size: 18px;  
+       	font-family: "Times New Roman", Times, serif; font-style: italic; }
+       	.theSelects img { vertical-align: middle;}
+       </style>
+    </head_merge>
+    
+  <div id="showLesson" class="lift:LessonsSn.showLesson">
+	<h2>Temat: <span id="lessonTitle">Temat</span></h2>  
+  
+  </div>
+ <div id="boxText">
+  <h2>Wybór lekcji</h2>
+  
+  <div class="lift:LessonsSn.subjectSelect theSelects" >
+  <span>Wybierz przedmiot:</span>
+   <select id="subjectSelect" onchange="selectSubject(this)"></select>
+ 	<span>Wybierz poziom edukacyjny:</span>
+   <select onchange="selectLevel(this)">
+   <option value="0">Wszystkie</option>
+   <option value="1">I</option>
+   <option value="2">II</option>
+   <option value="3">III</option>
+   <option value="4">IV</option>
+   </select>
+  </div>
+  <br/><br/>
+  <div id="themeList" class="lift:LessonsSn.lessons dataTable_wrapper">
+            <table id="dataTable" class="display" >
+                <thead><tr><th>Tytuł</th><th>Dział</th><th>Przedmiot</th><th>Poziom edukacyjny</th></tr></thead>
+                <tbody><tr><td><a href="">To jest tytuł</a></td><td></td></tr></tbody>
+                 <tfoot>
+                 	<tr><th>Tytuł</th><th>Dział</th><th>Przedmiot</th><th>Poziom edukacyjny</th></tr>
+                 </tfoot>
+            </table>
+        </div>
+</div>
+
+<br/><br/>
+    </div>
+   
+</html>

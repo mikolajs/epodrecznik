@@ -1,0 +1,91 @@
+<!doctype HTML>
+<html>
+    
+<div class="lift:surround?with=resource;at=body">
+    <head_merge> 
+     
+       <script src="/jquery/dejavu.js"></script>
+       <script src="/jquery/lessoneditor.js"></script>
+       <script src="/jquery/departmentselect.js"></script>
+       <script>
+       
+      var lessonEditor = new Object();
+      var departmentSelect = new Object();
+      
+     
+       
+       $(document).ready(function(){
+    	   
+    	  lessonEditor = new LessonEditor(); 
+    	  departmentSelect = new DepartmentSelect();	  
+    	  
+       });
+       </script>
+       <style>
+       #edit form p {
+       	margin: 2px;      	
+       }
+       #edit form p label {
+       	float: left;
+       	width: 100px;     	
+       }
+       #edit form p textarea, #edit form p input, #edit form p button, #edit form p select {
+       	width: 250px; 
+       }
+       
+        #lessonList { list-style-type: none; margin: 0; padding: 0; width: 60%; }
+		#lessonList li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; 
+			background-color: #ddd !important; background-image:none !important;
+			 border: solid 1px #888; vvertical-align: middle;}
+		#lessonList li span { padding: 0 15px 0 15px; }
+		#lessonList li img { position: absolute; right: 2px;}
+		.title, .type { border-right: solid 1px #888; }
+		.title, .type, .link {font-weight: bold;}
+		.desc { font-family: cursive;}
+		
+       </style>
+    </head_merge>
+    
+  <div id="editLesson">
+  <h2>Edycja lekcji</h2>
+  <form class="lift:EditLesson.editLesson" id="send">
+  <input id="ID" style="display:none;"/>
+  <p><label for="title">Temat:</label><input id="title" />
+  <label>Publiczny:</label><select id="public"></select>
+  </p>
+  <p><label>Przedmiot:</label><select id="subjects"></select>
+  <label>Dział:</label><select id="departments"></select>
+  <input id="departmentHidden" style="display:none;"/>
+  <label>Poziom:</label><select id="level"></select>
+  <input id="save" type="submit"/><input id="delete" type="submit"/></p>
+  
+  <input id="json" style="display:none;" value="[]"/>
+  
+  </form>
+  <div id="addNewData">
+  <img src="/images/addico.png" />
+  </div>
+  
+  <ul id="lessonList"></ul>
+  
+  </div>
+  
+  <div id="edit">
+  <form > 
+  		<p><label for="Type">Type:</label><select id="Type"><option value="Link">Link</option>
+  		<option value="Film">Film</option>
+  		<option value="Prezentacja">Prezentacja</option>
+  		<option value="Dokument">Dokument</option>
+  		<option value="Quiz">Quiz</option></select></p>
+  		<p><label for="Link">Link:</label><input type="text" id="Link"/></p>
+  		<p><label for="Theme">Tytuł:</label><input type="text" id="Theme"/></p>
+  		<p><label for="Info">Opis:</label>
+  			<textarea id="Info" style="height:80px;" maxlength="250"></textarea></p>
+  		<p><button id="editSave">Zapisz</button></p>
+  </form>
+  </div>
+
+<br/><br/>
+    </div>
+   
+</html>
