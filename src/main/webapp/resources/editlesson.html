@@ -5,7 +5,7 @@
     <head_merge> 
      
        <script src="/jquery/dejavu.js"></script>
-       <script src="/jquery/lessoneditor.js"></script>
+       <script src="/jquery/editlesson.js"></script>
        <script src="/jquery/departmentselect.js"></script>
        <script>
        
@@ -48,7 +48,7 @@
     
   <div id="editLesson">
   <h2>Edycja lekcji</h2>
-  <form class="lift:EditLesson.editLesson" id="send">
+  <form class="lift:EditLesson.editLesson" id="send" method="POST">
   <input id="ID" style="display:none;"/>
   <p><label for="title">Temat:</label><input id="title" />
   <label>Publiczny:</label><select id="public"></select>
@@ -76,11 +76,13 @@
   		<option value="Film">Film</option>
   		<option value="Prezentacja">Prezentacja</option>
   		<option value="Dokument">Dokument</option>
-  		<option value="Quiz">Quiz</option></select></p>
+  		<option value="Quiz">Quiz</option>
+  		<option value="Plik"></option>
+  		</select></p>
   		<p><label for="Link">Link:</label><input type="text" id="Link"/></p>
   		<p><label for="Theme">Tytuł:</label><input type="text" id="Theme"/></p>
-  		<p><label for="Info">Opis:</label>
-  			<textarea id="Info" style="height:80px;" maxlength="250"></textarea></p>
+  		<p><label for="Desc">Opis:</label>
+  			<textarea id="Desc" style="height:80px;" maxlength="250"></textarea></p>
   		<p><button id="editSave">Zapisz</button></p>
   </form>
   </div>

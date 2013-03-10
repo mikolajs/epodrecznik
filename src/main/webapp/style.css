@@ -188,17 +188,9 @@ h2 {
 	}
 h3 {
 	font-family:"Times New Roman", Times, serif;
-	font-size:27px;
+	font-size:20px;
 	font-weight:normal;
 	font-style:italic;
-	color:#fff;
-	background:url(images/title-bg.png) no-repeat 0 0;
-	width:350px;
-	height:46px;
-	line-height:46px;
-	text-indent:21px;
-	text-shadow:0 0 4px #ca591c;
-	position:relative;
 	z-index:2;
 }
 

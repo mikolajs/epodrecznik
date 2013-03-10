@@ -3,44 +3,58 @@
     
 <div class="lift:surround?with=resource;at=body">
     <head_merge> 
+   
        <script>
-           var oTable = $();
-           $(document).ready(function() {
-                oTable = $('#dataTable').dataTable({
-                    "aoColumnDefs": [
-                        { "bVisible": false, "aTargets": [ 2 ] }
-                    ]});
-                
-             });
-             
-             function selectSubject(elem){
-                oTable.fnFilter( elem.innerHTML,2);
-             }
-             
-             function showAddBook(elem){
-                $(elem).hide(300);
-                $('#formAddBook').show(300);
-             }
-              function closeAddBook(){
-                $('#formAddBook').hide(300);
-                $('#iconAddBook').show(300);
-             }
+       var oTable = $();
+       var oTablePrivate = $();
+       $(document).ready(function() {
+            oTable = $('#datatable').dataTable({
+    			"sPaginationType": "two_button",
+    			"bFilter": true,
+    			"iDisplayLength": 20,
+    			"bLengthChange": true,
+    		    "oLanguage": {
+    		        "sSearch": "Filtruj wiersze: ",
+    		        "sZeroRecords": "Brak danych do wyświetlenia",
+    		        "sInfoEmpty": "Brak danych do wyświetlenia",
+    		        "sEmptyTable": "Brak danych do wyświetlenia",
+    		        "sInfo": "Widzisz wiersze od _START_ do _END_  z wszystkich _TOTAL_",
+    		        "oPaginate": {
+    		        	"sPrevious": "Poprzednie",
+    			        "sNext": "Następne",
+    			        "sFirst": "Początek",
+    			        "sLast": "Koniec",
+    		        },
+    		        "sInfoFiltered": " - odfiltrowano z _MAX_ wierszy",
+    		        "sLengthMenu": 'Pokaż <select>'+
+    		        '<option value="20">20</option>'+
+    		        '<option value="50">50</option>'+
+    		        '<option value="100">100</option>'+
+    		        '<option value="-1">całość</option>'+
+    		        '</select> wierszy'
+    		    }
+    		      });
+       });
        </script>
     </head_merge>
-    
- <div id="boxText">
-  
+<div>
+<h2>Twoje testy</h2>
+<a href="/resources/editquiz"><img src="/images/addico.png"></a>
+<table id="datatable">
+<thead>
+<tr><th>Tytuł</th><th>Dział</th><th>Przedmiot</th><th>Pytań</th><th>Poziom</th><th>Opis</th></tr>
+</thead>
+<tbody class="lift:CreatePracticeSn.showPractices">
+<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+</tbody>
+<tfoot>
+<tr><th>Tytuł</th><th>Dział</th><th>Przedmiot</th><th>Pytań</th><th>Poziom</th><th>Opis</th></tr>
+</tfoot>
+</table>
+</div>    
 
-  <div id="quizList" class="lift:QuizSn.quizList dataTable_wrapper">
-            <table id="dataTable" class="display" >
-                <thead><tr><th>Tytuł</th><th>Opis</th><th>Właściciel</th></tr></thead>
-                <tbody><tr><td><a href="">To jest tytuł</a></td><td id="descriptBook"></td><td id="ownerBook"></td></tr></tbody>
-            </table>
-            
-   </div>
-        <a href="/resources/editquiz"><img src="/images/addico.png" id="iconAddQuiz"/></a>
-  <br/>
-</div>
+
+
     </div>
    
 </html>

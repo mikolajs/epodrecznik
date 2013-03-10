@@ -1,7 +1,6 @@
 <div class="lift:surround?with=resource;at=body">
 	<head_merge>
 	<script type="text/javascript" src="/ckeditor/ckeditor.js"></script>
-	<script type="text/javascript" src="/jquery/editdictionary.js"></script>
 	<script type="text/javascript" src="/jquery/ASCIIMathML.js"></script>
 		<style>
 		div#cffm {
@@ -16,9 +15,59 @@
 	
 		</style>
 	 <script>
-$(function() {
-$( "#sortable" ).sortable();
-$( "#sortable" ).disableSelection();
+	 var oTable = $();
+$(document).ready(function() {
+
+CKEDITOR.replace( 'questionQuest',{
+	width : 500, 
+	height: 250,
+	extraPlugins : 'addImage,formula',
+	toolbar :[
+{ name: 'document',  items: [ 'Source'] },
+{ name: 'clipboard', items: [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', 'Undo', 'Redo' ] },
+{ name: 'editing', items: [ 'Find', 'Replace', 'SelectAll']},
+{ name: 'basicstyles',items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', 'RemoveFormat' ] },
+{ name: 'insert', items: [ 'AddImage', 'Formula', 'YouTube', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar',] },
+'/',
+{ name: 'paragraph', items: [ 'NumberedList', 'BulletedList', 'Outdent', 'Indent', 'Blockquote', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'] },
+{ name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] },
+{ name: 'colors', items: [ 'TextColor', 'BGColor' ] } ]
+});
+CKEDITOR.config.disableNativeSpellChecker = false;
+
+$( "#quizList" ).sortable();
+$( "#quizList" ).disableSelection();
+
+oTable = $('#datatable').dataTable({
+	"sPaginationType": "two_button",
+	"bFilter": true,
+	"iDisplayLength": 20,
+	"bLengthChange": true,
+    "oLanguage": {
+        "sSearch": "Filtruj wiersze: ",
+        "sZeroRecords": "Brak danych do wyświetlenia",
+        "sInfoEmpty": "Brak danych do wyświetlenia",
+        "sEmptyTable": "Brak danych do wyświetlenia",
+        "sInfo": "Widzisz wiersze od _START_ do _END_  z wszystkich _TOTAL_",
+        "oPaginate": {
+        	"sPrevious": "Poprzednie",
+	        "sNext": "Następne",
+	        "sFirst": "Początek",
+	        "sLast": "Koniec",
+        },
+        "sInfoFiltered": " - odfiltrowano z _MAX_ wierszy",
+        "sLengthMenu": 'Pokaż <select>'+
+        '<option value="20">20</option>'+
+        '<option value="50">50</option>'+
+        '<option value="100">100</option>'+
+        '<option value="-1">całość</option>'+
+        '</select> wierszy'
+    }
+      });
+      
+      
+
+
 });
 </script>
    
@@ -27,41 +76,51 @@ $( "#sortable" ).disableSelection();
  <div id="boxText">
   <h2>Edycja testu</h2>
   <hr/>
-  <form class="lift:CreatePracticeSn.formEdit" method="POST">
-    <input id="id" type="hidden" />
-  	
-  	<label for="title">Formuła:</label><input type="text" id="title" />
-  	<label for="subjects">Przedmiot:</label><select id="subjects"></select>
-    <label for="department">Dział:</label><select id="department"></select>       
+  <form class="lift:CreatePracticeSn.editQuiz" method="POST">
+    <input id="id" type="hidden" /> 	
+  	<label for="title">Temat:</label><input type="text" id="title" />
+  	<label for="subjectQuiz">Przedmiot:</label><select id="subjectQuiz"></select>
+    <label for="departmentQuiz">Dział:</label><select id="department"></select>       
     <input id="contentData" type="hidden" />
     <input id="save" type="submit" /><input id="cancel" type="submit"/><input id="delete" type="submit"/>
   </form>
-  <div id="showQuiz">
   
-  	<div><span class="quest">Pytanie</span>
-  		<span class="corr">Prawidłowa odp</span>
-  		<span class="wrong">Odpowiedzi błędne</span>
-  	</div>
-  	
-  	<ul id="sortable"><li><span class="quest"></span><span class="corr"></span><span class="wrong"></span></li></ul>
-  	
-  </div>
   <div id="addQuestion">
-  <p><label for="question">Pytanie:</label><textarea id="question"></textarea></p>
-  <p> <label for="answer">Odpowiedź prawidłowa:</label><input type="text" id="answer" /></p>
-  <p> <label for="subjects">Odpowiedzi błędne:</label><input type="text" id="subjects" /></p>
+  <form class="lift:CreatePracticeSn.editQuest" method="POST">
+  <input id="idQuest" style="display:none" type="text"/>
+  <label for="subjectQuest">Przedmiot</label><select id="subjectQuest"></select><br/>
+  <label for="departmentQuest">Dział</label><select id="departmentQuest"></select><br/>
+  <label for="levelQuest">Poziom</label><select id="levelQuest"></select><br/>
+  <label for="dificultQuest">Trudność</label><select id="dificultQuest"></select>
+  <p><textarea id="questionQuest" class="ckeditor"></textarea></p>
+  <p> <label for="answerQuest">Odpowiedź prawidłowa:</label><input type="text" id="answerQuest" /></p>
+  
+  <ul id="answerList">
+  <li></li>
+  </ul>
+  <input type="text" id="wrongQuestHelp" />
+  <input type="text" id="wrongQuest" style="display:none;"/>
+  <img src="/images/addico.png" id="delWrongQuest"/><img src="/images/delico.png" id="delWrongQuest"/>
   <p>
-  	 <input id="save" value="Dodaj" type="submit"/>
-  	 <input id="cancel" type="submit"/>
-  	 <input id="delete" type="submit"/>
+  	 <input id="saveQuest" value="Dodaj" type="submit"/>
+  	 <input id="cancelQuest" value="Anuluj" type="submit"/>
+  	 <input id="deleteQuest" value="Usuń" type="submit"/>
   </p>
+  </form>
   </div>
+  
+  
+  <div class="rigthList">
+  <img src="/images/addico.png" />
+  <table id="datatable"><thead><tr><td>Wybierz</td><td>Pytanie</td><td>Edycja</td></tr></thead>
+  <tbody class="lift:CreatePracticeSn.showQuestion"><tr><td></td><td></td><td></td></tr></tbody>
+  <tfoot><tr><td>Wybierz</td><td>Pytanie</td><td>Edycja</td></tr></tfoot>
+  </table>
+  
+  
+  </div>
+  
   <br/>
-  <div class=" tabsConainer"> 
-    	<div id="slideEditor">
-    	<textarea class="ckeditor" id="slideText"></textarea>
-    	</div>            
-    </div>
    
   </div>
   

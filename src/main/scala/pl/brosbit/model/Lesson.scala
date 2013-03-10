@@ -5,7 +5,7 @@ import java.util.Date
 import org.bson.types.ObjectId
 
 case class LessonContent(what:String, link:String, title:String, descript:String) {
-    def forJSONStr = "{\"what\":\"" + what + "\",\"llink\":\"" + link + "\",\"title\":\"" + 
+    def forJSONStr = "{\"what\":\"" + what + "\",\"link\":\"" + link + "\",\"title\":\"" + 
     						title + "\",\"descript\":\"" + descript + "\"}"
 }
 

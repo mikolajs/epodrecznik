@@ -97,20 +97,4 @@ class ModerateSn extends RoleChecker {
         publicSlide.save
     }
 	 
-//	 private def checkLastAddedAndAppend(slide:Slide){
-//	      
-//	          val lastAddedInDBList = LastAdded.findAll
-//	          val lastAdded = if(lastAddedInDBList.isEmpty) LastAdded.create else lastAddedInDBList.head
-//          
-//	          val link = "/slide/" + slide._id.toString	          
-//	        
-//	          
-//	          var newLastAddedContent = lastAdded.content.filter(content => content.link != link )
-//	          newLastAddedContent =  newLastAddedItem::newLastAddedContent
-//	          if (newLastAddedContent.length > 15) newLastAddedContent = newLastAddedContent.dropRight(1)
-//	          lastAdded.content = newLastAddedContent
-//	          lastAdded.save
-//	 }
-	 
-	
 }

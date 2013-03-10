@@ -8,6 +8,10 @@
            var oTable = $();
            var oTablePrivate = $();
            $(document).ready(function() {
+        	    $("#dataTable tbody tr").children("td.tit").click(function(){
+        	    			$('#hiddenAjaxText').val($(this).attr('id')).trigger('blur');
+        	    		});     	    		
+        	    	
                 oTable = $('#dataTable').dataTable({
         			"sPaginationType": "two_button",
         			"bFilter": true,
@@ -35,20 +39,6 @@
         		    }
         		      });
                 
-               
-                		
-                //zmienić!
-            	    $('#dataTable').children('tbody').children('tr').each(function() {
-            	    	$(this).children('td').each(function(index){
-            	    	if(index == 0){
-            	    	$(this).children('a').click(function(){
-                    	    var w = screen.width;
-                    	    window.open(this.href,'Pokaz slajdów','fullscreen=yes,width='+w.toString());
-                    	     return false;
-                    	    });
-            	    	}
-            	    	});
-            	    });
                 
                 
              });
@@ -65,6 +55,16 @@
              }
        </script>
        <style>
+        #lessonList { list-style-type: none; margin: 0; padding: 0; width: 60%; }
+		#lessonList li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; 
+			background-color: #fafafa !important; background-image:none !important; vertical-align: middle;}
+		#lessonList li span { padding: 0 15px 0 15px; }
+		#lessonList li img { position: absolute; left: 2px;}
+		.title {font-weight: bold;}
+		.desc { font-family: cursive; padding: 10px 0 0 10px;}
+		
+		#lessonHead {padding: 10px 0 10px 0;}
+       
        .theSelects span { font-weight: bold; padding: 2px, 10px, 2px, 10px; font-size: 18px;  
        	font-family: "Times New Roman", Times, serif; font-style: italic; }
        	.theSelects img { vertical-align: middle;}
@@ -72,8 +72,16 @@
     </head_merge>
     
  <div id="boxText">
-  <h2>Wybór lekcji</h2>
+  <h2>Twoje lekcje</h2>
   
+  <div class="lift:LessonsSn.showLesson">
+  <input id="hiddenAjaxText" style="display:none;"/>
+  <h3>Podgląd lekcji</h3>
+  <div id="ajaxLesson">
+   
+   </div>
+  </div>
+  <br/> <hr/> <br/>
   <div class="lift:LessonsSn.subjectSelect theSelects" >
   <span>Wybierz przedmiot:</span>
    <select id="subjectSelect" onchange="selectSubject(this)"></select>
@@ -89,14 +97,14 @@
   <br/>
   <div id="addNewLesson"><a href="/resources/editlesson"><img src="/images/addico.png" /></a></div>
   <br/>
-  <div id="themeList" class="lift:LessonsSn.lessons dataTable_wrapper">
+  <div id="themeList" class="lift:LessonsSn.teacherLessons dataTable_wrapper">
             <table id="dataTable" class="display" >
                 <thead><tr><th>Tytuł</th><th>Dział</th><th>Przedmiot</th>
-                <th>Poziom</th><th>Zawartość</th></tr></thead>
-                <tbody><tr><td><a href="">To jest tytuł</a></td><td></td><td></td></tr></tbody>
+                <th>Poziom</th></tr></thead>
+                <tbody><tr><td>To jest tytu</td><td></td><td></td></tr></tbody>
                  <tfoot>
                  	<tr><th>Tytuł</th><th>Dział</th><th>Przedmiot</th><th>Poziom edukacyjny</th>
-                 	<th>Zawartość</th></tr>
+                 	</tr>
                  </tfoot>
             </table>
         </div>

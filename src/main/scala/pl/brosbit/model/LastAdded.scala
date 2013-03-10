@@ -5,10 +5,10 @@ import _root_.net.liftweb.mongodb._
 import java.util.Date
 import org.bson.types.ObjectId
 
-case class LastAddedItem(info:String, link:String, date:String)
+case class LastAddedItem(info:String, subject:String, link:String, date:String)
 
 object LastAdded extends MongoDocumentMeta[LastAdded] {
-  override def collectionName = "newcontent"
+  override def collectionName = "lastadded"
   override def formats = super.formats + new ObjectIdSerializer + new DateSerializer
   def create = new LastAdded(ObjectId.get,Nil)
 }

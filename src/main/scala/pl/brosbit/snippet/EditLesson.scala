@@ -64,8 +64,10 @@ class EditLesson extends BaseSlide {
                      case _ => 
                  }
                 tLesson.contents = createLessonContentsList(json)
+                if(tLesson.public) checkLastAddedAndAppend(tLesson)
                 tLesson.save 
-            }     
+            }   
+            S.redirectTo("/resources/lessons")
         }
         
         def delete() {
@@ -73,6 +75,7 @@ class EditLesson extends BaseSlide {
                case Some(less) => if(isLessonOwner(less)) less.delete
                case _ =>
            }
+           S.redirectTo("/resources/lessons")
         }
         
         val publics = List(("TAK","TAK"),("NIE","NIE"))
@@ -81,7 +84,7 @@ class EditLesson extends BaseSlide {
         
         "#ID" #> SHtml.text(id, id = _) &
         "#title" #> SHtml.text(title, x => title = x.trim) &
-        "#subjects" #> SHtml.select(subjects, Full(subjects.head._1), subjectID = _) &
+        "#subjects" #> SHtml.select(subjects, Full(subjectID), subjectID = _) &
         "#departmentHidden" #> SHtml.text(departmentID, departmentID = _) &
         "#departments" #> departmentSelect() &
         "#public" #> SHtml.select(publics, Full("TAK"), public = _) &
@@ -98,7 +101,7 @@ class EditLesson extends BaseSlide {
 	          val lastAdded = if(lastAddedInDBList.isEmpty) LastAdded.create else lastAddedInDBList.head
           
 	          val link = "/lessons/" + lesson._id.toString	          
-	          val newLastAddedItem = LastAddedItem(lesson.title, lesson.title, Formater.formatDate(new Date()))
+	          val newLastAddedItem = LastAddedItem(lesson.title, lesson.subjectInfo, "/lessons", Formater.formatDate(new Date()))
 	          
 	          var newLastAddedContent = lastAdded.content.filter(content => content.link != link )
 	          newLastAddedContent =  newLastAddedItem::newLastAddedContent
@@ -116,6 +119,7 @@ class EditLesson extends BaseSlide {
     
     def createLessonContentsList(jsonStr:String) = {
         implicit val formats = DefaultFormats
+        println(jsonStr) //testowo usunąć!!!!!!!!!!!!!!!!!!!!!!!!!!
         val json = parse(jsonStr)
         json.extract[List[LessonContent]]
     }

@@ -28,8 +28,9 @@ class Main {
      val contentList = if(lastAddedList.isEmpty) Nil else lastAddedList.head.content
      "p" #> contentList.map(item => { 
        <p><a href={item.link}>
-       <img alt="x" src={"/images/lekcja.png"} /><span>{item.date}</span> 
+       <img alt="lekcja" src="/images/lekcja.png" /><span>{item.date}</span> 
        <strong>{item.info}</strong> 
+       <span> - {item.subject}</span>
        </a></p>
      } )
    }

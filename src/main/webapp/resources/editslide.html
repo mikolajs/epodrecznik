@@ -14,15 +14,20 @@
 			width : 990, 
 			height: 650,
 			extraPlugins : 'youTube,addImage,formula',
-    		toolbar : [ [ 'Source' ],
-    		            [ 'Link','Unlink','Anchor' ],[ 'Maximize', 'ShowBlocks','-','About' ] ,
-    		[ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ],
-    		[ 'Find','Replace','-','SelectAll' ],
-    		[ 'Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat' ],
-    		[ 'NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiLtr','BidiRtl' ],
-    		[ 'AddImage', 'YouTube', 'Formula', 'Table','HorizontalRule','SpecialChar','Iframe' ] ,
-    		[ 'Styles','Format','Font','FontSize' ],
-    		[ 'TextColor','BGColor' ] ]
+    		toolbar :[
+	{ name: 'document',  items: [ 'Source'] },
+	{ name: 'clipboard', groups: [ 'clipboard', 'undo' ], items: [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
+	{ name: 'editing', groups: [ 'find', 'selection', 'spellchecker' ], items: [ 'Find', 'Replace', '-', 'SelectAll']},
+	{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ], items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ] },
+	{ name: 'insert', items: [ 'AddImage', 'Formula', 'YouTube', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe', 'Flash' ] },
+	'/',
+	{ name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ], items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl' ] },
+	{ name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] },
+	{ name: 'styles', items: [ 'Styles', 'Format', 'Font', 'FontSize' ] },
+	{ name: 'colors', items: [ 'TextColor', 'BGColor' ] },
+	{ name: 'tools', items: [ 'Maximize', 'ShowBlocks' ] }
+	
+]
 		});
 		
 		CKEDITOR.config.setStyles = [];
