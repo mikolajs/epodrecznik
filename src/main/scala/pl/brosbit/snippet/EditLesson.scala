@@ -79,7 +79,7 @@ class EditLesson extends BaseSlide {
         }
         
         val publics = List(("TAK","TAK"),("NIE","NIE"))
-        val levels = List(("1","I"),("2","II"),("3","III"),("4","IV"))
+        val levels = List(("1","I"),("2","II"),("3","III"),("4","IV"),("5","V"))
         val subjects = Subject.findAll.map(s => (s._id.toString, s.full))
         
         "#ID" #> SHtml.text(id, id = _) &

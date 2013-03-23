@@ -6,50 +6,79 @@
        <script>
            var oTable = $();
            $(document).ready(function() {
-                oTable = $('#dataTable').dataTable({
-                    "aoColumnDefs": [
-                        { "bVisible": false, "aTargets": [ 2 ] }
-                    ]});
+        	   oTable = $('#dataTable').dataTable({
+       			"sPaginationType": "two_button",
+       			"bFilter": true,
+       			"iDisplayLength": 20,
+       			"bLengthChange": true,
+       		    "oLanguage": {
+       		        "sSearch": "Filtruj wiersze: ",
+       		        "sZeroRecords": "Brak danych do wyświetlenia",
+       		        "sInfoEmpty": "Brak danych do wyświetlenia",
+       		        "sEmptyTable": "Brak danych do wyświetlenia",
+       		        "sInfo": "Widzisz wiersze od _START_ do _END_  z wszystkich _TOTAL_",
+       		        "oPaginate": {
+       		        	"sPrevious": "Poprzednie",
+       			        "sNext": "Następne",
+       			        "sFirst": "Początek",
+       			        "sLast": "Koniec",
+       		        },
+       		        "sInfoFiltered": " - odfiltrowano z _MAX_ wierszy",
+       		        "sLengthMenu": 'Pokaż <select>'+
+       		        '<option value="20">20</option>'+
+       		        '<option value="50">50</option>'+
+       		        '<option value="100">100</option>'+
+       		        '<option value="-1">całość</option>'+
+       		        '</select> wierszy'
+       		    }
+       		      });
                 
-             });
+           });
              
-             function selectSubject(elem){
-                oTable.fnFilter( elem.innerHTML,2);
-             }
+           
+           function selectSubject(elem){
+          	 var val = $(elem).children(':selected').val();
+          	 if (val != 'Wszystkie') oTable.fnFilter(val,2);
+          	 else oTable.fnFilter( '.+',2,true);
+           }
+           function selectLevel(elem){
+          	 var val = $(elem).children(':selected').val();
+          	 if (val != '0') oTable.fnFilter(val,3);
+          	 else oTable.fnFilter('.+',3,true);
+           }
              
-             function showAddBook(elem){
-                $(elem).hide(300);
-                $('#formAddBook').show(300);
-             }
-              function closeAddBook(){
-                $('#formAddBook').hide(300);
-                $('#iconAddBook').show(300);
-             }
        </script>
     </head_merge>
     
+    
+  <div class="lift:ArticlesSn.subjectSelect theSelects" >
+  <span>Wybierz przedmiot:</span>
+   <select id="subjectSelect" onchange="selectSubject(this)"></select>
+ 	<span>Wybierz poziom edukacyjny:</span>
+   <select onchange="selectLevel(this)">
+   <option value="0">Wszystkie</option>
+   <option value="1">I</option>
+   <option value="2">II</option>
+   <option value="3">III</option>
+   <option value="4">IV</option>
+   <option value="5">V</option>
+   </select>
+  </div>  
  <div id="boxText">
   
 
-  <div id="ebookList" class="lift:EBookMkSn.ebookList dataTable_wrapper">
+  <div id="ebookList" class="lift:ArticlesSn.ebookList dataTable_wrapper">
             <table id="dataTable" class="display" >
-                <thead><tr><th>Tytuł</th><th>Opis</th><th>Właściciel</th></tr></thead>
-                <tbody><tr><td><a href="">To jest tytuł</a></td><td id="descriptBook"></td><td id="ownerBook"></td></tr></tbody>
+                <thead><tr><th>Tytuł</th><th>Opis</th><th>Właściciel</th><th>Edycja</th></tr></thead>
+                <tbody><tr><td><a href="">To jest tytuł</a></td><td id="descriptBook"></td>
+                <td id="ownerBook"></td><td id="editBook"></td></tr></tbody>
+                <tfoot><tr><th>Tytuł</th><th>Opis</th><th>Właściciel</th><th>Edycja</th></tr></tfoot>
             </table>
             
    </div>
-        <img src="/images/addico.png" id="iconAddBook" onclick="showAddBook(this)"/>
-        <div id="formAddBook" style="display:none;">
-  <form id="addBook" method="POST" class="lift:EBookMkSn.newBook">
-  <fieldset>
-  <legend>Nowa książka</legend>
-  <label for="title">Tytuł</label><input type="text" id="title" /><br/>
-  <label for="description">Opis</label><br/>
-  <textarea id="description"></textarea><br/>
-  <input type="submit" id="save" value="Zapisz!"/><input type="submit" value="Anuluj" onclick="return closeAddBook()" id="Cancel" />
-  </fieldset>
-  </form>
-  </div>
+    <br/> <br/>
+        <a href="/resources/editdocument/0"><img src="/images/addico.png" id="iconAddBook" /></a>
+        
   <br/>
 </div>
     </div>

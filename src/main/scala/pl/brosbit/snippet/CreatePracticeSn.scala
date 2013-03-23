@@ -45,6 +45,7 @@ class CreatePracticeSn {
         })
     }
     
+    //not implemented!!!!!!!!!
     def editQuiz() = {
         "#deleteQuiz" #> <span>Tymczasowa</span>
     }

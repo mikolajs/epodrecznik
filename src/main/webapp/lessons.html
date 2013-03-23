@@ -10,7 +10,14 @@
            $(document).ready(function() {
         	   $("#dataTable tbody tr").children("td.tit").click(function(){
 	    			$('#hiddenAjaxText').val($(this).attr('id')).trigger('blur');
-	    		});  
+	    			$('#showLesson').dialog('open');
+	    		});
+        	   $('#showLesson').dialog({
+        		   modal:true,
+					autoOpen:false,
+					width:600,
+					height: 500
+        	   });
         	   
                 oTable = $('#dataTable').dataTable({
         			"sPaginationType": "two_button",
@@ -55,13 +62,13 @@
              }
        </script>
        <style>
-       #lessonList { list-style-type: none; margin: 0; padding: 0; width: 60%; }
+       #lessonList { list-style-type: none; margin: 0; padding: 0; }
 		#lessonList li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; 
 			background-color: #fafafa !important; background-image:none !important; vertical-align: middle;}
-		#lessonList li span { padding: 0 15px 0 15px; }
-		#lessonList li img { position: absolute; left: 2px;}
+		#lessonList li span { padding: 0 10px 0 10px; }
+		#lessonList li img { position: absolute; left: 22px;}
 		.title {font-weight: bold;}
-		.desc { font-family: cursive; padding: 10px 0 0 10px;}
+		.desc { font-family: cursive; font-size:.8em; padding: 10px 0 0 10px;}
 		
 		#lessonHead {padding: 10px 0 10px 0;}
 		
@@ -72,17 +79,17 @@
     </head_merge>
    <h2>Wybór lekcji</h2> 
     
-  <div id="showLesson" class="lift:LessonsSn.showLessonPublic">
+  <div id="showLesson" class="lift:LessonsSn.showLessonPublic" title="Podgląd lekcji">
   <input id="hiddenAjaxText" style="display:none;"/>
-	<h3>Podgląd lekcji</h3>
   		<div id="ajaxLesson">
   		<br/>
-   			Kliknij na temat lekcji w tabelce, aby zobaczyć elementy lekcji.<br/><br/>
+   			
    		</div>
   </div>
   
  <div id="boxText">
-  
+  <em style="color:#c44">* Kliknij na temat lekcji w tabelce, aby zobaczyć elementy lekcji.</em>
+  <br/><br/>
   <div class="lift:LessonsSn.subjectSelect theSelects" >
   <span>Wybierz przedmiot:</span>
    <select id="subjectSelect" onchange="selectSubject(this)"></select>

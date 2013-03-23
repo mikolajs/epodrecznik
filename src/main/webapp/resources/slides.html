@@ -35,32 +35,7 @@
         		    }
         		      });
                 
-                oTablePrivate = $('#dataTablePrivate').dataTable({
-        			"sPaginationType": "two_button",
-        			"bFilter": true,
-        			"iDisplayLength": 20,
-        			"bLengthChange": true,
-        		    "oLanguage": {
-        		        "sSearch": "Filtruj wiersze: ",
-        		        "sZeroRecords": "Brak danych do wyświetlenia",
-        		        "sInfoEmpty": "Brak danych do wyświetlenia",
-        		        "sEmptyTable": "Brak danych do wyświetlenia",
-        		        "sInfo": "Widzisz wiersze od _START_ do _END_  z wszystkich _TOTAL_",
-        		        "oPaginate": {
-        		        	"sPrevious": "Poprzednie",
-        			        "sNext": "Następne",
-        			        "sFirst": "Początek",
-        			        "sLast": "Koniec",
-        		        },
-        		        "sInfoFiltered": " - odfiltrowano z _MAX_ wierszy",
-        		        "sLengthMenu": 'Pokaż <select>'+
-        		        '<option value="20">20</option>'+
-        		        '<option value="50">50</option>'+
-        		        '<option value="100">100</option>'+
-        		        '<option value="-1">całość</option>'+
-        		        '</select> wierszy'
-        		    }
-        		      });
+               
                 		
                 //błędna funkcja dodaje link tylko do pierwszego 
             	    $('#dataTable').children('tbody').children('tr').each(function() {
@@ -75,18 +50,6 @@
             	    	});
             	    });
                 
-
-            	    $('#dataTablePrivate').children('tbody').children('tr').each(function(i) {
-            	    	$(this).children('td').each(function(index){
-            	    		if(index == 0){
-            	    			$(this).children('a').click(function(){
-                    	    		var w = screen.width;
-                    	    		window.open(this.href,'Pokaz slajdów','fullscreen=yes,width='+w.toString());
-                    	     		return false;
-                    	    	});
-            	    		}
-            	    	});
-            	    });
                 
              });
              
@@ -121,39 +84,29 @@
    <option value="2">II</option>
    <option value="3">III</option>
    <option value="4">IV</option>
+   <option value="5">V</option>
    </select>
+   
   </div>
+  
   <br/><br/>
-  <div id="themeList" class="lift:SlidesSn.slidesListPublic dataTable_wrapper">
+  <div id="themeList" class="lift:SlidesSn.slidesList dataTable_wrapper">
             <table id="dataTable" class="display" >
-                <thead><tr><th>Tytuł</th><th>Dział</th><th>Przedmiot</th><th>Poziom edukacyjny</th><th>Edytuj</th></tr></thead>
+                <thead><tr><th>Tytuł</th><th>Dział</th><th>Przedmiot</th>
+                	<th>Poziom</th><th>Typ</th><th>Edytuj</th></tr></thead>
                 <tbody><tr><td><a href="">To jest tytuł</a></td><td></td><td></td></tr></tbody>
                  <tfoot>
-                 	<tr><th>Tytuł</th><th>Dział</th><th>Przedmiot</th><th>Poziom edukacyjny</th><th>Edytuj</th></tr>
+                 	<tr><th>Tytuł</th><th>Dział</th><th>Przedmiot</th><th>Poziom</th>
+                 	<th>Typ</th><th>Edytuj</th></tr>
                  </tfoot>
             </table>
         </div>
+        <br/><br/>
+         <span>Dodaj nowy slajd: <a href="/resources/editslide/0"> <img src="/images/addico.png" /> </a></span>
+   <br/>
 </div>
 
-<br/><br/><br/><br/>
-<div id="boxText" class="theSelects">
-  <h2>Twoje prywatne tematy</h2>
-   <span>Dodaj nowy slajd: <a href="/resources/editslide/0"> <img src="/images/addico.png" /> </a></span>
-   <br/><br/>
-  <div id="subjectList" class="lift:SlidesSn.slidesListPrivate dataTable_wrapper">
-            <table id="dataTablePrivate" class="display" >
-                <thead><tr><th>Tytuł</th><th>Dział</th><th>Przedmiot</th>
-                	<th>Etap edukacyjny</th><th>Edytuj</th></tr>
-                </thead>
-                <tbody>
-                	<tr id="tbodyTr"><td></td><td></td><td></td><td></td></tr>
-                </tbody>
-                <tfoot><tr><th>Tytuł</th><th>Dział</th><th>Przedmiot</th>
-                	<th>Etap edukacyjny</th><th>Edytuj</th></tr>
-                </tfoot>
-            </table>
-        </div>
-  </div>
+<br/><br/>
     </div>
    
 </html>

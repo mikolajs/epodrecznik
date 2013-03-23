@@ -8,7 +8,7 @@ html {
   width: 950px;
   margin: 0 auto;
   padding: 0 48px;
-  font-size: 16px;
+  font-size: 24px;
   line-height: 1.25;
   overflow: hidden;
   /* Resets and base styles from HTML5 Boilerplate */
@@ -189,12 +189,12 @@ html {
   position: relative;
 }
 .slide h1 {
-  font-size: 4.5em;
+  font-size: 2.5em;
 }
 .slide h1, .slide .vcenter {
   font-weight: bold;
   text-align: center;
-  padding-top: 1em;
+  padding-top: .8em;
   max-height: 100%;
 }
 .csstransforms .slide h1, .csstransforms .slide .vcenter {
@@ -220,19 +220,19 @@ html {
   transform: none;
 }
 .slide h2 {
-  font-size: 2.25em;
+  font-size: 1.4em;
   font-weight: bold;
-  padding-top: .5em;
+  padding-top: .4em;
   margin: 0 0 .66666em 0;
   border-bottom: 3px solid #888;
 }
 .slide h3 {
-  font-size: 1.4375em;
+  font-size: 1.1em;
   font-weight: bold;
   margin-bottom: .30435em;
 }
 .slide h4 {
-  font-size: 1.25em;
+  font-size: 1.1em;
   font-weight: bold;
   margin-bottom: .25em;
 }

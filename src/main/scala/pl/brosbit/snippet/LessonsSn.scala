@@ -89,7 +89,7 @@ class LessonsSn extends BaseSlide with RoleChecker {
     "tbody *" #> lessons.map(lesson => <tr>
     	<td id={lesson._id.toString} class="tit">{lesson.title}</td>
     	<td>{lesson.departmentInfo}</td><td>{lesson.subjectInfo}</td>
-    	<td>{lesson.lev.toString}</td></tr>)
+    	<td>{lesson.lev.toString}</td><td>{if(lesson.public) "Tak" else "Nie"}</td></tr>)
   }
   
   //for public view in main menu
@@ -101,11 +101,6 @@ class LessonsSn extends BaseSlide with RoleChecker {
     	<td>{lesson.lev.toString}</td></tr>)
   }
   
-  
-   def subjectSelect() = {
-    val subj = "Wszystkie"::Subject.findAll.map(s => s.full)
-    "#subjectSelect *" #> subj.map(s => <option value={s}>{s}</option>)
-  }
   
   
 }

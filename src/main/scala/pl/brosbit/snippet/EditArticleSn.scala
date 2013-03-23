@@ -16,7 +16,7 @@ import org.bson.types.ObjectId
 import Helpers._
 import http.js.JsCmds.{ SetHtml, Alert, Run }
 
-class ArticleSn {
+class EditArticleSn {
   val id = S.param("id").openOr("0")
   val index = S.param("index").openOr("-1")
   val chapter = S.param("chapter").openOr("1")

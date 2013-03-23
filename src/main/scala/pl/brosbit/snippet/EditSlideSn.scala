@@ -41,6 +41,7 @@ class EditSlideSn extends BaseSlide with RoleChecker {
     var subjectLev = slide.subjectLev.toString
     var departmentId = if(slide.departmentId != null) slide.departmentId.toString else ""
     var departmentInfo = slide.departmentInfo
+    var public = if(slide.public) "TAK" else "NIE"
     
     var slidesData = slideCont.slides
     //println("------------slides data -----------------\n" +slidesData)
@@ -49,62 +50,39 @@ class EditSlideSn extends BaseSlide with RoleChecker {
     
     //poprawić - uwzględnić fak, że new Slide już istnieje - chyba, że potrzebujemy kopi
     def saveData() {
-      //if not confirmed allow write to the same slide!
-      
-      val slidesContentHtml = Unparsed(slidesData)
-      
-      var newSlide = slide
-      var newSlideCont = slideCont
-      
-      if(slide.public) {
-        newSlide = Slide.create
-        newSlideCont = SlideContent.create
+      val userId = User.currentUser.open_!.id.is
+      if(slide.authorId == 0L || slide.authorId == userId) {
+          val slidesContentHtml = Unparsed(slidesData)
+           slide.title = title
+           slide.subjectId = new ObjectId(subjectId)
+          val sub = Subject.find(new ObjectId(subjectId)).getOrElse(Subject.create);
+          slide.subjectInfo = sub.full
+          slide.subjectLev = subjectLev.toInt
+          slide.departmentId = new ObjectId(departmentId)
+          slide.departmentInfo = Department.find(new ObjectId(departmentId)).
+              getOrElse(Department.create(new ObjectId(subjectId))).name
+          slide.authorId = userId
+          slide.public = public == "TAK"
+          slideCont.slides = slidesContentHtml.toString
+          slideCont.save
+          slide.slides = slideCont._id      
+          slide.save 
       }
-
-      newSlide.title = title
-      newSlide.subjectId = new ObjectId(subjectId)
-      val sub = Subject.find(new ObjectId(subjectId)).getOrElse(Subject.create);
-      newSlide.subjectInfo = sub.full
-      newSlide.subjectLev = subjectLev.toInt
-      newSlide.departmentId = new ObjectId(departmentId)
-      newSlide.departmentInfo = Department.find(new ObjectId(departmentId)).
-        getOrElse(Department.create(new ObjectId(subjectId))).name
-  
-      val userID = User.currentUser.get.id.is.toString
-   
-      newSlide.authors = if (slide.authors.exists(e => e.user == userID)) slide.authors.map(e => {
-        										if (e.user == userID) Edit(userID, new Date().getTime().toString)
-        										else e
-        										}) 
-        			  else Edit(userID,new Date().getTime().toString)::slide.authors
-       newSlide.public = false
-       newSlideCont.slides = slidesContentHtml.toString
        
-       newSlideCont.save
-       
-       if(slide.public) {
-         newSlide.referTo = slide._id    
-         newSlide.slides = newSlideCont._id
-       }        
-       newSlide.save 
       
       S.redirectTo("/resources/slides") //!important must refresh page
     }
     
     def deleteData() {
-      slide = if (ID != "0") Slide.find(ID).getOrElse(Slide.create) else Slide.create
-      if (slide.public) {
-    	  if(isModerator) {
-    		  slideCont.delete
-    		  slide.delete
-    	  }
-      } 
-      else {
-        if(isOwner(slide.authors)){
+      val userId = User.currentUser.open_!.id.is
+     if (id != "0") Slide.find(id) match {
+         case Some(slide) if slide.authorId == userId => {
            slideCont.delete
     	   slide.delete
-        }     
+        } 
+         case _ =>
       }
+      
       S.redirectTo("/resources/slides")
     }
       
@@ -112,11 +90,13 @@ class EditSlideSn extends BaseSlide with RoleChecker {
       S.redirectTo("/resources/slides")
     }
     
-    val levList = List(("1","I"),("2","II"),("3","III"),("4","IV"))
+    val levList = List(("1","I"),("2","II"),("3","III"),("4","IV"),("5","V"))
+    val publicList = List(("TAK","TAK"),("NIE","NIE"))
     "#id" #> SHtml.text(ID, ID = _, "type"->"hidden") &
     "#titleTheme" #> SHtml.text(title, title= _,"class"->"Name") &
     "#subjects" #> SHtml.select(listSubject, Full(subjectId),subjectId = _) &
     "#subjectLevel" #> SHtml.select(levList,Full(subjectLev),subjectLev = _) &
+    "#public" #> SHtml.select(publicList,Full(public), public = _) &
     "#departmentHidden" #> SHtml.text(departmentId, departmentId = _, "type"->"hidden") &
     "#departments" #> departmentSelect() &
     "#slidesData" #> SHtml.text(slidesData, slidesData = _, "type"->"hidden") &

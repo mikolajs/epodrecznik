@@ -7,7 +7,7 @@
     		  this.selectClassGroupForSubject(this);
     		  this._prepareDepartSelect();
     		  this._bindSubjectChange();
-    		 // this._bindDepartmentChange();
+    		  this._bindDepartmentChange();
     	  },
     	  
     	  _prepareDepartSelect: function(){
@@ -43,11 +43,11 @@
     				  var id = options[i].getAttribute('class');
     				  if (subID == id) {
     					  options[i].selected = true;
-    					  depId =  options[i].getAttribute('value');
+    					  depID =  options[i].getAttribute('value');
     					  break;
     				  }
     			  }
-    		 }	 	
+    		 }	 
     		  $(self.inputDepart).val(depID);
     	  },
     	  
@@ -56,6 +56,7 @@
     		  var self = this;
     		  $(this.selectSubj).change(function(){
     			  self.clearDepartmentSelect();
+    			  self.selectClassGroupForSubject(self);
     			  self.selectFirstInActiveOptionClass(self);
     		  });
     	  },
@@ -66,6 +67,5 @@
     			 var depID = $(this).children("option:selected").val();
     			 $(self.inputDepart).val(depID);
     		  });
-    	  }
-    	  
+    	  }    	  
       });

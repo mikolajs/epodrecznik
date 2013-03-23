@@ -50,6 +50,7 @@ class Boot {
     
     LiftRules.statelessDispatchTable.append({
       case Req("image" :: id :: Nil, _, GetRequest) => () => ImageLoader.icon(id)
+      case Req("file" :: id :: Nil, _, GetRequest) => () => FileLoader.file(id)
     })
 
     if (DB.runQuery("select * from users where lastname = 'Administrator'")._2.isEmpty) {
@@ -59,10 +60,6 @@ class Boot {
 
     val isAdmin = If(() => User.loggedIn_? && (User.currentUser.open_!.role.is == "a"),
       () => RedirectResponse("/"))
-    val isModerator = If(() => if(User.loggedIn_?){
-        val r = User.currentUser.open_!.role.is
-        (r == "m" || r == "a") } 
-    	else {false}, () => RedirectResponse("/"))
     	
     val isTeacher = If(() => if(User.loggedIn_?) {
          val r = User.currentUser.open_!.role.is
@@ -80,7 +77,6 @@ class Boot {
         Menu("Kontakt") / "contact" >> LocGroup("public"),
         Menu("Tworzenie lekcji") / "resources" / "lessons" >> LocGroup("resource") >> isTeacher,  
         Menu("Prezentacje") / "resources" / "slides" >> LocGroup("resource") >> isTeacher,
-        Menu("Filmy") / "resources" / "videos" >> LocGroup("resource") >> isTeacher,
         Menu("Grafika") / "resources" / "images" >> LocGroup("resource") >> isTeacher,
         Menu("Artykuły") / "resources" / "documents" >> LocGroup("resource") >> isTeacher,
         Menu("Zadania") / "resources" / "quizes" >> LocGroup("resource") >> isTeacher,
@@ -94,12 +90,12 @@ class Boot {
         Menu("Czytaj") / "document" / ** >> LocGroup("extra") >> Hidden,
         Menu("Czytaj") / "quiz" / ** >> LocGroup("extra") >> Hidden,
         Menu("Image upload") / "imgstorage" >> LocGroup("extra") >> Hidden >> isTeacher,
-        Menu("Moderacja") / "moderate" >> LocGroup("extra") >> Hidden >> isModerator,
         Menu("Administrator") / "admin" / "admin" >> LocGroup("admin") >> isAdmin,
         Menu("Przedmioty") / "admin" / "subjects" >> LocGroup("admin") >> isAdmin,
         Menu("Działy") / "admin" / "departments" >> LocGroup("admin") >> isAdmin,
         Menu("Użytkownicy") / "admin" / "users" >> LocGroup("admin") >> isAdmin,
         Menu("Aktualności") / "admin" / "news" >> LocGroup("admin") >> isAdmin,
+        Menu("Moderacja") / "admin" / "moderate" >> LocGroup("admin") >> isAdmin,
         Menu("GC") / "admin" / "gc" >> LocGroup("admin") >> isAdmin) :::
         User.sitemap: _*)
 

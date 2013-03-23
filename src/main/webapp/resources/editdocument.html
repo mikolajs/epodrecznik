@@ -8,14 +8,14 @@
 <link rel="stylesheet" type="text/css" href="/style/ebook.css" />
 </head_merge>
 
-		<div id="header" class="lift:EBookSn.ebookData">
+		<div id="header" class="lift:EditArticleSn.ebookData">
 			<div id="bookHeader">
 				<div id="bookHeaderContent">
 					<h1>Tytuł</h1>
 					<p>Krótki opis</p>
 					Właściciel: <em>Nazwisko</em> <br />
 				</div>
-				<form class="lift:EBookSn.editBookTitle" method="POST">
+				<form class="lift:EditArticleSn.editBookTitle" method="POST">
 					<fieldset>
 						<legend>Edycja</legend>
 						<label for="bookTitle">Tytuł:</label><input type="text"
@@ -28,11 +28,11 @@
 					id="imgEditBookTitle" />
 			</div>
 
-			<div class="lift:EBookSn.ebookTree">
+			<div class="lift:EditArticleSn.ebookTree">
 				<ol id="ebookTree">
 					<li><a href="">Rozdział</a></li>
 				</ol>
-				<form id="formNewChapter" class="lift:EBookSn.newChapter"
+				<form id="formNewChapter" class="lift:EditArticleSn.newChapter"
 					method="POST">
 					<fieldset>
 						<legend>Dodaj nowy rozdział:</legend>
@@ -54,13 +54,13 @@
 		<div id="editPermission">
 		<div>
 			Edytorzy:
-			<ul class="lift:EBookSn.showChapterPermission">
+			<ul class="lift:EditArticleSn.showChapterPermission">
 				<li>Użyszkodnik <a href="">usuń</a>
 				</li>
 			</ul>
 		</div>
 			<form id="formAddPermissionMail"
-				class="lift:EBookSn.formAddPermission" method="POST">
+				class="lift:EditArticleSn.formAddPermission" method="POST">
 				<fieldset>
 					<legend>Dodaj edytora</legend>
 					<input id="addPermissionMail" /> <input id="addPermissionSubmit" class="saveButton"/>
@@ -71,7 +71,7 @@
 		</div>
 		
 
-		<div class="lift:EBookSn.chapterData">
+		<div class="lift:EditArticleSn.chapterData">
 			<div id="chapter">
 				<h2>Rozdział</h2>
 				<p id="subChapterContent">treść początku rodziału</p>
@@ -83,7 +83,7 @@
 
 
 	<div id="formEditChapter">
-		<form class="lift:EBookSn.formEditChapter" method="POST">
+		<form class="lift:EditArticleSn.formEditChapter" method="POST">
 			<label for="chapterTitleForm">Tytuł:</label><input type="text"
 				value="" 3 id="chapterTitleForm" /> <label>Poziom:</label> <select
 				id="chapterLevelForm">
