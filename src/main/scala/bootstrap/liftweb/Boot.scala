@@ -95,7 +95,6 @@ class Boot {
         Menu("Działy") / "admin" / "departments" >> LocGroup("admin") >> isAdmin,
         Menu("Użytkownicy") / "admin" / "users" >> LocGroup("admin") >> isAdmin,
         Menu("Aktualności") / "admin" / "news" >> LocGroup("admin") >> isAdmin,
-        Menu("Moderacja") / "admin" / "moderate" >> LocGroup("admin") >> isAdmin,
         Menu("GC") / "admin" / "gc" >> LocGroup("admin") >> isAdmin) :::
         User.sitemap: _*)
 

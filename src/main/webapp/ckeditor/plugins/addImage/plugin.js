@@ -17,7 +17,7 @@ CKEDITOR.plugins.add( 'addImage',
     {
       return {
         title : 'Dodaj obrazek',
-        minWidth : 450,
+        minWidth : 550,
         minHeight : 400,
         contents :
         [
@@ -32,10 +32,14 @@ CKEDITOR.plugins.add( 'addImage',
                 label : 'Url do obazka',
                 validate : CKEDITOR.dialog.validate.notEmpty('Nie może być pusty')
               },
-	      {
-	       type : 'html',
-	       html : '<iframe src="/imgstorage" width="100%" height="350px" frameborder="0" onload="getImageURLfromIFrame(this)" ></iframe>'
-	      }
+	          {
+	            type : 'html',
+	            html : '<iframe id="imageLoaderFrame" src="/imgstorage"  frameborder="0" onload="getImageURLfromIFrame(this)" ></iframe>'
+	          },
+              {
+                  type: 'html',
+                  html: '<img src="" id="imagePreview" style="height:30%;width:auto;"/>'
+                },
             ]
           },
           

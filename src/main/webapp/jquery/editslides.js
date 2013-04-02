@@ -111,6 +111,7 @@
 			var innerDoc = elem.contentDocument || elem.contentWindow.document;
 			var url  = innerDoc.getElementById('path').value;
 			$('.cke_dialog_ui_input_text').val(url);
+			$('#imagePreview').attr('src',url);
 		}
 		
 		//for ascii to math

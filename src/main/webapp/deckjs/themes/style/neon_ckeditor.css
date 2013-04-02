@@ -7,8 +7,13 @@ body {
  
   margin: 0 auto;
   padding: 0 48px;
-  font-size: 24px;
+  font-size: 28px;
  
+ 
+}
+
+p, span {
+	 line-height : 1em !important;
 }
 
  h1 {
@@ -19,7 +24,7 @@ body {
   text-align: center;
   padding-top: 0.8em;
   max-height: 100%;
-  font-size: 2.5em;
+  font-size: 2.6em;
 }
 
  h2 {
@@ -30,7 +35,7 @@ body {
   text-shadow: 0 0 15px #af0, 0 0 2px #fff;
   border-bottom: 1px solid #333;
   padding-top: 0.4em;
-  font-size: 1.4em;
+  font-size: 1.5em;
 }
  h3 {
   color: #fff;
@@ -38,7 +43,7 @@ body {
   font-weight: 100;
   text-shadow: 0 0 10px #fff, 0 0 2px #fff;
   padding-top: 0.2em;
-  font-size: 1.1em;
+  font-size: 1.2em;
 }
 pre {
   border-color: #333;

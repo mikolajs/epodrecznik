@@ -54,7 +54,7 @@ class Administration {
         u.firstName(firstName).lastName(lastName).email(email).role(role).save
       }
     }
-    val users = List(("t","nauczyciel"),("m", "moderator"))
+    val users = List(("t","nauczyciel"))
     "#usersFormLastName" #> SHtml.text(lastName, lastName = _, "class" -> "Name", "maxlenght" -> "40") &
       "#usersFormFirstName" #> SHtml.text(firstName, firstName = _, "class" -> "Name", "maxlenght" -> "40") &
       "#usersFormEmail" #> SHtml.text(email, email = _, "class" -> "email", "maxlenght" -> "50") &

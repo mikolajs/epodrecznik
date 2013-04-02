@@ -20,8 +20,8 @@
                         
                         $('#newsForm').dialog({
                             autoOpen: false,
-                            height: 400,
-                            width: 600,
+                            height: 550,
+                            width: 650,
                             modal: true,
                             close: function(){
                                
@@ -59,6 +59,7 @@
             }
             
             function mkAddNews(){
+            	 document.getElementById('editForm').reset();
                  $('#newsForm').dialog("open");
             }
             
@@ -83,12 +84,13 @@
     </div>
   
   <div id="newsForm" style="display:none;" title="Edycja newsów">
-   <form class="lift:Administration.editLink?form=POST"  >
+   <form class="lift:Administration.editLink?form=POST" id="editForm" >
      
           <input id="editId"/>
           <p><label for="editTitle">Tytuł:</label><input width="200px" id="editTitle"/>
-          <input id="pathImg" type="text" /><img src="" id="imagePreview"></p>
-          <iframe src="/imgstorage" style="width:500px;height:100px;" onload="getImageURLfromIFrame(this)"></iframe>
+          <input id="pathImg" type="text" /><br/>
+          <img style="width:30%;height:30%;" src="" id="imagePreview"></p>
+          <iframe src="/imgstorage" style="width:600px;height:60px;border:none;"  onload="getImageURLfromIFrame(this)"></iframe>
           <p><label for="editLink">Link:</label><input width="200px" id="editLink"/></p>
           <p><label for="editContent">Opis:</label><textarea id="editContent" width="200px" ></textarea></p>
           <p><input id="editDelete"/><input id="editSave"/></p>
