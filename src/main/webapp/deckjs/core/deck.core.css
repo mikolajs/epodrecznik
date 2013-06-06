@@ -1,3 +1,4 @@
+/* edited by Mikołaj S*/
 html {
   height: 100%;
   font-size: 20px;
@@ -246,7 +247,7 @@ html {
   font-weight: bold;
 }
 .slide img, .slide iframe, .slide video {
-  display: block;
+  display: inline; /* moja zmiana */
   max-width: 100%;
 }
 .slide video, .slide iframe, .slide img {

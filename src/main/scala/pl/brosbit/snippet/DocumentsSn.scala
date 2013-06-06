@@ -1,7 +1,7 @@
 package pl.brosbit.snippet
 
 import java.util.Date
-import scala.xml.{ Text, XML, Unparsed, Elem, Null, TopScope }
+import scala.xml.{ Text, Unparsed }
 import _root_.net.liftweb._
 import http.{ S, SHtml }
 import common._
@@ -18,15 +18,30 @@ import Helpers._
 //for show list of all doc and create new doc
 class DocumentsSn extends BaseSlide {
 //edocuments => show edocuments list 
- def edocList() = {
+ def docList() = {
     val documents = Document.findAll   //all can view??
-    "tbody" #> documents.map(doc => "a" #> <a href={"/resources/showdocument/" + doc._id.toString} >{ doc.title } </a> &
-      ".descriptBook *" #> <p>{ doc.descript }</p> &
+    "tbody" #> documents.map(doc => "a" #> <a href={"/document/" + doc._id.toString} target="_blanck" >{ doc.title } </a> &
+      ".descriptBook *" #> Text( doc.descript ) &
       ".ownerBook *" #> <em>{ doc.ownerName }</em> &
       ".subject *" #> Text(doc.subcjectName) &
       ".department *" #> Text(doc.departmentName) &
-      ".editBook *" #> <a href={"/resources/editdocument/" + doc._id.toString} target="_blank"> Edytuj</a>
+      ".editBook *" #> <a href={"/resources/editdocument/" + doc._id.toString}> Edytuj</a>
       )
   }
+ 
+ def showDocument() = {
+     val id = S.param("id").openOr("0")
+     Document.find(id) match {
+         case Some(document) => {
+             "#title *" #> document.title &
+             "#subject *" #> document.subcjectName &
+             "#level *" #> document.level.toString &
+             "#department *" #> document.departmentName &
+             "article *" #> Unparsed(document.content)
+             
+         }
+         case _ => "article" #> <h1>Nie znaleziono dokumentu!</h1>
+     }     
+ }
 
 }

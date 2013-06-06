@@ -68,7 +68,6 @@ CKEDITOR.plugins.add( 'youTube',
     width = width.replace(/\"/gi,'');
     height = height.replace(/\"/gi,'');
     src = src.replace(/\"/gi,'');
-	alert(height + width + src);
 	iframeNode.setAttribute('width',width);
 	iframeNode.setAttribute('height',height);
 	iframeNode.setAttribute('src',src);

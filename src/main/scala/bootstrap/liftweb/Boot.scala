@@ -72,7 +72,7 @@ class Boot {
     def sitemap() = SiteMap(
       List(
         Menu("Wiadomości") / "index" >> LocGroup("public"),
-        Menu("Encyklopedia") / "dictionary" >> LocGroup("public"),
+       // Menu("Encyklopedia") / "dictionary" >> LocGroup("public"),
         Menu("Lekcje") / "lessons" >> LocGroup("public"),
         Menu("Kontakt") / "contact" >> LocGroup("public"),
         Menu("Tworzenie lekcji") / "resources" / "lessons" >> LocGroup("resource") >> isTeacher,  
@@ -85,6 +85,7 @@ class Boot {
         Menu("Edycja haseł") / "resources" / "editdictionary" / ** >> LocGroup("extra") >> Hidden >> isTeacher,
         Menu("Edycja Slajdów") / "resources" / "editslide" / ** >> LocGroup("extra") >> Hidden >> isTeacher,
         Menu("Edycja quizów") / "resources" / "editquiz" / ** >> LocGroup("extra") >> Hidden >> isTeacher,
+        Menu("Edycja pytań") / "resources" / "editquest" >> LocGroup("extra"),// >> Hidden >> isTeacher,
         Menu("Edytuj książkę") / "resources" / "editdocument" / ** >> LocGroup("extra") >> Hidden >> isTeacher, 
         Menu("Pokaz") / "slide" / ** >> LocGroup("extra") >> Hidden,
         Menu("Czytaj") / "document" / ** >> LocGroup("extra") >> Hidden,
@@ -95,7 +96,8 @@ class Boot {
         Menu("Działy") / "admin" / "departments" >> LocGroup("admin") >> isAdmin,
         Menu("Użytkownicy") / "admin" / "users" >> LocGroup("admin") >> isAdmin,
         Menu("Aktualności") / "admin" / "news" >> LocGroup("admin") >> isAdmin,
-        Menu("GC") / "admin" / "gc" >> LocGroup("admin") >> isAdmin) :::
+        Menu("GC") / "admin" / "gc" >> LocGroup("admin") >> isAdmin,
+        Menu("Static") / "static" / **) :::
         User.sitemap: _*)
 
     LiftRules.setSiteMapFunc(sitemap)

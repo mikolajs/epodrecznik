@@ -10,11 +10,10 @@ import org.bson.types.ObjectId
 object QuizQuestion extends MongoDocumentMeta[QuizQuestion] {
   override def collectionName = "questions"
   override def formats = super.formats + new ObjectIdSerializer + new DateSerializer
-  def create = new QuizQuestion(ObjectId.get, 0L, 0, 0, false, "", null, "", 0, null, "", "", Nil)
+  def create = new QuizQuestion(ObjectId.get, 0L, 0, 0, false, null, null, "", "", Nil)
 }
 case class QuizQuestion(var _id: ObjectId,  var authorId: Long,  var dificult:Int, var level:Int,
-				var public:Boolean, var departmentInfo: String, var departmentId:ObjectId, 
-				var subjectInfo: String, var subjectLev:Int, var subjectId:ObjectId,
+				var public:Boolean, var departmentId:ObjectId, var subjectId:ObjectId,
 				var question:String, var answer:String, var fake:List[String])  extends MongoDocument[QuizQuestion] {
   def meta = QuizQuestion
 }

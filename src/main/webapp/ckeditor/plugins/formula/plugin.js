@@ -43,7 +43,7 @@ CKEDITOR.plugins.add( 'formula',
             [
 	      {
 	       type : 'html',
-	       html : '<iframe src="/static/asciitomathhelp.html" width="420px" height="420px" ></iframe>'
+	       html : '<iframe src="/static/asciitomathhelp.html" style="width:100%;min-height:250px;" ></iframe>'
 	      }
             ]
           },

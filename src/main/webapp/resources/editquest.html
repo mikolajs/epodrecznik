@@ -1,0 +1,147 @@
+<div class="lift:surround?with=resource;at=body">
+	<head_merge>
+	<script type="text/javascript" src="/ckeditor/ckeditor.js"></script>
+	<script type="text/javascript" src="/jquery/ckeditorresource.js"></script>
+	<script type="text/javascript" src="/jquery/ASCIIMathML.js"></script>
+	<script type="text/javascript" src="/jquery/dejavu.js"></script>
+	<script type="text/javascript" src="/jquery/departmentselect.js"></script>
+	<script type="text/javascript" src="/jquery/editquest.js"></script>
+	
+	 <script>
+	 var oTable = $();
+	 var department = Object();
+	 var editQuest = Object();
+	 
+$(document).ready(function() {
+	
+	 $('#questEditor').dialog({
+		  autoOpen: false,
+		  height: 500,
+		  width: 900,
+		  modal: false,
+		  close: function() {
+			  editQuest.isOpen = false;		  
+		  }
+	  });
+
+CKEDITOR.replace( 'questionQuest',{
+	width : 450, 
+	height: 200,
+	extraPlugins : 'addImage,formula',
+	toolbar :[
+{ name: 'clipboard', items: [ 'PasteText', 'PasteFromWord', 'Undo', 'Redo' ] },
+{ name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] },
+{ name: 'colors', items: [ 'TextColor', 'BGColor' ] },
+{ name: 'insert', items: [ 'AddImage', 'Formula', 'YouTube', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar',] },
+{ name: 'basicstyles',items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', 'RemoveFormat' ] },
+{ name: 'paragraph', items: [ 'NumberedList', 'BulletedList', 'Outdent', 'Indent', 'Blockquote', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'] }
+ ]
+});
+CKEDITOR.config.disableNativeSpellChecker = false;
+
+$( "#quizList" ).sortable();
+$( "#quizList" ).disableSelection();
+
+oTable = $('#datatable').dataTable({
+	"sPaginationType": "two_button",
+	"bFilter": true,
+	"iDisplayLength": 20,
+	"bLengthChange": true,
+    "oLanguage": {
+        "sSearch": "Filtruj wiersze: ",
+        "sZeroRecords": "Brak danych do wyświetlenia",
+        "sInfoEmpty": "Brak danych do wyświetlenia",
+        "sEmptyTable": "Brak danych do wyświetlenia",
+        "sInfo": "Widzisz wiersze od _START_ do _END_  z wszystkich _TOTAL_",
+        "oPaginate": {
+        	"sPrevious": "Poprzednie",
+	        "sNext": "Następne",
+	        "sFirst": "Początek",
+	        "sLast": "Koniec",
+        },
+        "sInfoFiltered": " - odfiltrowano z _MAX_ wierszy",
+        "sLengthMenu": 'Pokaż <select>'+
+        '<option value="20">20</option>'+
+        '<option value="50">50</option>'+
+        '<option value="100">100</option>'+
+        '<option value="-1">całość</option>'+
+        '</select> wierszy'
+    }
+      });
+      
+      department = new DepartmentSelect();
+      department.initialize();
+	  editQuest = new EditQuest();
+	  editQuest.oTable = oTable;
+	  
+	 
+
+});
+</script>
+<style>
+ .wrong {padding-left: 5px; display: block;}
+</style>
+   
+	</head_merge>
+	
+ <div id="selectDep">
+ <form class="lift:EditQuestSn.choiseQuest" method="POST">
+    <label for="subjects">Przedmiot:</label><select id="subjects"></select>
+    <label for="departments">Dział:</label><select id="departments"></select>
+    <label for="levels">Poziom edukacyjny:</label><select id="levels"></select>
+    <input id="departmentHidden" />
+    <input id="choise" type="submit" />     
+ </form>
+</div>
+
+
+<div id="questEditor" title="Edycja pytania">
+
+ 
+<form class="lift:EditQuestSn.editQuest" method="POST">
+ <div style="padding-bottom:10px;float:left;"><textarea id="questionQuest" class="ckeditor"></textarea>
+ <p>
+  	<input id="saveQuestVisible" value="Dodaj!" type="submit" onclick="return editQuest.prepareToSave();"/>
+  	 <input id="saveQuest" value="Dodaj" type="submit" style="display:none;"/>
+  	 <input id="deleteQuest" value="Usuń" type="submit"/>
+  </p>
+  </div>
+ <div style="float:right;width:300px;">
+  <input id="idQuest" style="display:none" type="text"/>
+  <p>
+  	<label for="dificultQuest">Trudność:</label><select id="dificultQuest"></select>
+    <label for="publicQuest">Publiczny:</label><input type="checkbox" id="publicQuest" />
+  </p>
+  <h5>Odpowiedź prawidłowa:</h5><input type="text" id="answerQuest" />
+  	<h5>Odpowiedzi fałszywe</h5>
+  	<ul id="fakeAnswerList">
+  	</ul>
+  	<p>
+  		<input type="text" class="fakeAnswer" id="fakeAdd" value="" /> 
+  		<img alt="" src="/images/addico.png" onclick="editQuest.addFakeAnswer()">
+  	</p>
+  	<input type="text" id="wrongQuest" style="display:none;"/>
+  <p>
+    </div>
+    
+  </form>
+  <div class="clear"></div>
+</div>
+ 
+ <div id="questList">
+  <table id="datatable"><thead><tr><th>Pytanie</th><th>Odpowiedz prawidłowa</th><th>Błędne odpowiedzi</th>
+  <th>Trudność</th><th>Publiczny?</th></tr></thead>
+  <tbody class="lift:EditQuestSn.showQuests"><tr><td></td><td></td><td></td><td></td><td></td></tr></tbody>
+  <tfoot><tr><th>Pytanie</th><th>Odpowiedz prawidłowa</th><th>Błędne odpowiedzi</th>
+  <th>Trudność</th><th>Publiczny?</th></tr></tfoot>
+  </table>
+ 
+ </div>
+ 
+ <br/><br/> 
+ 
+  <img src="/images/addico.png" onclick="editQuest.startNewQuest()"/>
+ 
+  
+  
+</div>

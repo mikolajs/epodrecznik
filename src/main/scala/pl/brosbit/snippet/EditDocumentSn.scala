@@ -14,123 +14,132 @@ import json.JsonAST.JObject
 import json.JsonParser
 import org.bson.types.ObjectId
 import Helpers._
-import http.js.JsCmds.{ SetHtml, Alert, Run }
+import http.js.{JsCmds, JsCmd}
+import http.js.JsCmds.{ SetHtml, Alert, Run}
+import http.js.JE._
 
 class EditDocumentSn extends BaseSlide {
-  val id = S.param("id").openOr("0")
-  var document = if (id != "0") Document.find(id).getOrElse(Document.create) else Document.create
-  
-  val userId = User.currentUser match {
-    case Full(u) => u.id.is
-    case _ => -1L
-  }
-  val isOwner = if (document.ownerID == 0L || document.ownerID == userId) true else false
 
+    val userId = User.currentUser.open_!.id.is
+    
+    val id = S.param("id").openOr("0")
+    var document = if (id != "0") Document.find(id).getOrElse(Document.create) else Document.create
+    
+    
+    val isOwner = document.ownerID == 0L || document.ownerID == userId || User.currentUser.open_!.role == "a"
 
-  def editMainData() = {
-    var title = document.title
-    var descript = document.descript
-    var departmentId = document.departmentId.toString
-    var subjectId = document.subjectId.toString            
+    def editData() = {
+    	
+        var docID = id
+        var title = document.title
+        var descript = document.descript
+        var departmentId = document.departmentId.toString
+        var subjectId = document.subjectId.toString
+        var level = document.level.toString
+        var docContent = document.content
+
+        def save() {
+            //println("-------------save------------title-----------------")
+            if (isOwner) {
+                document.title = title
+                document.descript = descript
+                Department.find(departmentId) match {
+                    case Some(dep) => {
+                        document.departmentId = dep._id
+                        document.departmentName = dep.name
+                        document.subjectId = dep.subject
+                        document.level = level.toInt
+                        document.subcjectName = Subject.find(dep.subject).getOrElse(Subject.create).full
+                        val user = User.currentUser.open_!
+                        document.ownerID = user.id
+                        document.ownerName = user.fullName
+                        document.content = docContent
+                        document.save                       
+                        if (id == "0") S.redirectTo("/resources/editdocument/"+ document._id.toString)
+                        Alert("Zapisano")
+                    }
+                    case _ =>
+                }
+            } 
+        }
         
-    def save() = {
-      //println("-------------save------------title-----------------")
-      if (isOwner) {
-        document.title = title
-        document.descript = descript
-        Department.find(departmentId) match {
-            case Some(dep) => {
-                document.departmentId = dep._id
-                document.departmentName = dep.name
-                document.subjectId = dep.subject
-                document.subcjectName = Subject.find(dep.subject).getOrElse(Subject.create).full
-                document.save
-                Alert("Zapisano")
+        def delete() = {
+            if(isOwner) {
+                document.delete
             }
-            case _ => Alert("Nieprawidłowy dział!")
-        }   
-      } else {
-    	  Alert("Nie zapisano!")
-        //println("----------------------no----boook-------------!!!!!!!!!!!----")
-      }
-      
+        }
+
+        val subjects = Subject.findAll.map(sub => (sub._id.toString, sub.full))
+        val levList = List(("1","I"),("2","II"),("3","III"),("4","IV"),("5","V"))
+        "#docID" #> SHtml.text(docID, docID = _) &
+            "#docTitle" #> SHtml.text(title, title = _) &
+            "#docDescription" #> SHtml.textarea(descript, descript = _) &
+            "#subjects" #> SHtml.select(subjects, Full(subjectId), subjectId = _) &
+            "#departmentHidden" #> SHtml.text(departmentId, departmentId = _, "type"->"hidden") &
+            "#departments" #> departmentSelect() &
+            "#docLevel" #> SHtml.select(levList, Full(level), level = _) &
+            "#docContent" #> SHtml.textarea(docContent, d => docContent =  d.trim) & 
+            "#docSave" #> SHtml.submit("Zapisz", save) &
+            "#docDelete" #> SHtml.submit("Usuń", delete)
     }
     
-    val subjects = Subject.findAll.map(sub => (sub._id.toString, sub.full))
-    val form = "#docTitle" #> SHtml.text(title, title = _) &
-      "#docDescription" #> SHtml.textarea(descript, descript = _) &
-      "#docSubject" #> SHtml.select(subjects, Full(subjectId), subjectId = _) &
-      "#departmentHidden" #> SHtml.text(departmentId, departmentId = _, "type"->"hidden") &
-      "#departments" #> departmentSelect() &
-      "#docSave" #> SHtml.ajaxSubmit("Zapisz", save) andThen SHtml.makeFormsAjax
+    
 
-    "form" #> (in => form(in))
-  }
-  
+   /* //action add new chapter
+    def formEditChapter() = {
+        var chapterTitle = ""
+        var chapterLevel = ""
+        var chapterId = ""
+        var chapterIndex = ""
+        var chapterContent = ""
+        var isNew = false
 
-  //action add new chapter
-  def newChapter() = {
-    var chapterTitle = ""
-    var chapterIndex = ""
-    val list = (1 to 30).map(i => (i.toString, i.toString))
-    def save() {
-      var saved = "Zapisano"
-      println("-------------save------------new--chapter----------" + chapterTitle)
-      if (isOwner) {
-        var where = try {
-          //println("chapter index = " + chapterIndex )
-          var i = chapterIndex.trim().toInt - 1
-          if (i > document.chapters.size) document.chapters.size else i
-        } finally { 0 }
+        def save():JsCmd = {
+            if(document.ownerID == 0L) {
+                println("-------------no owner or no document!!----------")
+                return Alert("Zapisz najpierw tytuł dokumentu")
+            }
+            var saved = "Zapisano"
+            println("-------------save------------new--chapter----------" + chapterTitle)
+            if (isOwner) {
+                var chapter = DocumentChapter.find(chapterId).getOrElse(DocumentChapter.create)
+                var where = try {
+                    //println("chapter index = " + chapterIndex )
+                    var i = tryo(chapterIndex.trim().toInt).getOrElse(0)
+                    if (i > document.chapters.size) document.chapters.size else i
+                } finally { 0 }
+                var isNew_? = chapter.title == ""
+                chapter.title = chapterTitle
+                chapter.content = chapterContent
+                chapter.document = document._id
+                chapter.save
+                val newChapters = document.chapters.filter(ch => ch != chapter._id)
+                document.chapters = (document.chapters.take(where) :+ chapter._id) ::: document.chapters.drop(where)
+                document.save
+                JsFunc("editDoc.closeAfterEdit", chapter._id.toString).cmd
+                
+            } else {
+                saved = "Brak uprawnień"
+                S.redirectTo("/resources/documents")
+                Alert("Brak uprawnień")
+            }
+        }
         
-  
-        val newChapter = Chapter("","",1)
+        def delete() = {
+            println("---------------------no----book-------------!!!!!!!!!!!----")
+            JsFunc("alert","Usuwanie!").cmd
+        }
 
-        document.chapters = (document.chapters.take(where) :+ newChapter) ::: document.chapters.drop(where)
-        document.save
-      } else {
-        saved = "Brak uprawnień"
-        println("---------------------no----book-------------!!!!!!!!!!!----")
-      }
-      Alert(saved) 
-    }
+        val list = List(("0", "0"), ("1", "1"), ("2", "2"), ("3", "3"), ("4", "4"))
+        val form =  "#chapterIDForm" #> SHtml.text(chapterId, chapterId = _, "style" -> "display:none;") &
+            "#chapterIndexForm" #> SHtml.text(chapterIndex, chapterIndex = _, "style" -> "display:none;") &
+            "#chapterTitleForm" #> SHtml.text(chapterTitle, chapterTitle = _) &
+            "#chapterLevelForm" #> SHtml.select(list, Full("0"), chapterLevel = _) &
+            "#chapterContentForm" #> SHtml.textarea(chapterContent, chapterContent = _) &
+            "#saveChapterForm" #> SHtml.ajaxSubmit("Zapisz", save) &
+            "#deleteChapterForm" #> SHtml.ajaxSubmit("Usuń", delete) andThen SHtml.makeFormsAjax
 
-    val form = "#chapterTitle" #> SHtml.text(chapterTitle, chapterTitle = _) &
-      "#chapterIndex" #> SHtml.select(list, Full("1"), chapterIndex = _) &
-      "#saveAddChapter" #> SHtml.ajaxSubmit("Zapisz", save) andThen SHtml.makeFormsAjax
-
-    "form" #> (in => form(in))
-  }
-
-
-  //main data - chapter content
-  def chapterData() = {
-    
-  }
-
-  def formEditChapter() = {
-    var title = ""
-    var content = ""
-    var level = ""
-    var subchapterIndex = "-1"
-
-    def save() {
-     
-    }
-
-    def delete() {
-     
-    }
-    
-    val list = List(("0", "0"), ("1", "1"), ("2", "2"), ("3", "3"), ("4", "4"))
-    val form = "#subchapterIndexForm" #> SHtml.text(subchapterIndex, subchapterIndex = _, "style" -> "display:none;") &
-      "#chapterTitleForm" #> SHtml.text(title, title = _) &
-      "#chapterLevelForm" #> SHtml.select(list, Full("0"), level = _) &
-      "#editor" #> SHtml.textarea(content, content = _) &
-      "#saveChapter" #> SHtml.submit("Zapisz", save) &
-      "#deleteChapter" #> SHtml.submit("Usuń", delete) andThen SHtml.makeFormsAjax
-      
-    "formEditSubchapter" #> (in => form(in))
-  }
+        "form" #> (in => form(in))
+    } */
 
 }

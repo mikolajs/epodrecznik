@@ -40,7 +40,7 @@ CKEDITOR.plugins.add( 'addFile',
 	      },
 	      {
 	       type : 'html',
-	       html : '<iframe src="/filestorage" width="100%" height="350px" frameborder="0" onload="getImageURLfromIFrame(this)" ></iframe>'
+	       html : '<iframe src="/filestorage" style="width:100%;min-height:250px;" frameborder="0" onload="getImageURLfromIFrame(this)" ></iframe>'
 	      }
             ]
           },

@@ -4,102 +4,88 @@
 <div class="lift:surround?with=resource;at=body">
 <head_merge>
 <script type="text/javascript" src="/jquery/ASCIIMathML.js"></script>
-<script src="/jquery/ebookedit.js"></script>
-<link rel="stylesheet" type="text/css" href="/style/ebook.css" />
+<script type="text/javascript" src="/jquery/dejavu.js"></script>
+<script type="text/javascript" src="/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="/jquery/ckeditorresource.js"></script>
+<script type="text/javascript" src="/jquery/departmentselect.js"></script>
+<script type="text/javascript" src="/jquery/editdoc.js"></script>
+<script>
+var departmentSelect = new Object();
+var editDoc = new Object();
+$(document).ready(function(){
+	departmentSelect = new DepartmentSelect();	
+	editDoc = new Document();
+	 
+	
+	
+	CKEDITOR.replace( 'docContent', {
+		height: 600,
+		extraPlugins : 'youTube,addImage,formula',
+		toolbar :[
+{ name: 'clipboard', groups: [ 'clipboard', 'undo' ], 
+	items: [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
+{ name: 'editing', groups: [ 'find', 'selection', 'spellchecker' ],
+		items: [ 'Find', 'Replace', '-', 'SelectAll']},
+{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ], 
+			items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ] },
+{ name: 'insert', 
+items: [ 'AddImage', 'Formula', 'YouTube', 'Table', 'HorizontalRule',  'SpecialChar', 'Iframe', 'Flash' ] },
+'/',
+{ name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ], 
+	items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl' ] },
+{ name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] },
+{ name: 'styles', items: [ 'Format','Styles', 'Font', 'FontSize' ] },
+{ name: 'colors', items: [ 'TextColor', 'BGColor' ] },
+{ name: 'tools', items: [  'ShowBlocks' ] }
+
+]
+	});
+	CKEDITOR.config.setStyles = [];
+	CKEDITOR.config.contentsCss = '/deckjs/themes/style/web-2.0.css';
+	CKEDITOR.config.disableNativeSpellChecker = false;
+});
+
+</script>
+<style>
+#articleWrapper {
+	margin-top: 100px;
+}
+
+label { width: 100px; float: left;}
+select {width: 150px;}
+input[type=submit] { width: 200px;}
+</style>
 </head_merge>
 
-		<div id="header" class="lift:EditArticleSn.ebookData">
-			<div id="bookHeader">
-				<div id="bookHeaderContent">
-					<h1>Tytuł</h1>
-					<p>Krótki opis</p>
-					Właściciel: <em>Nazwisko</em> <br />
-				</div>
-				<form class="lift:EditArticleSn.editBookTitle" method="POST">
-					<fieldset>
-						<legend>Edycja</legend>
-						<label for="bookTitle">Tytuł:</label><input type="text"
-							id="bookTitle" /><br /> Opis:<br />
-						<textarea id="bookDescription"></textarea>
-						<br /> <input id="saveEditBook" class="saveButton" />
-					</fieldset>
+		<div id="header">
+				<form  class="lift:EditDocumentSn.editData" method="POST">
+						<input id="docID" style="display:none;"/>
+						<div style="float: left;"><p><label for="docTitle">Tytuł:</label>
+						  <input type="text" id="docTitle"  style="width:350px;"/></p>
+						 <p><label>Opis:</label>
+						  <textarea id="docDescription" style="width:350px;height:100px;"></textarea>
+						</p>
+						</div>
+						<div style="float: right;;">
+						<p><label for="subjects">Przedmiot:</label><select id="subjects"></select><br></br>
+						<label for="departments">Dział:</label><select id="departments"></select><br></br>
+						<input id="departmentHidden" type="text" /> 
+						<label>Poziom:</label><select id="docLevel"></select></p>
+						<p>
+						<input id="docSave" class="saveButton" /> 
+						<input id="docDelete" class="deleteButton" onclick="return editDoc.deleteQuest()"/></p>
+						</div>
+						<div class="clear"></div>
+						<textarea id="docContent" ></textarea>
+						
+										
+				
 				</form>
-				<img src="/images/addico.png" class="leftButton"
-					id="imgEditBookTitle" />
-			</div>
-
-			<div class="lift:EditArticleSn.ebookTree">
-				<ol id="ebookTree">
-					<li><a href="">Rozdział</a></li>
-				</ol>
-				<form id="formNewChapter" class="lift:EditArticleSn.newChapter"
-					method="POST">
-					<fieldset>
-						<legend>Dodaj nowy rozdział:</legend>
-						<label for="chapterTitle">Tytuł</label><input id="chapterTitle"
-							type="text" /> <select id="chapterIndex"><option>1</option>
-							<option>2</option>
-							<option>3</option>
-							<option>4</option>
-							<option>5</option>
-						</select> <input id="saveAddChapter" />
-					</fieldset>
-				</form>
-			</div>
-			<img id="addNewChapterImg" src="/images/addico.png"
-				title="Dodaj rozdział" class="leftButton" />
-
-		</div>
-
-		<div id="editPermission">
-		<div>
-			Edytorzy:
-			<ul class="lift:EditArticleSn.showChapterPermission">
-				<li>Użyszkodnik <a href="">usuń</a>
-				</li>
-			</ul>
-		</div>
-			<form id="formAddPermissionMail"
-				class="lift:EditArticleSn.formAddPermission" method="POST">
-				<fieldset>
-					<legend>Dodaj edytora</legend>
-					<input id="addPermissionMail" /> <input id="addPermissionSubmit" class="saveButton"/>
-				</fieldset>
-			</form>
-			<img id="showAddPermissionMail" src="/images/addico.png"
-			class="leftButton" />
+			
 		</div>
 		
-
-		<div class="lift:EditArticleSn.chapterData">
-			<div id="chapter">
-				<h2>Rozdział</h2>
-				<p id="subChapterContent">treść początku rodziału</p>
-				<img src="/images/addico.png" id="editChapter" />
-			</div>
-			<img id="addSubchapter" />
-		</div>
-	</div>
-
-
-	<div id="formEditChapter">
-		<form class="lift:EditArticleSn.formEditChapter" method="POST">
-			<label for="chapterTitleForm">Tytuł:</label><input type="text"
-				value="" 3 id="chapterTitleForm" /> <label>Poziom:</label> <select
-				id="chapterLevelForm">
-				<option>0</option>
-				<option>1</option>
-				<option>2</option>
-				<option>3</option>
-				<option>4</option>
-			</select> <br />
-			<textarea id="editor"></textarea>
-			<input type="submit" id="saveChapter" /> <input type="submit"
-				value="Anuluj" id="cancelChapter" /> <input type="submit"
-				value="Usuń!" id="deleteChapter" />
-		</form>
-	</div>
-
+	
+	
 
 </div>
 </html>
