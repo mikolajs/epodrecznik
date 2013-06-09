@@ -42,5 +42,13 @@ class ShowQuestionSn {
              <td>{quest.level.toString}</td><td>{quest.dificult.toString}</td><td>{quest.public.toString}</td></tr>
          })
     }
-
+    
+    def showAllUserAndPublicQuest() = {
+         val userId = user.id.is
+         //wrong question - howto or query?????
+         QuizQuestion.findAll(("authorId"->userId)~("public"->true)).map(quest => {
+             <tr><td>{quest.question}</td><td>{quest.answer}</td><td>{quest.fake.mkString(" :: ")}</td>
+             <td>{quest.level.toString}</td><td>{quest.dificult.toString}</td><td>{quest.public.toString}</td></tr>
+         })
+    }
 }

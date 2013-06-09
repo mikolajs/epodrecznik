@@ -1,36 +1,79 @@
 <div class="lift:surround?with=resource;at=body">
 	<head_merge>
+	<script type="text/javascript" src="/ckeditor/ckeditor.js"></script>
+	<script type="text/javascript" src="/jquery/ckeditorresource.js"></script>
+	<script type="text/javascript" src="/jquery/ASCIIMathML.js"></script>
+	<script type="text/javascript" src="/jquery/dejavu.js"></script>
+	<script type="text/javascript" src="/jquery/departmentselect.js"></script>
+	<script type="text/javascript" src="/jquery/editquiz.js"></script>
 	
+	 <script>
+	 var department = Object();
+	 var editQuest = Object();
+	 
+$(document).ready(function() {
+	
+$( "#allQuizList" ).sortable();
+$( "#choosedQuizList" ).sortable();
+     
+      department = new DepartmentSelect();
+      department.initialize();
+	  editQuiz = new EditQuiz();
+
+});
+</script>
+<style>
+ .wrong {padding-left: 5px; display: block;}
+</style>
    
 	</head_merge>
-	<h1>Nieprawidłowy skopiowany plik!!!!!</h1>
-  <form>
-  <input type="text" id="wrongQuestHelp" />
-  <input type="text" id="wrongQuest" style="display:none;"/>
-  <img src="/images/addico.png" id="delWrongQuest"/><img src="/images/delico.png" id="delWrongQuest"/>
-  <p>
-  	 <input id="saveQuest" value="Dodaj" type="submit"/>
-  	 <input id="cancelQuest" value="Anuluj" type="submit"/>
+	
+ <div id="selectDep">
+ <form class="lift:EditQuestSn.choiseQuest" method="POST">
+    <label for="subjects">Przedmiot:</label><select id="subjects"></select>
+    <label for="departments">Dział:</label><select id="departments"></select>
+    <label for="levels">Poziom edukacyjny:</label><select id="levels"></select>
+    <input id="departmentHidden" />
+    <input id="choise" type="submit" />     
+ </form>
+</div>
+
+
+<div id="questEditor" title="Edycja pytania">
+
+ 
+<form class="lift:EditQuestSn.editQuest" method="POST">
+<input id="idQuest" style="display:none" type="text"/>
+<p><label for="titleQuiz">Tytuł:</label>
+<input type="text" id="titleQuiz"/></p>
+<p><label for="publicQuiz">Publiczny:</label><input type="checkbox" id="publicQuiz" /></p>
+<p><label for="descriptionQuiz">Opis testu:</label>
+ <textarea id="descriptionQuiz"></textarea></p>
+ <p>
+  	<input id="saveQuestVisible" value="Dodaj!" type="submit" onclick="return editQuiz.prepareToSave();"/>
+  	 <input id="saveQuest" value="Dodaj" type="submit" style="display:none;"/>
   	 <input id="deleteQuest" value="Usuń" type="submit"/>
-  </p>
+</p>
   </form>
- 
- <div id="questList">
-  <table id="datatable"><thead><tr><th>Pytanie</th><th>P</th><th></th></tr></thead>
-  <tbody class="lift:EditQuizSn.showQuests"><tr><td></td><td></td><td></td></tr></tbody>
-  <tfoot><tr><td>Wybierz</td><td>Pytanie</td><td>Edycja</td></tr></tfoot>
-  </table>
- 
+  
+  <div class="clear"></div>
+</div>
+ <div id="listColumns">
+ <div id="choosenQuestList">
+ <div class="questionDiv">
+ <p class="questionEditList"></p>
+ <p class="answers"></p>
+ <strong title="trudność">5</strong>
  </div>
- 
-  
-  
-  <div class="rigthList">
-  <img src="/images/addico.png" />
- 
-  
-  
-  </div>
+ </div>
+ <div id="aivalibleQuestList">
+ <div class="questionDiv">
+ <p class="questionEditList"></p>
+ <p class="answers"></p>
+ <strong title="trudność">5</strong>
+ </div>
+ </div>
+ </div>
   
   
 </div>

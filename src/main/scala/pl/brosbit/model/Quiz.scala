@@ -15,6 +15,6 @@ object Quiz extends MongoDocumentMeta[Quiz] {
 case class Quiz(var _id: ObjectId,  var authorId: Long, var description: String,
 				var title: String, var departmentInfo: String, var departmentId:ObjectId, 
 				var subjectInfo: String, var subjectLev:Int, var subjectId:ObjectId,
-				var questions: List[ObjectId])  extends MongoDocument[Quiz] {
+				var questions: List[String])  extends MongoDocument[Quiz] {
   def meta = Quiz
 }

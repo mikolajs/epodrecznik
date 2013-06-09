@@ -85,7 +85,7 @@ class Boot {
         Menu("Edycja haseł") / "resources" / "editdictionary" / ** >> LocGroup("extra") >> Hidden >> isTeacher,
         Menu("Edycja Slajdów") / "resources" / "editslide" / ** >> LocGroup("extra") >> Hidden >> isTeacher,
         Menu("Edycja quizów") / "resources" / "editquiz" / ** >> LocGroup("extra") >> Hidden >> isTeacher,
-        Menu("Edycja pytań") / "resources" / "editquest" >> LocGroup("extra"),// >> Hidden >> isTeacher,
+        Menu("Edycja pytań") / "resources" / "editquest" >> LocGroup("extra") >> Hidden >> isTeacher,
         Menu("Edytuj książkę") / "resources" / "editdocument" / ** >> LocGroup("extra") >> Hidden >> isTeacher, 
         Menu("Pokaz") / "slide" / ** >> LocGroup("extra") >> Hidden,
         Menu("Czytaj") / "document" / ** >> LocGroup("extra") >> Hidden,

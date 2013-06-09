@@ -15,19 +15,27 @@ var EditQuest =  dejavu.Class.declare({
 	deleteQuestion : function(id) {
 		alert('DELETE ' + id);
 		this._deleteRow(id);
+		this.isOpen = false;
 		$('#questEditor').dialog('close');
 	}, 
 	
 	insertQuestion : function(id) {
-		alert('INSERT ' + id);
-		var array = new Array();
-		if(id == 0) {
-			//howto check new or edit?????
-			this._insertNewRow(array, id)
+		
+		var array = this._getArrayFromForm();
+		var idForm = $('#idQuest').val();
+		
+		if(idForm == "0" || jQuery.trim(idForm) == "") {
+			var nodeTr = this._insertNewRow(array, id);
+			nodeTr.id = id;
+			var self = this;
+			$(nodeTr).click(function(){
+				self.editQuestion(this);
+			});			
 		}
 		else {
 			this._editRow(array, id);
 		}
+		this.isOpen = false;
 		$('#questEditor').dialog('close');
 	},
 	
@@ -55,13 +63,16 @@ var EditQuest =  dejavu.Class.declare({
     },
     
     startNewQuest : function() {
-    	this._resetFormEdit();
     	if(this.isOpen) return;
     	this.isOpen = true;
+    	this._resetFormEdit();
+    	CKEDITOR.instances.questionQuest.setData('');
     	$('#questEditor').dialog('open');
     },
     
     editQuestion : function(elem) {
+    	if(this.isOpen) return;
+    	this.isOpen = true;
     	this._resetFormEdit();
     	var $tr = $(elem);
     	var id = $tr.attr('id');
@@ -70,6 +81,7 @@ var EditQuest =  dejavu.Class.declare({
     		var $td = $(this);
     		switch (index) {
     		case 0:
+    			//$("#questionQuest").val($td.text());
     			CKEDITOR.instances.questionQuest.setData($td.text());
     			break;
     		case 1:
@@ -99,7 +111,6 @@ var EditQuest =  dejavu.Class.declare({
     			break;
     		}
     	});
-    	isOpen = true;
     	$('#questEditor').dialog('open');
     },
     
@@ -118,8 +129,22 @@ var EditQuest =  dejavu.Class.declare({
 		if(inInput.length > 0) fakeList.push(inInput);
 		
 		var fakeStr = fakeList.join(';');
-		alert("Błędne odpowiedzi: " +fakeStr);
 		return fakeStr;
+    },
+    
+    _getArrayFromForm : function() {
+    	var array = new Array();
+    	array.push($('#questionQuest').val());
+    	array.push($('#answerQuest').val());
+    	var fakeHTML = "";
+    	var fakes = this._getFakeAnswerStringFromInputs().split(';');
+    	for(i in fakes) fakeHTML += '<span class="wrong">' + fakes[i] + '</span>'; 
+    	array.push(fakeHTML);
+    	array.push($('#dificultQuest option:selected').val());
+    	var check = "NIE"
+    	if( document.getElementById('publicQuest').checked)  check = "TAK";
+    	array.push(check);
+    	return array;
     },
     
     _resetFormEdit : function() {
@@ -128,28 +153,27 @@ var EditQuest =  dejavu.Class.declare({
     },
     
     _getTrNodeContainsId : function (id) {
-		var trNodes = self.oTable.fnGetNodes();
+		var trNodes = this.oTable.fnGetNodes();
 		for (i in trNodes) {	
 			if (trNodes[i].id == id)
 				return trNodes[i];
 		}
 	},
  
-    _deleteRow = function(id) {
-		var tr = this.getTrNodeContainsId(id);
+    _deleteRow : function(id) {
+		var tr = this._getTrNodeContainsId(id);
 		this.oTable.fnDeleteRow(tr);
 	},
  
-	_insertNewRow = function(array, id){
+	_insertNewRow : function(array, id){
 		var indexes = this.oTable.fnAddData(array);
-		//add data tr id???
 		return this.oTable.fnGetNodes(indexes[0]);
 	},
  
  
 	_editRow : function(array, id) {  
-		var tr = self.getTrNodeContainsId(id);
-		if (tr) self.oTable.fnUpdate(array, tr);  
+		var tr = this._getTrNodeContainsId(id);
+		if (tr) this.oTable.fnUpdate(array, tr);  
 	}
     
 	
