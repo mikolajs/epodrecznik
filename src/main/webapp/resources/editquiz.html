@@ -9,7 +9,7 @@
 	
 	 <script>
 	 var department = Object();
-	 var editQuest = Object();
+	 var editQuiz = Object();
 	 
 $(document).ready(function() {
 	
@@ -23,13 +23,28 @@ $( "#choosedQuizList" ).sortable();
 });
 </script>
 <style>
- .wrong {padding-left: 5px; display: block;}
+#leftColumn, #rightColumn { 
+	list-style-type: none; margin: 5px; padding: 5px; 
+float: left; margin-right: 10px; background: #eeeeee; padding: 5px; width: 450px; max-height: 600px;
+overflow-y:scroll; }
+ul.dropselected li, ul.dropall li {margin: 5px; padding: 5px; 
+border: dotted 1px #555; background-color: #fff !important; background-image: none !important;}
+ul.dropall, ul.dropselected {max-height:600px; min-height: 100px;}
+ .wrong {padding-left: 10px; display:inline; text-decoration:line-through;}
+ .rightAnswer {padding-left: 10px; display: inline; text-decoration: underline; color: red;}
+ .dropall strong, .dropselected strong {
+ 	position: absolute;
+ 	padding: 5px;
+ 	bottom: 0px;
+ 	right: 0px;
+ 	border: solid 1px #333;
+ } 
 </style>
    
-	</head_merge>
+</head_merge>
 	
  <div id="selectDep">
- <form class="lift:EditQuestSn.choiseQuest" method="POST">
+ <form class="lift:EditQuizSn.choiseQuest" method="POST">
     <label for="subjects">Przedmiot:</label><select id="subjects"></select>
     <label for="departments">Dział:</label><select id="departments"></select>
     <label for="levels">Poziom edukacyjny:</label><select id="levels"></select>
@@ -37,42 +52,44 @@ $( "#choosedQuizList" ).sortable();
     <input id="choise" type="submit" />     
  </form>
 </div>
-
+<br/><br/>
 
 <div id="questEditor" title="Edycja pytania">
 
  
-<form class="lift:EditQuestSn.editQuest" method="POST">
-<input id="idQuest" style="display:none" type="text"/>
+<form class="lift:EditQuizSn.editQuiz" method="POST">
+<p>
+<input id="questionsQuiz" type="text" style="display:none;"/></p>
 <p><label for="titleQuiz">Tytuł:</label>
-<input type="text" id="titleQuiz"/></p>
-<p><label for="publicQuiz">Publiczny:</label><input type="checkbox" id="publicQuiz" /></p>
-<p><label for="descriptionQuiz">Opis testu:</label>
- <textarea id="descriptionQuiz"></textarea></p>
- <p>
-  	<input id="saveQuestVisible" value="Dodaj!" type="submit" onclick="return editQuiz.prepareToSave();"/>
-  	 <input id="saveQuest" value="Dodaj" type="submit" style="display:none;"/>
-  	 <input id="deleteQuest" value="Usuń" type="submit"/>
+<input type="text" id="titleQuiz"/>
+<label for="publicQuiz">Publiczny:</label><input type="checkbox" id="publicQuiz" />
+<input id="saveQuizVisible" value="Dodaj!" type="submit" onclick="return editQuiz.prepareToSave();"/>
+  	 <input id="saveQuiz" value="Dodaj" type="submit" style="display:none;"/>
+  	 <input id="deleteQuizVisible" onclick="return editQuiz.prepareToDelete();" value="Usuń!" type="submit"/>
+  	 <input id="deleteQuiz" value="Usuń" style="display:none;" type="submit"/>
 </p>
+<p><label for="descriptionQuiz">Opis testu:</label>
+ <textarea id="descriptionQuiz">Descript</textarea></p>
+ 
   </form>
   
   <div class="clear"></div>
 </div>
- <div id="listColumns">
- <div id="choosenQuestList">
- <div class="questionDiv">
- <p class="questionEditList"></p>
- <p class="answers"></p>
- <strong title="trudność">5</strong>
+
+
+ <div id="listColumns" class="lift:EditQuizSn.questionList">
+ 
+<div id="leftColumn">
+ <ul class="dropselected">
+ </ul>
  </div>
+ <div id="rightColumn">
+ <ul class="dropall">
+ <li class="questLiAll">
+ </li>
+ </ul>
  </div>
- <div id="aivalibleQuestList">
- <div class="questionDiv">
- <p class="questionEditList"></p>
- <p class="answers"></p>
- <strong title="trudność">5</strong>
- </div>
- </div>
+ 
  </div>
   
   

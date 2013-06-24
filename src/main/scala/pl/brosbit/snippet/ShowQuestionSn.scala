@@ -26,8 +26,8 @@ class ShowQuestionSn {
     def showAllUserQuizes() = {
         val userId = user.id.is
         
-        "#tr" #> Quiz.findAll("authorId"->userId).map(quiz => {
-            <tr><td><a href={"resources/editquiz/"+ quiz._id.toString}>{quiz.title}</a></td>
+        "tr" #> Quiz.findAll("authorId"->userId).map(quiz => {
+            <tr><td><a href={"/resources/editquiz/"+ quiz._id.toString}>{quiz.title}</a></td>
             <td>{quiz.departmentInfo}</td><td>{quiz.subjectInfo}</td>
             <td>{quiz.questions.length.toString}</td><td>{quiz.subjectLev.toString}</td>
             <td>{quiz.description}</td>

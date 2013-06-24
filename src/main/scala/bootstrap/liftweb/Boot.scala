@@ -55,7 +55,8 @@ class Boot {
 
     if (DB.runQuery("select * from users where lastname = 'Administrator'")._2.isEmpty) {
       val u = User.create
-      u.lastName("Administrator").role("a").password("123qwerty").email("mail@mail.org").validated(true).save
+      u.lastName("Administrator").role("a").password("123qwerty").email("mail@mail.org").
+      	superUser(true).validated(true).save
     }
 
     val isAdmin = If(() => User.loggedIn_? && (User.currentUser.open_!.role.is == "a"),

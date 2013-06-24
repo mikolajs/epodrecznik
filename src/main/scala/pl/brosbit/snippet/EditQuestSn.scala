@@ -43,7 +43,7 @@ class EditQuestSn extends BaseSlide {
     }
     
     def showQuests() = {
-        val userId = 1L // User.currentUser.open_!.id.is
+        val userId = User.currentUser.open_!.id.is
         println("departmentId: " + departmentId + "   subjectId: " + subjectId + " level: ")
         "tr" #> QuizQuestion.findAll(("authorId"->userId)~("subjectId"->subjectId)~
                 ("departmentId"->departmentId)~("level"->level.toInt)).map(quest => {
@@ -65,12 +65,13 @@ class EditQuestSn extends BaseSlide {
         var dificult = "2"
             
         def save():JsCmd = {
-            
-            println("+++++++++++++++++++ SAVE QUEST ")
-            printParam
+            //println("+++++++++++++++++++ SAVE QUEST ")
+            //printParam
             ///dodać test uprawnień
+            val userId = User.currentUser.open_!.id.is
             val quest = QuizQuestion.find(id).getOrElse(QuizQuestion.create)
-            quest.authorId = 1L  //zmienić!!!!!!!!!!!!
+            if(quest.authorId != 0L && quest.authorId != userId) return Alert("To nie twoje pytanie!")
+            quest.authorId = userId
             quest.answer = answer
             quest.fake = wrongAnswers.split(";").toList
             quest.question = question
@@ -85,10 +86,14 @@ class EditQuestSn extends BaseSlide {
         
         def delete():JsCmd = {
              println("+++++++++++++++++++ Del QUEST ")
+            val userId = User.currentUser.open_!.id.is 
             QuizQuestion.find(id) match {
                 case Some(quest) => {
-                    quest.delete
-                    JsFunc("editQuest.deleteQuestion", quest._id.toString).cmd
+                    if(quest.authorId == userId) {
+                        quest.delete
+                        JsFunc("editQuest.deleteQuestion", quest._id.toString).cmd
+                    }
+                    else Alert("To nie twoje pytanie!")
                 }
                 case _ => Alert("Nie znaleziono pytania!")
             }
