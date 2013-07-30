@@ -17,7 +17,7 @@ import Helpers._
 import  _root_.net.liftweb.http.js.JsCmds._
 import  _root_.net.liftweb.http.js.JsCmd
 import  _root_.net.liftweb.http.js.JE._
-import com.sun.org.omg.CORBA._IDLTypeStub
+///import com.sun.org.omg.CORBA._IDLTypeStub
 
 class ShowQuestionSn {
     
@@ -27,10 +27,10 @@ class ShowQuestionSn {
         val userId = user.id.is
         
         "tr" #> Quiz.findAll("authorId"->userId).map(quiz => {
-            <tr><td><a href={"/resources/editquiz/"+ quiz._id.toString}>{quiz.title}</a></td>
+            <tr><td><a href={"/quiz/"+ quiz._id.toString} target="_blank">{quiz.title}</a></td>
             <td>{quiz.departmentInfo}</td><td>{quiz.subjectInfo}</td>
             <td>{quiz.questions.length.toString}</td><td>{quiz.subjectLev.toString}</td>
-            <td>{quiz.description}</td>
+            <td>{quiz.description}</td><td><a href={"/resources/editquiz/" + quiz._id.toString}>Edytuj</a></td>
             </tr>
         })
     }

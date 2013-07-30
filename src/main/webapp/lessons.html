@@ -10,6 +10,7 @@
            $(document).ready(function() {
         	   $("#dataTable tbody tr").children("td.tit").click(function(){
 	    			$('#hiddenAjaxText').val($(this).attr('id')).trigger('blur');
+	    			$('#ajaxLesson').empty();
 	    			$('#showLesson').dialog('open');
 	    		});
         	   $('#showLesson').dialog({

@@ -102,7 +102,7 @@ class EditQuestSn extends BaseSlide {
         val dificults = 2 to 6 map( i => {val iS = i.toString;(iS, iS)})        
         
        val form = "#idQuest" #> SHtml.text(id, id = _) &
-        "#questionQuest" #> SHtml.textarea(question, x => question = x.trim) &
+       "#questionQuest" #> SHtml.textarea(question, x => question = x.trim) &
        "#answerQuest" #> SHtml.text(answer, x => answer = x.trim) &
        "#wrongQuest" #> SHtml.text(wrongAnswers, x => wrongAnswers = x.trim) &
        "#dificultQuest" #> SHtml.select(dificults, Full(dificult), dificult = _) &

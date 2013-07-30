@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="http://code.jquery.com/jquery.js"></script>
+ 
+    <script type="text/javascript" src="/jquery/dejavu.js"></script>
+    <script src="/jquery/showquiz.js"></script>
+    <link href="/style/bootstrap.min.css" rel="stylesheet" media="screen">
+    <script src="/jquery/bootstrap.min.js"></script>
+    <style type="text/css">
+    #header { background: #1a1a1a; 
+            position: absolute;
+        top: 0; font-weight: bold; 
+        text-align: center;
+        width: 100%;
+                color: #eee; margin: 0 auto; border 0 0 2px 0 solid red;
+                }
+  #mainContainer { max-width: 750px; margin: 0 auto; padding-top: 50px;}
+#header  > ul { position: relative; top 0; margin: 0; padding: 0; }
+#header  > ul > li { display: inline; decoration: none; vertical-align: middle; 
+							border: 0 3px 0 3px 0; padding: 0 5px 0 5px;
+                             font: 12px serif; color: green; }
+                                
+#header >  ul > li > span { font: 15px sans; color: #eee; padding:0;}
+#header > ul > li > a { color: orange; text-decoration: none; font: 16px sans; vertical-align: middle;}
+#header >  ul > li > img { vertical-align: middle; padding: 0; }
+ #questionContent {min-height: 350px; margin: auto 0; border: solid 1px #ccc; padding: 5px;text-align:center;
+ font-size: 1.2em;}
+
+ #answerCloud > ul > li {display:inline-flex; padding: 5px 10px 5px 10px;}
+ #answerContent { width: 400px; margin-top: 10px;}
+ #giveAnswer {width: 80px; height: 30px;}
+    </style>
+   <script type="text/javascript">
+   	var showQuiz = new Object();
+   	
+   	function afterAnswer(wasCorrect){
+ 	   showQuiz.afterAnswered(wasCorrect);
+   	}
+   	
+   	$(document).ready(function(){
+   		showQuiz = new ShowQuiz();
+   	});
+   	
+   </script>
+
+</head>
+<body class="ShowQuizSn.title">
+    
+<div id="header" class="lift:ShowQuizSn.title">
+   <ul>
+    <li><a href="/index">podrecznik.edu.pl</a></li>
+    <li>Temat: <span id="title">Jakiś temat</span></li>
+    <li>Przedmiot: <span id="subject">Fizyka liceum</span></li>
+    <li>Etap:<span id="etap">3</span></li>
+    <li id="questionsNr" style="display:none;"></li>
+   </ul>  
+</div>
+
+<div id="mainContainer">
+<div class="container-fluid">
+<div class="row-fluid">
+    <div  class="span1">   
+    <span id="questNumberAnswerInfo">d/x</span><br/>
+    <canvas id="canvasAnswerInfo" height="300" width="30" style="border: 2px solid #666"></canvas><br/>
+    <span id="percentAnswerInfo">100%</span>
+    </div>
+    
+   <div class="lift:ShowQuizSn.firstQuest span11" id="questionContent" ><u></u></div>
+   <div class="span11 offset1" >    
+   		<form class="lift:ShowQuizSn.getAnswer" method="POST">
+        <label for="answerContent" style="display:inline;">Odpowiedź: </label> <input type="text" id="answerContent" />
+        <input type="submit" value="OK" id="giveAnswer" />
+        </form>
+   </div>
+    <div id="answerCloud"  class="lift:ShowQuizSn.possibleAnswers span12">
+    <ul></ul>
+  </div>
+</div>
+</div>
+</div>
+
+ 
+</body>
+</html>
