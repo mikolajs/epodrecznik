@@ -73,14 +73,13 @@ class Boot {
     def sitemap() = SiteMap(
       List(
         Menu("Wiadomości") / "index" >> LocGroup("public"),
-       // Menu("Encyklopedia") / "dictionary" >> LocGroup("public"),
         Menu("Lekcje") / "lessons" >> LocGroup("public"),
+        Menu("Encyklopedia") / "dictionary" >> LocGroup("public"),
         Menu("Kontakt") / "contact" >> LocGroup("public"),
         Menu("Nauczyciel") / "resources" / "index" >> LocGroup("public") >> isTeacher,
         Menu("Kursy") / "resources" / "courses" >> LocGroup("resource") >> isTeacher,  
         Menu("Lekcje") / "resources" / "lessons" >> LocGroup("resource") >> isTeacher,  
         Menu("Prezentacje") / "resources" / "slides" >> LocGroup("resource") >> isTeacher,
-        //Menu("Grafika") / "resources" / "images" >> LocGroup("resource") >> isTeacher,
         Menu("Artykuły") / "resources" / "documents" >> LocGroup("resource") >> isTeacher,
         Menu("Testy") / "resources" / "quizes" >> LocGroup("resource") >> isTeacher,
         Menu("Zadania") / "resources" / "editquest" >> LocGroup("resource") >> isTeacher,
@@ -92,8 +91,9 @@ class Boot {
         Menu("Edytuj książkę") / "resources" / "editdocument" / ** >> LocGroup("extra") >> Hidden >> isTeacher, 
         Menu("Edytuj hasło") / "resources" / "editheadword" / ** >> LocGroup("extra") >> Hidden >> isTeacher, 
         Menu("Pokaz") / "slide" / ** >> LocGroup("extra") >> Hidden,
-        Menu("Czytaj") / "document" / ** >> LocGroup("extra") >> Hidden,
-        Menu("Czytaj") / "quiz" / ** >> LocGroup("extra") >> Hidden,
+        Menu("Czytaj dokument") / "document" / ** >> LocGroup("extra") >> Hidden,
+        Menu("Quiz") / "quiz" / ** >> LocGroup("extra") >> Hidden,
+        Menu("Hasło") / "headword" / ** >> LocGroup("extra") >> Hidden,
         Menu("Image upload") / "imgstorage" >> LocGroup("extra") >> Hidden >> isTeacher,
         Menu("Administrator") / "admin" / "admin" >> LocGroup("admin") >> isAdmin,
         Menu("Przedmioty") / "admin" / "subjects" >> LocGroup("admin") >> isAdmin,
@@ -139,6 +139,10 @@ class Boot {
         ParsePath("quiz" :: quizId :: Nil, _, _, _), _, _) =>
         RewriteResponse(
           "quiz" :: Nil, Map("id" -> quizId))
+       case RewriteRequest(
+        ParsePath("headword" :: headwordId :: Nil, _, _, _), _, _) =>
+        RewriteResponse(
+          "quiz" :: Nil, Map("id" -> headwordId))
     })
     /*
      * Show the spinny image when an Ajax call starts

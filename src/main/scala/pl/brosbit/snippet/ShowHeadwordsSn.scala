@@ -13,8 +13,24 @@ import json.JsonDSL._
 import json.JsonAST.JObject
 import json.JsonParser
 import org.bson.types.ObjectId
-import net.liftweb.common.Empty
 
 class ShowHeadwordsSn {
-
+     val subjectId = S.param("w").openOr("0")
+     val subject = Subject.find(subjectId).getOrElse({
+         	val subList = Subject.findAll
+         	if(subList.isEmpty) Subject.create
+         	else subList.head
+         })
+     
+      def showWords() = {
+          if(subject.full == "") S 
+          "li" #> Dictionary.findAll("subject"->subjectId).map(dict =>
+              <li><a href={"/headword?w="+ dict._id.toString} target="_blanck">dict.headword</a> 
+              <a href={"/resources/editheadword/"+dict._id.toString}><img src="/images/editico.png" /></a></li>)
+      }
+      
+      def showSubjects = {
+          val subjects = Subject.findAll.map(s => (s._id.toString, s.full))
+          "#choiseSubject" #> SHtml.select(subjects, Full(subject._id.toString), x => x)
+      }
 }

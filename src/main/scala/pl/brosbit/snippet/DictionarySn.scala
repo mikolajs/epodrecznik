@@ -19,7 +19,6 @@ class DictionarySn {
     
     def searchEntry() = {
         var entry = ""
-        //var allSubjects = Subject.findAll.map(sub => (sub.full,sub.full))
         
         def search(){
         	S.redirectTo("/dictionary?e="+entry)
@@ -32,25 +31,15 @@ class DictionarySn {
     }
     
     def searchResult() = {
-        val entry = S.param("e").getOrElse("")
-        "ul" #> Dictionary.findAll(("entry"->entry)).map(dict => {
-            "li *" #> <a href={"/dictionary?e=" + entry + "&s=" + dict._id.toString}>{dict.entry} 
-            			<span> - [{dict.subjectName}]</span></a>
+        val word = S.param("w").getOrElse("")
+        "ul" #> Dictionary.findAll(("headword"->word)).map(dict => {
+            "li *" #> <a href={"/headword?e=" + word + "&s=" + dict._id.toString} target="_blanck"> 
+            			{dict.headword} <span> - [{dict.subjectName}]</span></a>
         })              
     }
     
-    def showEntry() = {
-        val id = S.param("s").getOrElse("")
-        Dictionary.find(id) match {
-            case Some(dict) => {
-                "#showEntry" #> <section><h2>{dict.entry}</h2>{Unparsed(dict.content)}</section>
-            }
-            case _ => "#showEntry" #> <span></span>
-        }
-    }
-    
     def autocomplete() = {
-        val entries = Dictionary.findAll.map(dict => "'" + dict.entry + "'")
+        val entries = Dictionary.findAll.map(dict => "'" + dict.headword + "'")
         "script" #> <script>{"var availableTags=[" + entries.mkString(", ") +"];"}</script>
     }
 

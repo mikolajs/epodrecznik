@@ -3,59 +3,24 @@
     
 <div class="lift:surround?with=resource;at=body">
     <head_merge> 
-   
        <script>
-       var oTable = $();
-       var oTablePrivate = $();
-       $(document).ready(function() {
-            oTable = $('#datatable').dataTable({
-    			"sPaginationType": "two_button",
-    			"bFilter": true,
-    			"iDisplayLength": 20,
-    			"bLengthChange": true,
-    		    "oLanguage": {
-    		        "sSearch": "Filtruj wiersze: ",
-    		        "sZeroRecords": "Brak danych do wyświetlenia",
-    		        "sInfoEmpty": "Brak danych do wyświetlenia",
-    		        "sEmptyTable": "Brak danych do wyświetlenia",
-    		        "sInfo": "Widzisz wiersze od _START_ do _END_  z wszystkich _TOTAL_",
-    		        "oPaginate": {
-    		        	"sPrevious": "Poprzednie",
-    			        "sNext": "Następne",
-    			        "sFirst": "Początek",
-    			        "sLast": "Koniec",
-    		        },
-    		        "sInfoFiltered": " - odfiltrowano z _MAX_ wierszy",
-    		        "sLengthMenu": 'Pokaż <select>'+
-    		        '<option value="20">20</option>'+
-    		        '<option value="50">50</option>'+
-    		        '<option value="100">100</option>'+
-    		        '<option value="-1">całość</option>'+
-    		        '</select> wierszy'
-    		    }
-    		      });
-       });
+      function choiseSubject(elem) {
+    	 var val = $(elem).children(':selected').val(); 
+     	 document.location.href = "/resources/headwords?w="+ val;
+      }
        </script>
     </head_merge>
 <div>
 <h2>Hasła</h2>
-<a href="/resources/editheadwords/0"><img src="/images/addico.png">Dodaj</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-<table id="datatable">
-<thead>
-<tr><th>Hasło</th><th>Przedmiot</th><th>Poziom</th><th>Edycja</th></tr>
-</thead>
-<tbody class="lift:ShowHeadWordsSn.showAllUserQuizes">
-<tr><td></td><td></td><td></td><td></td></tr>
-</tbody>
-<tfoot>
-<tr><th>Hasło</th><th>Przedmiot</th><th>Poziom</th><th>Edycja</th></tr>
-</tfoot>
-</table>
-</div>    
+<div class="lift:ShowHeadwordsSn.showSubjects">
+<span>Wybierz przedmiot: </span><select id="choiseSubject" onchange="choiseSubject(this)"></select>
+</div>
+<a href="/resources/editheadword/0"><img src="/images/addico.png">Dodaj</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
 
-
-    </div>
+<div class="lift:ShowHeadwordsSn.showWords">
+<ul><li></li></ul>   
+</div>
    
 </html>
