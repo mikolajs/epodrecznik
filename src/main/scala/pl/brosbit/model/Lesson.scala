@@ -12,15 +12,13 @@ case class LessonContent(what:String, link:String, title:String, descript:String
 object Lesson extends MongoDocumentMeta[Lesson] {
   override def collectionName = "lessons"
   override def formats = super.formats + new ObjectIdSerializer + new DateSerializer
-  def create = new Lesson(ObjectId.get, false, "author", 0L,  "", "" ,
-          		new ObjectId("000000000000000000000000"), "", "", 0, 
-          		new ObjectId("000000000000000000000000"), 0, Nil)
+  def create = new Lesson(ObjectId.get, false, 0, 0L,  "",  
+          		new ObjectId("000000000000000000000000"), Nil)
 }
 
-case class Lesson(var _id: ObjectId,  var public:Boolean, var authorName: String, 
-        		var authorId:Long, var title: String, var departmentInfo: String, var departmentId:ObjectId, 
-				 var moderator: String, var subjectInfo: String, var subjectLev:Int, 
-				 var subjectId:ObjectId, var lev: Int, var contents: List[LessonContent]) 
+case class Lesson(var _id: ObjectId,  var public:Boolean, var nr: Int,
+        		var authorId:Long, var title: String, 
+				 var courseId:ObjectId, var contents: List[LessonContent]) 
 				 extends MongoDocument[Lesson] {
   def meta = Lesson
 }

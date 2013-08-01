@@ -8,7 +8,7 @@
            var oTable = $();
            var oTablePrivate = $();
            $(document).ready(function() {
-        	   $("#dataTable tbody tr").children("td.tit").click(function(){
+        	   $("#dataTable tbody tr").click(function(){
 	    			$('#hiddenAjaxText').val($(this).attr('id')).trigger('blur');
 	    			$('#ajaxLesson').empty();
 	    			$('#showLesson').dialog('open');
@@ -51,16 +51,10 @@
                 
              });
              
-             function selectSubject(elem){
-            	 var val = $(elem).children(':selected').val();
-            	 if (val != 'Wszystkie') oTable.fnFilter(val,2);
-            	 else oTable.fnFilter( '.+',2,true);
-             }
-             function selectLevel(elem){
-            	 var val = $(elem).children(':selected').val();
-            	 if (val != '0') oTable.fnFilter(val,3);
-            	 else oTable.fnFilter('.+',3,true);
-             }
+           function courseSelect(elem){
+          	 var val = $(elem).children(':selected').val();           	
+          	 document.location.href = "/lessons?c="+ val;
+           }
        </script>
        <style>
        #lessonList { list-style-type: none; margin: 0; padding: 0; }
@@ -91,25 +85,21 @@
  <div id="boxText">
   <em style="color:#c44">* Kliknij na temat lekcji w tabelce, aby zobaczyć elementy lekcji.</em>
   <br/><br/>
-  <div class="lift:LessonsSn.subjectSelect theSelects" >
-  <span>Wybierz przedmiot:</span>
-   <select id="subjectSelect" onchange="selectSubject(this)"></select>
- 	<span>Wybierz poziom edukacyjny:</span>
-   <select onchange="selectLevel(this)">
-   <option value="0">Wszystkie</option>
-   <option value="1">I</option>
-   <option value="2">II</option>
-   <option value="3">III</option>
-   <option value="4">IV</option>
-   </select>
+  <div class="lift:LessonsSn.courseSelectPublic theSelects" >
+  <span>Wybierz kurs:</span>
+  <select id="courseSelect" onchange="courseSelect(this)"><option></select>
+  </div>
+  <div id="courseInfo" class="lift:LessonsSn.courseDescription theSelects">
+  <span>Opis kursu:</span>
+  <p></p>
   </div>
   <br/><br/>
   <div id="themeList" class="lift:LessonsSn.publicLessons dataTable_wrapper">
             <table id="dataTable" class="display" >
-                <thead><tr><th>Tytuł</th><th>Dział</th><th>Przedmiot</th><th>Poziom edukacyjny</th></tr></thead>
-                <tbody><tr><td><a href="">To jest tytuł</a></td><td></td></tr></tbody>
+                <thead><tr><th>LP</th><th>Tytuł</th></tr></thead>
+                <tbody><tr><td></td><td></td></tr></tbody>
                  <tfoot>
-                 	<tr><th>Tytuł</th><th>Dział</th><th>Przedmiot</th><th>Poziom edukacyjny</th></tr>
+                 	<tr><th>LP</th><th>Tytuł</th></tr>
                  </tfoot>
             </table>
         </div>

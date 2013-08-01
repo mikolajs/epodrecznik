@@ -7,11 +7,7 @@ import http.{S,SHtml, RequestVar}
 import common._
 import util._
 import pl.brosbit.model._
-import mapper.By
 import http.js.JsCmds.SetHtml
-import json.JsonDSL._
-import json.JsonAST.JObject
-import json.JsonParser
 import org.bson.types.ObjectId
 import Helpers._
 import http.js.JsCmds._
@@ -70,9 +66,7 @@ class ShowQuizSn {
                 if(answer.trim == questOld.get.answer) true;
                 else false
             } else true
-            
-            println("wasCorrect ============ "+ wasCorrect.toString)
-            
+ 
             questNow.set(questNow.is + 1)
             if(wasCorrect) correct.set(correct.is + 1)
             if(questNow.is >= quiz.questions.length) proceedEndQuiz(wasCorrect)
@@ -83,15 +77,12 @@ class ShowQuizSn {
             
             val percentCorrect = (correct * 100) / quiz.questions.length
             
-            println("percentCorrect ============= " + percentCorrect.toString)
             SetHtml("questionContent", <div><h1>KONIEC</h1>
             		<h2>Twój wynik to: {percentCorrect.toString()} %</h2>
             		</div>) & JsFunc("afterAnswer", wasCorrect.toString).cmd
         }
         
         def proceedNextQuiz(wasCorrect:Boolean):JsCmd = {
-            
-            println("proceedNextQuiz ============================ " + questNow.is.toString)
             
             val questNew = QuizQuestion.find(quiz.questions(questNow.is))
             

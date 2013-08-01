@@ -8,7 +8,7 @@
            var oTable = $();
            var oTablePrivate = $();
            $(document).ready(function() {
-        	    $("#dataTable tbody tr").children("td.tit").click(function(){
+        	    $("#dataTable tbody tr").click(function(){
         	    			$('#hiddenAjaxText').val($(this).attr('id')).trigger('blur');
         	    			$('#lessonBox').dialog('open');
         	    		});     	    		
@@ -49,16 +49,11 @@
                 
              });
              
-             function selectSubject(elem){
-            	 var val = $(elem).children(':selected').val();
-            	 if (val != 'Wszystkie') oTable.fnFilter(val,2);
-            	 else oTable.fnFilter( '.+',2,true);
+             function courseSelect(elem){
+            	 var val = $(elem).children(':selected').val(); 
+            	 document.location.href = "/resources/lessons?c="+ val;
              }
-             function selectLevel(elem){
-            	 var val = $(elem).children(':selected').val();
-            	 if (val != '0') oTable.fnFilter(val,3);
-            	 else oTable.fnFilter('.+',3,true);
-             }
+            
        </script>
        <style>
         #lessonList { list-style-type: none; margin: 0; padding: 0; width: 60%; }
@@ -87,30 +82,23 @@
    </div>
   </div>
   <br/> <hr/> <br/>
-  <div class="lift:LessonsSn.subjectSelect theSelects" >
-  <span>Wybierz przedmiot:</span>
-   <select id="subjectSelect" onchange="selectSubject(this)"></select>
- 	<span>Wybierz poziom edukacyjny:</span>
-   <select onchange="selectLevel(this)">
-   <option value="0">Wszystkie</option>
-   <option value="1">I</option>
-   <option value="2">II</option>
-   <option value="3">III</option>
-   <option value="4">IV</option>
-   <option value="5">V</option>
-   </select>
+  <div class="lift:LessonsSn.courseSelectTeacher theSelects" >
+  <span>Wybierz kurs:</span>
+   <select id="courseSelect" onchange="courseSelect(this)"></select>
+  </div>
+  <div id="courseInfo" class="lift:LessonsSn.courseDescription">
+  <b>Publiczny: </b><span id="coursePublic"></span>
+  <p></p>
   </div>
   <br/>
   <div id="addNewLesson"><a href="/resources/editlesson"><img src="/images/addico.png" /></a></div>
   <br/>
   <div id="themeList" class="lift:LessonsSn.teacherLessons dataTable_wrapper">
             <table id="dataTable" class="display" >
-                <thead><tr><th>Tytuł</th><th>Dział</th><th>Przedmiot</th>
-                <th>Poziom</th><th>Publiczny?</th></tr></thead>
+                <thead><tr><th>LP</th><th>Tytuł</th><th>Publiczny?</th></tr></thead>
                 <tbody><tr><td>To jest tytu</td><td></td><td></td></tr></tbody>
                  <tfoot>
-                 	<tr><th>Tytuł</th><th>Dział</th><th>Przedmiot</th><th>Poziom edukacyjny</th>
-                 	<th>Publiczny?</th>
+                 	<tr><th>LP</th><th>Tytuł</th><th>Publiczny?</th>
                  	</tr>
                  </tfoot>
             </table>

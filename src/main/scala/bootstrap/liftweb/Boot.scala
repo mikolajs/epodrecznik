@@ -76,7 +76,8 @@ class Boot {
        // Menu("Encyklopedia") / "dictionary" >> LocGroup("public"),
         Menu("Lekcje") / "lessons" >> LocGroup("public"),
         Menu("Kontakt") / "contact" >> LocGroup("public"),
-        Menu("Nauczyciel") / "resources" / "lessons" >> LocGroup("public") >> isTeacher,
+        Menu("Nauczyciel") / "resources" / "index" >> LocGroup("public") >> isTeacher,
+        Menu("Kursy") / "resources" / "courses" >> LocGroup("resource") >> isTeacher,  
         Menu("Lekcje") / "resources" / "lessons" >> LocGroup("resource") >> isTeacher,  
         Menu("Prezentacje") / "resources" / "slides" >> LocGroup("resource") >> isTeacher,
         //Menu("Grafika") / "resources" / "images" >> LocGroup("resource") >> isTeacher,
@@ -84,11 +85,12 @@ class Boot {
         Menu("Testy") / "resources" / "quizes" >> LocGroup("resource") >> isTeacher,
         Menu("Zadania") / "resources" / "editquest" >> LocGroup("resource") >> isTeacher,
         Menu("Pliki") / "resources" / "files" >> LocGroup("resource") >> isTeacher,
+        Menu("Encyklopedia") / "resources" / "headwords" >> LocGroup("resource") >> isTeacher,
         Menu("Edycja lekcji") / "resources" / "editlesson" / ** >> LocGroup("extra") >> Hidden >> isTeacher,
-        Menu("Edycja haseł") / "resources" / "editdictionary" / ** >> LocGroup("extra") >> Hidden >> isTeacher,
         Menu("Edycja Slajdów") / "resources" / "editslide" / ** >> LocGroup("extra") >> Hidden >> isTeacher,
         Menu("Edycja quizów") / "resources" / "editquiz" / ** >> LocGroup("extra") >> Hidden >> isTeacher,
         Menu("Edytuj książkę") / "resources" / "editdocument" / ** >> LocGroup("extra") >> Hidden >> isTeacher, 
+        Menu("Edytuj hasło") / "resources" / "editheadword" / ** >> LocGroup("extra") >> Hidden >> isTeacher, 
         Menu("Pokaz") / "slide" / ** >> LocGroup("extra") >> Hidden,
         Menu("Czytaj") / "document" / ** >> LocGroup("extra") >> Hidden,
         Menu("Czytaj") / "quiz" / ** >> LocGroup("extra") >> Hidden,
@@ -110,9 +112,9 @@ class Boot {
         RewriteResponse(
           "resources" :: "editslide" :: Nil, Map("id" -> subjectId))
       case RewriteRequest(
-        ParsePath("resources" :: "editdictionary" :: entryId :: Nil, _, _, _), _, _) =>
+        ParsePath("resources" :: "editheadword" :: entryId :: Nil, _, _, _), _, _) =>
         RewriteResponse(
-          "resources" :: "editdictionary" :: Nil, Map("id" -> entryId))
+          "resources" :: "editheadword" :: Nil, Map("id" -> entryId))
       case RewriteRequest(
         ParsePath("resources" :: "editdocument" :: entryId :: Nil, _, _, _), _, _) =>
         RewriteResponse(

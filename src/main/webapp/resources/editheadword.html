@@ -1,0 +1,42 @@
+<div class="lift:surround?with=default-other;at=body">
+	<head_merge>
+	<script type="text/javascript" src="/ckeditor/ckeditor.js"></script>
+	<script type="text/javascript" src="/jquery/editdictionary.js"></script>
+	<script type="text/javascript" src="/jquery/ASCIIMathML.js"></script>
+		<style>
+		div#cffm {
+   background-color:#fff;
+   font:12px sans-serif;
+   color:#000;
+   width: 100%;
+   height: 400;
+   overflow: none;
+}
+		#entry {width: 300px;}
+	
+		</style>
+	
+   
+	</head_merge>
+ 
+ <div id="boxText">
+  <h2>Edycja hasła encyklopiedii</h2>
+  <hr/>
+  <form class="lift:EditDictionarySn.formEdit" method="POST">
+    <input id="id" type="hidden" />
+  	<label for="entry">Hasło:</label><input id="entry"  type="text" class="Name"/>
+  	<span id="validationMassage"></span>
+    <label for="subjects">Przedmiot:</label><select id="subjects"></select>
+    <input id="contentData" type="hidden" />
+    <input id="save" type="submit"/><input id="cancel" type="submit"/><input id="delete" type="submit"/>
+  </form>
+  <br/>
+  <div class=" tabsConainer"> 
+    	<div id="slideEditor">
+    	<textarea class="ckeditor" id="slideText"></textarea>
+    	</div>            
+    </div>
+   
+  </div>
+  
+</div>

@@ -6,20 +6,14 @@
      
        <script src="/jquery/dejavu.js"></script>
        <script src="/jquery/editlesson.js"></script>
-       <script src="/jquery/departmentselect.js"></script>
        <script>
        
-      var lessonEditor = new Object();
-      var departmentSelect = new Object();
-      
-     
+      var lessonEditor = new Object();  
        
-       $(document).ready(function(){
-    	   
-    	  lessonEditor = new LessonEditor(); 
-    	  departmentSelect = new DepartmentSelect();	  
-    	  
+       $(document).ready(function(){ 	   
+    	  lessonEditor = new LessonEditor();      	  
        });
+       
        </script>
        <style>
        #edit form p {
@@ -42,7 +36,9 @@
 		.title, .type { border-right: solid 1px #888; }
 		.title, .type, .link {font-weight: bold;}
 		.desc { font-family: cursive;}
-		
+		label {font-weight: bold; padding-right: 10px;}
+		#title {width: 300px;}
+		#nr {width: 30px;}
        </style>
     </head_merge>
     
@@ -50,13 +46,14 @@
   <h2>Edycja lekcji</h2>
   <form class="lift:EditLesson.editLesson" id="send" method="POST">
   <input id="ID" style="display:none;"/>
-  <p><label for="title">Temat:</label><input id="title" />
+  <p><label for="nr">LP: </label>
+  <input id="nr" maxlength="3" 
+  onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 0 " />
+  <label for="title">Temat:</label><input id="title" />
   <label>Publiczny:</label><select id="public"></select>
   </p>
-  <p><label>Przedmiot:</label><select id="subjects"></select>
-  <label>Dział:</label><select id="departments"></select>
-  <input id="departmentHidden" style="display:none;"/>
-  <label>Poziom:</label><select id="level"></select>
+  <label>kurs:</label><select id="courses"></select>
+  
   <input id="save" type="submit"/><input id="delete" type="submit"/></p>
   
   <input id="json" style="display:none;" value="[]"/>
@@ -73,13 +70,12 @@
   <div id="edit">
   <form > 
   		<p><label for="Type">Type:</label><select id="Type"><option value="Link">Link</option>
-  		<option value="Film">Film</option>
   		<option value="Prezentacja">Prezentacja</option>
   		<option value="Dokument">Dokument</option>
-  		<option value="Quiz">Quiz</option>
-  		<option value="Plik"></option>
+  		<option value="Quiz">Test</option>
+  		<option value="Plik">Plik</option>
   		</select></p>
-  		<p><label for="Link">Link:</label><input type="text" id="Link"/></p>
+  		<p><label for="Link">URL:</label><input type="text" id="Link"/></p>
   		<p><label for="Theme">Tytuł:</label><input type="text" id="Theme"/></p>
   		<p><label for="Desc">Opis:</label>
   			<textarea id="Desc" style="height:80px;" maxlength="250"></textarea></p>

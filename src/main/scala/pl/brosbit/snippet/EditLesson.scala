@@ -26,69 +26,59 @@ class EditLesson extends BaseSlide {
         var id = ""
         var json = ""
         var title = ""
-        var public = ""
-        var subjectID = ""
-        var level = ""
-        var departmentID = ""
+        var public = false
+        var courseId = ""
+        var nr = ""
             
         id = S.param("id").openOr("0")
         val lesson = Lesson.find(id).getOrElse(Lesson.create)
         
         title = lesson.title
-        public = if(lesson.public) "TAK" else "NIE"
-        subjectID = if(lesson.subjectId != null) lesson.subjectId.toString else ""
-        departmentID = if(lesson.departmentId != null) lesson.departmentId.toString else ""
-        level = lesson.lev.toString      
+        public = lesson.public
+        courseId = if(lesson.courseId.toString != "000000000000000000000000") lesson.courseId.toString else ""
+        nr = lesson.nr.toString
         json = "[" + lesson.contents.map(cont => cont.forJSONStr).mkString(", ") + "]"
-            
+        
+        val userId = User.currentUser.open_!.id.is   
+        
         def save() {
-            val userId = User.currentUser.open_!.id.is
-            var tLesson = Lesson.find(id).getOrElse(Lesson.create)
-            if(tLesson.authorId == 0L || tLesson.authorId == userId){
-                 tLesson.title = title
-                 tLesson.authorId = userId
-                 tLesson.lev = tryo(level.toInt).openOr(4)
-                 tLesson.public = (public == "TAK") 
-                 Subject.find(subjectID) match {
-                     case Some(sub) => {
-                         tLesson.subjectId = sub._id
-                         tLesson.subjectInfo = sub.full
+            
+            if(lesson.authorId == 0L || lesson.authorId == userId){
+                 lesson.title = title
+                 lesson.authorId = userId
+                 lesson.nr = tryo(nr.toInt).openOr(0)
+                 lesson.public = public
+                 Course.find(courseId) match {
+                     case Some(cour) => {
+                         lesson.courseId = cour._id                      
                          }
-                     case _ => println("BŁĄD nieznaleziono przedmiotu") 
+                     case _ => println("BŁĄD nieznaleziono kursu") 
                  }
-                 Department.find(departmentID) match {
-                     case Some(dep) => {
-                         tLesson.departmentId = dep._id
-                         tLesson.departmentInfo = dep.name
-                     }
-                     case _ => 
-                 }
-                tLesson.contents = createLessonContentsList(json)
-                if(tLesson.public) checkLastAddedAndAppend(tLesson)
-                tLesson.save 
+                lesson.contents = createLessonContentsList(json)
+                if(lesson.public) checkLastAddedAndAppend(lesson)
+                lesson.save 
             }   
             S.redirectTo("/resources/lessons")
         }
         
         def delete() {
-           Lesson.find(id) match {
-               case Some(less) => if(isLessonOwner(less)) less.delete
-               case _ =>
-           }
+//           Lesson.find(id) match {
+//               case Some(less) => if(isLessonOwner(less)) less.delete
+//               case _ =>
+//           }
+           if(isLessonOwner(lesson)) lesson.delete
            S.redirectTo("/resources/lessons")
         }
         
         val publics = List(("TAK","TAK"),("NIE","NIE"))
         val levels = List(("1","I"),("2","II"),("3","III"),("4","IV"),("5","V"))
-        val subjects = Subject.findAll.map(s => (s._id.toString, s.full))
+        val courses = Course.findAll("authorId" -> userId).map(c => (c._id.toString, c.getInfo))
         
         "#ID" #> SHtml.text(id, id = _) &
         "#title" #> SHtml.text(title, x => title = x.trim) &
-        "#subjects" #> SHtml.select(subjects, Full(subjectID), subjectID = _) &
-        "#departmentHidden" #> SHtml.text(departmentID, departmentID = _) &
-        "#departments" #> departmentSelect() &
-        "#public" #> SHtml.select(publics, Full("TAK"), public = _) &
-        "#level" #> SHtml.select(levels, Full("4"), level = _ ) &
+        "#nr" #> SHtml.text(nr, nr = _) &
+        "#courses" #> SHtml.select(courses, Full(courseId), courseId = _) &
+        "#public" #> SHtml.checkbox(public, public = _) &
         "#json" #> SHtml.text(json, json = _) &
         "#save" #> SHtml.submit("Zapisz", save ) &
         "#delete" #> SHtml.submit("Usuń!", delete, "onclick"->"return confirm('Na pewno usunąć całą lekcję?')" ) 
@@ -100,8 +90,10 @@ class EditLesson extends BaseSlide {
 	          val lastAddedInDBList = LastAdded.findAll
 	          val lastAdded = if(lastAddedInDBList.isEmpty) LastAdded.create else lastAddedInDBList.head
           
-	          val link = "/lessons/" + lesson._id.toString	          
-	          val newLastAddedItem = LastAddedItem(lesson.title, lesson.subjectInfo, "/lessons", Formater.formatDate(new Date()))
+	          val link = "/lessons/" + lesson._id.toString	   
+	          
+	          val courseInfo = Course.find(lesson.courseId).getOrElse(Course.create).getInfo
+	          val newLastAddedItem = LastAddedItem(lesson.title, courseInfo, "/lessons", Formater.formatDate(new Date()))
 	          
 	          var newLastAddedContent = lastAdded.content.filter(content => content.link != link )
 	          newLastAddedContent =  newLastAddedItem::newLastAddedContent
@@ -119,7 +111,6 @@ class EditLesson extends BaseSlide {
     
     def createLessonContentsList(jsonStr:String) = {
         implicit val formats = DefaultFormats
-        println(jsonStr) //testowo usunąć!!!!!!!!!!!!!!!!!!!!!!!!!!
         val json = parse(jsonStr)
         json.extract[List[LessonContent]]
     }

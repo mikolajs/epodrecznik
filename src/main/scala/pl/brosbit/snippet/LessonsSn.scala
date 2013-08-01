@@ -22,17 +22,26 @@ class LessonsSn extends BaseSlide with RoleChecker {
     val imgs = Map(("l"->"/images/link.png"), ("p"->"/images/presentation.png"), ("q"->"/images/quiz.png"),
               ("d"->"/images/document.png"),("a"->"/images/attachment.png"),("v"->"/images/video.png"))
               
+    val courseId = S.param("c").openOr("0")
+    val course = Course.find(courseId).getOrElse(Course.findAll match {
+        case c::list => c
+        case _ => Course.create
+    })
+    val userID =  tryo(User.currentUserId.open_!.toLong).openOr(0L)
+              
   def showLesson() = {
       var lessonId = ""
       def create(id:String) = {
           Lesson.find(id) match {
               case Some(lesson) => {
+                  val courseInfo = course.getInfo
                   <div>
-            	  <div id="lessonHead"><span id="theme"><strong>Temat: </strong>{lesson.title}</span><br/>
-            	  <span id="public"><strong>Widoczność: </strong>{if(lesson.public) "Publiczny" else "Prywatny"}</span><br/>
-            	  <span id="subject"><strong>Przedmiot: </strong> {lesson.subjectInfo}</span><br/>
-            	  <span id="department"><strong>Dział: </strong>{lesson.departmentInfo}</span><br/>
-            	  <span id="level"><strong>Poziom: </strong>{lesson.lev.toString}</span></div>
+            	  <div id="lessonHead">
+                  <span id="lp"><strong>LP: </strong> {lesson.nr.toString}</span>
+                  <span id="theme"><strong>Temat: </strong>{lesson.title}</span><br/>
+            	  <span id="public"><strong>Widoczność: </strong>
+            	   	{if(lesson.public) "Publiczny" else "Prywatny"}</span><br/>
+            	  <span id="course"><strong>Kurs: </strong>{courseInfo}</span></div>
             	  <div id="lessonsContent">
             	  <ul id="lessonList">
             	  {lesson.contents.map(cont => {
@@ -59,11 +68,12 @@ class LessonsSn extends BaseSlide with RoleChecker {
       def create(id:String) = {
           Lesson.find(id) match {
               case Some(lesson) => {
+                  val courseInfo = course.getInfo
                   <div>
-            	  <div id="lessonHead"><span id="theme"><strong>Temat: </strong>{lesson.title}</span><br/>
-            	  <span id="subject"><strong>Przedmiot: </strong> {lesson.subjectInfo}</span><br/>
-            	  <span id="department"><strong>Dział: </strong>{lesson.departmentInfo}</span><br/>
-            	  <span id="level"><strong>Poziom: </strong>{lesson.lev.toString}</span></div>
+            	  <div id="lessonHead">
+                		  <span id="lp"><strong>LP: </strong> {lesson.nr.toString}</span>
+                		  <span id="theme"><strong>Temat: </strong>{lesson.title}</span><br/>
+            	   <span id="course"><strong>Kurs: </strong>{courseInfo}</span></div>
             	  <div id="lessonsContent">
             	  <ul id="lessonList">
             	  {lesson.contents.map(cont => {
@@ -84,23 +94,36 @@ class LessonsSn extends BaseSlide with RoleChecker {
   
 
   def teacherLessons() = {
-    val userID =  tryo(User.currentUserId.open_!.toLong).openOr(0L)
-    val lessons = Lesson.findAll("authorId"->userID) 
-    "tbody *" #> lessons.map(lesson => <tr>
-    	<td id={lesson._id.toString} class="tit">{lesson.title}</td>
-    	<td>{lesson.departmentInfo}</td><td>{lesson.subjectInfo}</td>
-    	<td>{lesson.lev.toString}</td><td>{if(lesson.public) "Tak" else "Nie"}</td></tr>)
+    
+    val lessons = Lesson.findAll(("authorId"->userID)~("courseId" -> course._id.toString)) 
+    "tbody *" #> lessons.map(lesson => <tr id={lesson._id.toString}>
+    	<td>{lesson.nr.toString}</td><td  class="tit">{lesson.title}</td>
+    	<td>{if(lesson.public) "Tak" else "Nie"}</td></tr>)
   }
   
   //for public view in main menu
   def publicLessons() = {
-      val lessons = Lesson.findAll("public"->true)
-      "tbody *" #> lessons.map(lesson => <tr>
-    	<td id={lesson._id.toString} class="tit">{lesson.title}</td>
-    	<td>{lesson.departmentInfo}</td><td>{lesson.subjectInfo}</td>
-    	<td>{lesson.lev.toString}</td></tr>)
+      val lessons = Lesson.findAll(("public"->true)~("courseId" -> course._id.toString))
+      "tbody *" #> lessons.map(lesson => <tr id={lesson._id.toString}>
+    	<td>{lesson.nr.toString}</td><td  class="tit">{lesson.title}</td>
+    	</tr>)
   }
   
+  def courseDescription() = {
+      "#coursePublic *" #> (if(course.public) "TAK" else "NIE") &
+      "p *" #> course.descript
+  }
   
+  def courseSelectTeacher() = {
+      
+       val courses = Course.findAll("authorId"-> userID).map(c => (c._id.toString, c.getInfo))
+      "#courseSelect" #> SHtml.select(courses, Full(course._id.toString), x => x)
+       //courses.map(c => <option value={c._1} > {c._2} </option> )
+  }
+  
+  def courseSelectPublic() = {
+      val courses = Course.findAll("public"->true).map(c => (c._id.toString, c.getInfo))
+       "#courseSelect" #> SHtml.select(courses, Full(course._id.toString), x => x)
+  }
   
 }
