@@ -10,6 +10,10 @@
 	var departmentSelect = new Object();
 	$(document).ready(function(){
 		
+		CKEDITOR.editorConfig = function( config ) {
+			 config.format_tags = 'p;h2;h3;h4;h5;h6;address;pre';
+		}
+		
 		CKEDITOR.replace( 'slideText',{
 			width : 990, 
 			height: 650,
@@ -35,7 +39,8 @@
 		CKEDITOR.config.disableNativeSpellChecker = false;
 		
 		
-		var slides = new Slides();
+		
+		var slides = new Slides(3);
 		slides.init();
 		
 	});

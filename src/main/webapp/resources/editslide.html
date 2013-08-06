@@ -2,15 +2,17 @@
 	<head_merge>
 	<script type="text/javascript" src="/ckeditor/ckeditor.js"></script>
 	<script type="text/javascript" src="/jquery/ckeditorresource.js"></script>
+	<script type="text/javascript" src="/jquery/dejavu.js"></script>
+	<script type="text/javascript" src="/jquery/jquery-ui-1.10.1.custom.min.js"></script>
 	<script type="text/javascript" src="/jquery/editslides.js"></script>
-	 <script src="/jquery/dejavu.js"></script>
+	
 	<script type="text/javascript" src="/jquery/departmentselect.js"></script>
 	<script type="text/javascript" src="/jquery/ASCIIMathML.js"></script>
 	
 	<script>
 	var departmentSelect = new Object();
 	$(document).ready(function(){
-		
+		window.setInterval("timerSaver()", 600000);
 		CKEDITOR.replace( 'slideText',{
 			width : 990, 
 			height: 650,
@@ -36,13 +38,18 @@
 		CKEDITOR.config.disableNativeSpellChecker = false;
 		
 		
-		var slides = new Slides();
-		slides.init();
+		var slides = new EditSlides(30);
 		departmentSelect = new DepartmentSelect();	
 		
 		
 	});
 	
+	function timerSaver() {
+		if(confirm("Nie zapisano od 10 minut. Zapisać teraz?")) $("#save").trigger('click');
+		window.setInterval("timerSaver()", 600000);
+	}
+	
+
 	</script>
 		<style>
 		div#cffm {
@@ -54,13 +61,18 @@
    overflow: none;
 }
 		#titleTheme {width: 300px;}
-		#slideChoice li { display:inline; padding: 5px !important; font-weight: bold; font-size: 15px; 
-						border: solid 1px black; background-image: none !important; } 
 		
 	    .highlightLi {  background-color: red !important; color:white;}
 	    #validationMassage { color: red; }
-	    #slidesHTML { position: relative; }
+	    #slidesHTML { width: 4000px; height: 700px;}
+	   section {  dispaly: inline; width: 990px; height: 20px;
+	     border: solid 1px #222; background-color: lightblue;
+	     transform: scale(0.2, 0.2); 
+	     }
 	    #imageLoaderFrame {width: 100%;}
+	    .lista {display:inline-flex; padding: 8px !important; font-weight: bold; font-size: 15px; 
+						border: solid 1px black; background-image: none !important;}
+	    
 		</style>
 	
    
@@ -94,19 +106,19 @@
     
     	<div id="slideEditor">
     	<div id="slideList">
-    	<ul id="slideChoice"><li>1</li><li>3</li></ul>
+    	<div id="slideChoice"><div class="lista"><span>1</span></div></div>
     	<br/>
+    	
     	</div>
     	<textarea class="ckeditor" id="slideText"></textarea>
     	</div>
         
        
     </div>
-   
+   <div id="slidesHTML" class="lift:EditSlideSn.slideData" style="display:none;">
+   			<section id="slideHTML"></section>
+  		</div>
   </div>
   
-  <div id="slidesHTML" class="lift:EditSlideSn.slideData" style="display:none;">
-   <section id="slideHTML"></section>
-  </div>
   
 </div>

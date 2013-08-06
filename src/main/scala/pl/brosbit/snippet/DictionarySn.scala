@@ -18,23 +18,22 @@ import net.liftweb.common.Empty
 class DictionarySn {
     
     def searchEntry() = {
-        var entry = ""
+        var word = ""
         
         def search(){
-        	S.redirectTo("/dictionary?e="+entry)
+        	S.redirectTo("/dictionary?w="+word)
         }
-        
-           
-       "#entry" #> SHtml.text(entry, x => entry = x.trim) &
+                 
+       "#entry" #> SHtml.text(word, x => word = x.trim) &
        "#search" #>  SHtml.button(<img src="/images/searchico.png"/>, search,"title"->"Szukaj") 
        
     }
-    
     def searchResult() = {
+        val levels = Map((1->"łatwy"),(2->"średni"),(3->"wyższy"))
         val word = S.param("w").getOrElse("")
-        "ul" #> Dictionary.findAll(("headword"->word)).map(dict => {
-            "li *" #> <a href={"/headword?e=" + word + "&s=" + dict._id.toString} target="_blanck"> 
-            			{dict.headword} <span> - [{dict.subjectName}]</span></a>
+        "ul *" #> Dictionary.findAll(("headword"->word)).map(dict => {
+           <li> <a href={"/headword/" + dict._id.toString} target="_blanck"> 
+            			{dict.headword} <span> - {dict.subjectName}, poziom: {levels(dict.level)}</span></a></li>
         })              
     }
     

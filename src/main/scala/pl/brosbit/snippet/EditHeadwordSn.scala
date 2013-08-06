@@ -29,14 +29,12 @@ class EditHeadwordSn extends BaseSlide with RoleChecker {
         var headword = dictionary.headword
         var subjectId = if (dictionary.subjectName != "") dictionary.subject.toString else ""
         var subjectName = dictionary.subjectName
-        var data = dictionary.content
+        var content = dictionary.content
         var level = dictionary.level.toString
 
         val listSubject = Subject.findAll.map(s => { (s._id.toString, s.full) })
 
         def saveData() {
-
-            val contentHtml = Unparsed(data)
 
             dictionary.headword = headword
             dictionary.subject = new ObjectId(subjectId)
@@ -49,7 +47,7 @@ class EditHeadwordSn extends BaseSlide with RoleChecker {
                 dictionary.authorId = userID
                 dictionary.authorName = user.fullName
             }
-            dictionary.content = contentHtml.toString
+            dictionary.content = content
             dictionary.level = tryo(level.toInt).openOr(3)
             dictionary.save
 
@@ -75,11 +73,10 @@ class EditHeadwordSn extends BaseSlide with RoleChecker {
             "#headword" #> SHtml.text(headword, x => headword = x.trim, "class" -> "Name") &
             "#subjects" #> SHtml.select(listSubject, Full(subjectId), subjectId = _) &
             "#level" #> SHtml.select(levels, Full(level), level = _) &
-            "#contentData" #> SHtml.text(data, data = _, "type" -> "hidden") &
+            "#slidesData" #> SHtml.text(content, content = _, "type" -> "hidden") &
             "#save" #> SHtml.button(<img src="/images/saveico.png"/>, saveData, "title" -> "Zapisz") &
-            "#delete" #> (if (isModerator) SHtml.button(<img src="/images/delico.png"/>,
-                deleteData, "title" -> "Usuń")
-            else <span></span>) &
+            "#delete" #>  SHtml.button(<img src="/images/delico.png"/>,
+                deleteData, "title" -> "Usuń") &        
             "#cancel" #> SHtml.button(<img src="/images/cancelico.png"/>, cancelAction, "title" -> "Anuluj")
     }
 

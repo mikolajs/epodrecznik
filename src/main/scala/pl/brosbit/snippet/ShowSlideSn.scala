@@ -15,7 +15,7 @@ import json.JsonParser
 import org.bson.types.ObjectId
 import Helpers._
 
-class ShowSlideSn extends {
+class ShowSlideSn  {
 
     //for showslides - viewer 
     def slideData() = {

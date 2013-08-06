@@ -70,7 +70,7 @@ class EditSlideSn extends BaseSlide with RoleChecker {
       }
        
       
-      S.redirectTo("/resources/slides") //!important must refresh page
+      S.redirectTo("/resources/editslide/"+ slide._id.toString) //!important must refresh page
     }
     
     def deleteData() {

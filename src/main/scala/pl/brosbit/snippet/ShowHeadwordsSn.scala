@@ -23,9 +23,9 @@ class ShowHeadwordsSn {
          })
      
       def showWords() = {
-          if(subject.full == "") S 
-          "li" #> Dictionary.findAll("subject"->subjectId).map(dict =>
-              <li><a href={"/headword?w="+ dict._id.toString} target="_blanck">dict.headword</a> 
+         
+          "li" #> Dictionary.findAll("subject"-> subject._id.toString).map(dict =>
+              <li><a href={"/headword?w="+ dict._id.toString} target="_blanck">{dict.headword}</a> 
               <a href={"/resources/editheadword/"+dict._id.toString}><img src="/images/editico.png" /></a></li>)
       }
       
