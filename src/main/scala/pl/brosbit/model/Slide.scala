@@ -5,7 +5,6 @@ import _root_.net.liftweb.mongodb._
 import java.util.Date
 import org.bson.types.ObjectId
 
-
 object Slide extends MongoDocumentMeta[Slide] {
   override def collectionName = "slides"
   override def formats = super.formats + new ObjectIdSerializer + new DateSerializer

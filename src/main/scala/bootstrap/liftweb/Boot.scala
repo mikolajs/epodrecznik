@@ -74,7 +74,6 @@ class Boot {
       List(
         Menu("Wiadomości") / "index" >> LocGroup("public"),
         Menu("Lekcje") / "lessons" >> LocGroup("public"),
-        Menu("Encyklopedia") / "dictionary" >> LocGroup("public"),
         Menu("Kontakt") / "contact" >> LocGroup("public"),
         Menu("Nauczyciel") / "resources" / "index" >> LocGroup("public") >> isTeacher,
         Menu("Kursy") / "resources" / "courses" >> LocGroup("resource") >> isTeacher,  
@@ -84,12 +83,11 @@ class Boot {
         Menu("Testy") / "resources" / "quizes" >> LocGroup("resource") >> isTeacher,
         Menu("Zadania") / "resources" / "editquest" >> LocGroup("resource") >> isTeacher,
         Menu("Pliki") / "resources" / "files" >> LocGroup("resource") >> isTeacher,
-        Menu("Encyklopedia") / "resources" / "headwords" >> LocGroup("resource") >> isTeacher,
         Menu("Edycja lekcji") / "resources" / "editlesson" / ** >> LocGroup("extra") >> Hidden >> isTeacher,
         Menu("Edycja Slajdów") / "resources" / "editslide" / ** >> LocGroup("extra") >> Hidden >> isTeacher,
         Menu("Edycja quizów") / "resources" / "editquiz" / ** >> LocGroup("extra") >> Hidden >> isTeacher,
         Menu("Edytuj książkę") / "resources" / "editdocument" / ** >> LocGroup("extra") >> Hidden >> isTeacher, 
-        Menu("Edytuj hasło") / "resources" / "editheadword" / ** >> LocGroup("extra") >> Hidden >> isTeacher, 
+        //Menu("Wyszukiwanie") / "search" >> LocGroup("extra") >> Hidden, 
         Menu("Pokaz") / "slide" / ** >> LocGroup("extra") >> Hidden,
         Menu("Czytaj dokument") / "document" / ** >> LocGroup("extra") >> Hidden,
         Menu("Quiz") / "quiz" / ** >> LocGroup("extra") >> Hidden,
@@ -111,10 +109,6 @@ class Boot {
         ParsePath("resources" :: "editslide" :: subjectId :: Nil, _, _, _), _, _) =>
         RewriteResponse(
           "resources" :: "editslide" :: Nil, Map("id" -> subjectId))
-      case RewriteRequest(
-        ParsePath("resources" :: "editheadword" :: entryId :: Nil, _, _, _), _, _) =>
-        RewriteResponse(
-          "resources" :: "editheadword" :: Nil, Map("id" -> entryId))
       case RewriteRequest(
         ParsePath("resources" :: "editdocument" :: entryId :: Nil, _, _, _), _, _) =>
         RewriteResponse(
@@ -139,10 +133,6 @@ class Boot {
         ParsePath("quiz" :: quizId :: Nil, _, _, _), _, _) =>
         RewriteResponse(
           "quiz" :: Nil, Map("id" -> quizId))
-       case RewriteRequest(
-        ParsePath("headword" :: headwordId :: Nil, _, _, _), _, _) =>
-        RewriteResponse(
-          "headword" :: Nil, Map("id" -> headwordId))
     })
     /*
      * Show the spinny image when an Ajax call starts

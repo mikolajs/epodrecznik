@@ -457,10 +457,10 @@ color: #358305;
 				color:#000;
 				text-decoration:underline;
 			}
-	#content ul {
+	ul {
 		padding-bottom:11px;
 	}
-	#content ul li {
+	ul li {
 		background:url(images/bull-2.gif) no-repeat 0 7px;
 		padding:0 0 7px 13px;
 		position:relative;

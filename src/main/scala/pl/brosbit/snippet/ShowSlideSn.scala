@@ -30,7 +30,8 @@ class ShowSlideSn  {
                                 "#subject" #> <span>{ slide.subjectInfo }</span> &
                                 "#etap" #> <span>{ slide.subjectLev.toString }</span> &
                                 "#department" #> <span>{ slide.departmentInfo }</span> &
-                                "#slideHTML" #> Unparsed(slideCont.slides)
+                                "#slideHTML" #> Unparsed(slideCont.slides) &
+                                "#detailHTML" #> Unparsed(slideCont.details)  
                         }
                         case _ => infoError
                     }

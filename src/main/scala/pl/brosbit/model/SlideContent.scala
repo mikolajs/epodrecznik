@@ -9,10 +9,10 @@ import org.bson.types.ObjectId
 object SlideContent extends MongoDocumentMeta[SlideContent] {
   override def collectionName = "slidesContent"
   override def formats = super.formats + new ObjectIdSerializer + new DateSerializer
-  def create = new SlideContent(ObjectId.get, "")
+  def create = new SlideContent(ObjectId.get, "", "")
 }
 
-case class SlideContent(var _id: ObjectId,  var slides: String) 
-				 extends MongoDocument[SlideContent] {
+case class SlideContent(var _id: ObjectId,  var slides: String,
+        				var details:String) extends MongoDocument[SlideContent] {
   def meta = SlideContent
 }

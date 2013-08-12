@@ -1,0 +1,53 @@
+
+
+var funChangeStr = function(str) {
+var r = /<section\s*id=\"slide-\d{1,2}\"\s*class=\"slide\">(.*?)<\/section>/g;
+var array = str.match(r);
+var slides = [];
+for (i in array) {
+    slides.push({'slide':array[i],'details':'<details></details>'});
+}
+return slides;
+}
+
+var funChangeAll =  function() {
+ var cur = db.slidesContent.find();
+ while(cur.hasNext()){
+    var actual = cur.next();
+    var slidesStr = actual.slides.split("\r\n").join("");
+    actual.slides = funChangeStr(slidesStr);
+    db.slidesContent.remove({"_id" : actual._id})
+    db.slidesContent.save(actual);
+ }
+}
+
+
+var funChangeAllServer = function() {
+  var cur = db.slidesContent.find();
+  while(cur.hasNext()){
+    var actual = cur.next();
+    var slidesStr = actual.slides.split("\r\n").join("");
+    actual.details = "";
+    db.slidesContent.remove({"_id" : actual._id})
+    db.slidesContent.save(actual);
+ }
+}
+
+var funChangeDesc =  function() {
+ var cur = db.slidesContent.find();
+ while(cur.hasNext()){
+    var actual = cur.next();
+    var slides = [];
+    var details = [];
+    for(i in actual.slides) {
+        slides.push(actual.slides[i].slide);
+        details.push(actual.slides[i].details);
+    }
+    actual.slides = slides.join("");
+    actual.details = details.join("");
+    db.slidesContent.remove({"_id" : actual._id})
+    db.slidesContent.save(actual);
+ }
+}
+
+
