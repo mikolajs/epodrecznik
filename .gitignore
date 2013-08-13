@@ -4,7 +4,8 @@
 *.log
 
 target/
-project/
+project/target
+project/project
 /.settings/
 /.externalToolBuilders/
 
