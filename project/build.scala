@@ -1,0 +1,57 @@
+import sbt._
+import Keys._
+import com.github.siasia._
+import PluginKeys._
+import WebPlugin._
+import WebappPlugin._
+
+object LiftProjectBuild extends Build {
+  override lazy val settings = super.settings ++ buildSettings
+  
+  lazy val buildSettings = Seq(
+    organization := "pl.brosbit",
+    version      := "0.2.4",
+    scalaVersion := "2.9.1")
+  
+  def yourWebSettings = webSettings ++ Seq(
+    port in container.Configuration := 8080
+    )
+  
+  lazy val liftQuickstart = Project(
+    id = "epodrecznik",
+    base = file("."),
+    settings = defaultSettings ++ yourWebSettings)
+    
+  lazy val defaultSettings = Defaults.defaultSettings ++ Seq(
+    name := "epodrecznik",
+    resolvers ++= Seq(
+      "Typesafe Repo" at "http://repo.typesafe.com/typesafe/releases", 
+      "Sonatype scala-tools repo" at "https://oss.sonatype.org/content/groups/scala-tools/"),
+      //"Java.net Maven2 Repository" at "http://download.java.net/maven/2/"),
+    
+    libraryDependencies ++= {
+	  val liftVersion = "2.4"
+	  Seq(
+	    "net.liftweb" %% "lift-webkit" % liftVersion % "compile",
+        "net.liftweb" %% "lift-mapper" % liftVersion % "compile",
+	    "org.eclipse.jetty" % "jetty-webapp" % "7.5.4.v20111024" % "container",
+	    "ch.qos.logback" % "logback-classic" % "1.0.0" % "compile",
+	    "net.liftweb" %% "lift-mongodb" % liftVersion % "compile",
+	    "postgresql" % "postgresql" % "9.1-901.jdbc4" % "compile", 
+	    "org.specs2" %% "specs2" % "1.12.3" % "test",
+	    "org.scalatest" %% "scalatest" % "1.6.1" % "test",
+	    "junit" % "junit" % "4.10" % "test"
+          
+	   
+		)
+	},
+
+    // compile options
+    scalacOptions ++= Seq("-encoding", "UTF-8", "-deprecation", "-unchecked"),
+    javacOptions  ++= Seq("-Xlint:unchecked", "-Xlint:deprecation"),
+
+    // show full stack traces
+    testOptions in Test += Tests.Argument("-oF")
+  )
+}
+

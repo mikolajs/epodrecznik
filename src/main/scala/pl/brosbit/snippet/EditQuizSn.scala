@@ -32,7 +32,7 @@ class EditQuizSn extends BaseSlide {
         val subjects = Subject.findAll.map(s => (s._id.toString, s.full))
         val levels = List(("1", "I"), ("2", "II"), ("3", "III"), ("4", "IV"), ("5", "V"))
         def makeChoise() {
-            S.redirectTo("/resources/editquest?sub=" + subjectId + "&dep=" + departmentId + "&lev=" + level)
+            S.redirectTo("/resources/editquiz?sub=" + subjectId + "&dep=" + departmentId + "&lev=" + level)
         }
 
         "#subjects" #> SHtml.select(subjects, Full(subjectId), subjectId = _) &

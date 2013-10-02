@@ -73,14 +73,12 @@ class CreatePracticeSn {
             Subject.find(subjectId) match {
                 case Some(sub) => {
                     quest.subjectId = sub._id
-                    quest.subjectInfo = sub.full
                 }
                 case _ => return Alert("Błędny przedmiot nie zapisano testu!")
             }
             Department.find(departmentId) match {
                 case Some(dep) => {
                     quest.departmentId = dep._id
-                    quest.departmentInfo = dep.name
                     JsFunc("saveQuestion", quest._id.toString).cmd
                 }
                 case _ => return Alert("Błędny dział przedmiot nie zapisano testu!")               
@@ -120,5 +118,4 @@ class CreatePracticeSn {
         "form" #> (in => form(in))
        
     }
-
 }

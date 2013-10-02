@@ -13,7 +13,6 @@ var EditQuest =  dejavu.Class.declare({
 	},
 	
 	deleteQuestion : function(id) {
-		alert('DELETE ' + id);
 		this._deleteRow(id);
 		this.isOpen = false;
 		$('#questEditor').dialog('close');

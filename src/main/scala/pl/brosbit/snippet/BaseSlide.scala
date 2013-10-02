@@ -18,7 +18,8 @@ class BaseSlide {
   
    def subjectSelect() = {
     val subj = "Wszystkie"::Subject.findAll.map(s => s.full)
-    "#subjectSelect *" #> subj.map(s => <option value={s}>{s}</option>)
+    "#subjectSelect" #> subj.map(s => 
+        "option" #> <option value={s}>{s}</option>)
   }
   
 }

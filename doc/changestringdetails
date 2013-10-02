@@ -1,5 +1,5 @@
 
-
+//too danger not use!!!!!!!!
 var funChangeStr = function(str) {
 var r = /<section\s*id=\"slide-\d{1,2}\"\s*class=\"slide\">(.*?)<\/section>/g;
 var array = str.match(r);

@@ -16,7 +16,7 @@ import org.bson.types.ObjectId
 import Helpers._
 
 
-class SlidesSn extends BaseSlide with RoleChecker {
+class SlidesSn extends  RoleChecker {
   
 
   def slidesList() = {
@@ -35,6 +35,11 @@ class SlidesSn extends BaseSlide with RoleChecker {
     	<td>{if(edit_?)
     	<a href={"/resources/editslide/"+slide._id.toString}>edytuj</a> else <i></i>}</td></tr>
     })
+  }
+  
+  def subjectSelect() = {
+    val subj = "Wszystkie"::Subject.findAll.map(s => s.full)
+    "#subjectSelect option" #> subj.map(s => <option value={s}>{s}</option>)
   }
   
 }

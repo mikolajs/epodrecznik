@@ -31,7 +31,8 @@ object DBVendor extends ConnectionManager {
       Full(dm)
     } catch {
       case e: Exception => e.printStackTrace; Empty
-    }
+    
+  }
   }
   def releaseConnection(conn: Connection) { conn.close }
 }
@@ -91,7 +92,7 @@ class Boot {
         Menu("Pokaz") / "slide" / ** >> LocGroup("extra") >> Hidden,
         Menu("Czytaj dokument") / "document" / ** >> LocGroup("extra") >> Hidden,
         Menu("Quiz") / "quiz" / ** >> LocGroup("extra") >> Hidden,
-        Menu("Hasło") / "headword" / ** >> LocGroup("extra") >> Hidden,
+        Menu("Wyszukiwanie") / "search"  >> LocGroup("extra") >> Hidden,
         Menu("Image upload") / "imgstorage" >> LocGroup("extra") >> Hidden >> isTeacher,
         Menu("Administrator") / "admin" / "admin" >> LocGroup("admin") >> isAdmin,
         Menu("Przedmioty") / "admin" / "subjects" >> LocGroup("admin") >> isAdmin,

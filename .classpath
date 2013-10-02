@@ -1,39 +1,52 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" output="target/scala-2.9.1/classes" path="src/main/scala"/>
-	<classpathentry kind="src" output="target/scala-2.9.1/test-classes" path="src/test/scala"/>
-	<classpathentry kind="con" path="org.scala-ide.sdt.launching.SCALA_CONTAINER"/>
-	<classpathentry kind="lib" path="/home/ms/.ivy2/cache/net.liftweb/lift-webkit_2.9.1/jars/lift-webkit_2.9.1-2.4.jar"/>
-	<classpathentry kind="lib" path="/home/ms/.ivy2/cache/commons-fileupload/commons-fileupload/jars/commons-fileupload-1.2.2.jar"/>
-	<classpathentry kind="lib" path="/home/ms/.ivy2/cache/net.liftweb/lift-util_2.9.1/jars/lift-util_2.9.1-2.4.jar"/>
-	<classpathentry kind="lib" path="/home/ms/.ivy2/cache/commons-codec/commons-codec/jars/commons-codec-1.4.jar"/>
-	<classpathentry kind="lib" path="/home/ms/.ivy2/cache/nu.validator.htmlparser/htmlparser/jars/htmlparser-1.2.1.jar"/>
-	<classpathentry kind="lib" path="/home/ms/.ivy2/cache/javax.mail/mail/jars/mail-1.4.4.jar"/>
-	<classpathentry kind="lib" path="/home/ms/.ivy2/cache/javax.activation/activation/jars/activation-1.1.jar"/>
-	<classpathentry kind="lib" path="/home/ms/.ivy2/cache/joda-time/joda-time/jars/joda-time-1.6.2.jar"/>
-	<classpathentry kind="lib" path="/home/ms/.ivy2/cache/net.liftweb/lift-actor_2.9.1/jars/lift-actor_2.9.1-2.4.jar"/>
-	<classpathentry kind="lib" path="/home/ms/.ivy2/cache/net.liftweb/lift-common_2.9.1/jars/lift-common_2.9.1-2.4.jar"/>
-	<classpathentry kind="lib" path="/home/ms/.ivy2/cache/org.slf4j/slf4j-api/jars/slf4j-api-1.6.4.jar"/>
-	<classpathentry kind="lib" path="/home/ms/.ivy2/cache/net.liftweb/lift-json_2.9.1/jars/lift-json_2.9.1-2.4.jar"/>
-	<classpathentry kind="lib" path="/home/ms/.ivy2/cache/com.thoughtworks.paranamer/paranamer/jars/paranamer-2.3.jar"/>
-	<classpathentry kind="lib" path="/home/ms/.ivy2/cache/org.scala-lang/scalap/jars/scalap-2.9.1.jar"/>
-	<classpathentry kind="con" path="org.scala-ide.sdt.launching.SCALA_COMPILER_CONTAINER"/>
-	<classpathentry kind="lib" path="/home/ms/.ivy2/cache/net.liftweb/lift-mapper_2.9.1/jars/lift-mapper_2.9.1-2.4.jar"/>
-	<classpathentry kind="lib" path="/home/ms/.ivy2/cache/net.liftweb/lift-db_2.9.1/jars/lift-db_2.9.1-2.4.jar"/>
-	<classpathentry kind="lib" path="/home/ms/.ivy2/cache/net.liftweb/lift-proto_2.9.1/jars/lift-proto_2.9.1-2.4.jar"/>
-	<classpathentry kind="lib" path="/home/ms/.ivy2/cache/com.h2database/h2/jars/h2-1.2.147.jar"/>
-	<classpathentry kind="lib" path="/home/ms/.ivy2/cache/org.apache.derby/derby/jars/derby-10.7.1.1.jar"/>
-	<classpathentry kind="lib" path="/home/ms/.ivy2/cache/ch.qos.logback/logback-classic/jars/logback-classic-1.0.0.jar"/>
-	<classpathentry kind="lib" path="/home/ms/.ivy2/cache/ch.qos.logback/logback-core/jars/logback-core-1.0.0.jar"/>
-	<classpathentry kind="lib" path="/home/ms/.ivy2/cache/net.liftweb/lift-mongodb_2.9.1/jars/lift-mongodb_2.9.1-2.4.jar"/>
-	<classpathentry kind="lib" path="/home/ms/.ivy2/cache/org.mongodb/mongo-java-driver/jars/mongo-java-driver-2.6.5.jar"/>
-	<classpathentry kind="lib" path="/home/ms/.ivy2/cache/net.liftweb/lift-json-ext_2.9.1/jars/lift-json-ext_2.9.1-2.4.jar"/>
-	<classpathentry kind="lib" path="/home/ms/.ivy2/cache/postgresql/postgresql/jars/postgresql-9.1-901.jdbc4.jar"/>
-	<classpathentry kind="lib" path="/home/ms/.ivy2/cache/org.specs2/specs2_2.9.1/jars/specs2_2.9.1-1.12.3.jar"/>
-	<classpathentry kind="lib" path="/home/ms/.ivy2/cache/org.specs2/specs2-scalaz-core_2.9.1/jars/specs2-scalaz-core_2.9.1-6.0.1.jar"/>
-	<classpathentry kind="lib" path="/home/ms/.ivy2/cache/org.scalatest/scalatest_2.9.1/jars/scalatest_2.9.1-1.6.1.jar"/>
-	<classpathentry kind="lib" path="/home/ms/.ivy2/cache/junit/junit/jars/junit-4.10.jar"/>
-	<classpathentry kind="lib" path="/home/ms/.ivy2/cache/org.hamcrest/hamcrest-core/jars/hamcrest-core-1.1.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="output" path="bin"/>
+  <classpathentry output="target/scala-2.10/classes" path="src/main/scala" kind="src"></classpathentry>
+  <classpathentry output="target/scala-2.10/classes" path="src/main/java" kind="src"></classpathentry>
+  <classpathentry output="target/scala-2.10/test-classes" path="src/test/scala" kind="src"></classpathentry>
+  <classpathentry output="target/scala-2.10/test-classes" path="src/test/java" kind="src"></classpathentry>
+  <classpathentry kind="con" path="org.scala-ide.sdt.launching.SCALA_CONTAINER"></classpathentry>
+  <classpathentry path="/home/ms/.ivy2/cache/net.liftweb/lift-webkit_2.10/jars/lift-webkit_2.10-2.5.jar" kind="lib"></classpathentry>
+  <classpathentry path="/home/ms/.ivy2/cache/net.liftweb/lift-util_2.10/jars/lift-util_2.10-2.5.jar" kind="lib"></classpathentry>
+  <classpathentry path="/home/ms/.ivy2/cache/net.liftweb/lift-actor_2.10/jars/lift-actor_2.10-2.5.jar" kind="lib"></classpathentry>
+  <classpathentry path="/home/ms/.ivy2/cache/net.liftweb/lift-common_2.10/jars/lift-common_2.10-2.5.jar" kind="lib"></classpathentry>
+  <classpathentry path="/home/ms/.ivy2/cache/org.slf4j/slf4j-api/jars/slf4j-api-1.7.2.jar" kind="lib"></classpathentry>
+  <classpathentry path="/home/ms/.ivy2/cache/net.liftweb/lift-json_2.10/jars/lift-json_2.10-2.5.jar" kind="lib"></classpathentry>
+  <classpathentry path="/home/ms/.ivy2/cache/org.scala-lang/scalap/jars/scalap-2.10.0.jar" kind="lib"></classpathentry>
+  <classpathentry kind="con" path="org.scala-ide.sdt.launching.SCALA_COMPILER_CONTAINER"></classpathentry>
+  <classpathentry path="/home/ms/.ivy2/cache/org.scala-lang/scala-reflect/jars/scala-reflect-2.10.0.jar" kind="lib"></classpathentry>
+  <classpathentry path="/home/ms/.ivy2/cache/com.thoughtworks.paranamer/paranamer/jars/paranamer-2.4.1.jar" kind="lib"></classpathentry>
+  <classpathentry path="/home/ms/.ivy2/cache/joda-time/joda-time/jars/joda-time-2.1.jar" kind="lib"></classpathentry>
+  <classpathentry path="/home/ms/.ivy2/cache/org.joda/joda-convert/jars/joda-convert-1.2.jar" kind="lib"></classpathentry>
+  <classpathentry path="/home/ms/.ivy2/cache/commons-codec/commons-codec/jars/commons-codec-1.6.jar" kind="lib"></classpathentry>
+  <classpathentry path="/home/ms/.ivy2/cache/javax.mail/mail/jars/mail-1.4.4.jar" kind="lib"></classpathentry>
+  <classpathentry path="/home/ms/.ivy2/cache/javax.activation/activation/jars/activation-1.1.jar" kind="lib"></classpathentry>
+  <classpathentry path="/home/ms/.ivy2/cache/nu.validator.htmlparser/htmlparser/bundles/htmlparser-1.4.jar" kind="lib"></classpathentry>
+  <classpathentry path="/home/ms/.ivy2/cache/commons-fileupload/commons-fileupload/jars/commons-fileupload-1.2.2.jar" kind="lib"></classpathentry>
+  <classpathentry path="/home/ms/.ivy2/cache/org.scala-lang/scala-actors/jars/scala-actors-2.10.0.jar" kind="lib"></classpathentry>
+  <classpathentry path="/home/ms/.ivy2/cache/net.liftweb/lift-mapper_2.10/jars/lift-mapper_2.10-2.5.jar" kind="lib"></classpathentry>
+  <classpathentry path="/home/ms/.ivy2/cache/net.liftweb/lift-db_2.10/jars/lift-db_2.10-2.5.jar" kind="lib"></classpathentry>
+  <classpathentry path="/home/ms/.ivy2/cache/net.liftweb/lift-proto_2.10/jars/lift-proto_2.10-2.5.jar" kind="lib"></classpathentry>
+  <classpathentry path="/home/ms/.ivy2/cache/net.liftmodules/lift-jquery-module_2.5_2.10/jars/lift-jquery-module_2.5_2.10-2.3.jar" kind="lib"></classpathentry>
+  <classpathentry path="/home/ms/.ivy2/cache/ch.qos.logback/logback-classic/jars/logback-classic-1.0.6.jar" kind="lib"></classpathentry>
+  <classpathentry path="/home/ms/.ivy2/cache/ch.qos.logback/logback-core/jars/logback-core-1.0.6.jar" kind="lib"></classpathentry>
+  <classpathentry path="/home/ms/.ivy2/cache/net.liftweb/lift-mongodb_2.10/jars/lift-mongodb_2.10-2.5.jar" kind="lib"></classpathentry>
+  <classpathentry path="/home/ms/.ivy2/cache/net.liftweb/lift-json-ext_2.10/jars/lift-json-ext_2.10-2.5.jar" kind="lib"></classpathentry>
+  <classpathentry path="/home/ms/.ivy2/cache/org.mongodb/mongo-java-driver/jars/mongo-java-driver-2.10.1.jar" kind="lib"></classpathentry>
+  <classpathentry path="/home/ms/.ivy2/cache/postgresql/postgresql/jars/postgresql-9.1-901.jdbc4.jar" kind="lib"></classpathentry>
+  <classpathentry path="/home/ms/.ivy2/cache/org.eclipse.jetty/jetty-webapp/jars/jetty-webapp-8.1.7.v20120910.jar" kind="lib"></classpathentry>
+  <classpathentry path="/home/ms/.ivy2/cache/org.eclipse.jetty/jetty-xml/jars/jetty-xml-8.1.7.v20120910.jar" kind="lib"></classpathentry>
+  <classpathentry path="/home/ms/.ivy2/cache/org.eclipse.jetty/jetty-util/jars/jetty-util-8.1.7.v20120910.jar" kind="lib"></classpathentry>
+  <classpathentry path="/home/ms/.ivy2/cache/org.eclipse.jetty/jetty-servlet/jars/jetty-servlet-8.1.7.v20120910.jar" kind="lib"></classpathentry>
+  <classpathentry path="/home/ms/.ivy2/cache/org.eclipse.jetty/jetty-security/jars/jetty-security-8.1.7.v20120910.jar" kind="lib"></classpathentry>
+  <classpathentry path="/home/ms/.ivy2/cache/org.eclipse.jetty/jetty-server/jars/jetty-server-8.1.7.v20120910.jar" kind="lib"></classpathentry>
+  <classpathentry path="/home/ms/.ivy2/cache/org.eclipse.jetty.orbit/javax.servlet/orbits/javax.servlet-3.0.0.v201112011016.jar" kind="lib"></classpathentry>
+  <classpathentry path="/home/ms/.ivy2/cache/org.eclipse.jetty/jetty-continuation/jars/jetty-continuation-8.1.7.v20120910.jar" kind="lib"></classpathentry>
+  <classpathentry path="/home/ms/.ivy2/cache/org.eclipse.jetty/jetty-http/jars/jetty-http-8.1.7.v20120910.jar" kind="lib"></classpathentry>
+  <classpathentry path="/home/ms/.ivy2/cache/org.eclipse.jetty/jetty-io/jars/jetty-io-8.1.7.v20120910.jar" kind="lib"></classpathentry>
+  <classpathentry path="/home/ms/.ivy2/cache/org.specs2/specs2_2.10/jars/specs2_2.10-1.14.jar" kind="lib"></classpathentry>
+  <classpathentry path="/home/ms/.ivy2/cache/org.specs2/specs2-scalaz-core_2.10/jars/specs2-scalaz-core_2.10-7.0.0.jar" kind="lib"></classpathentry>
+  <classpathentry path="/home/ms/.ivy2/cache/org.specs2/specs2-scalaz-concurrent_2.10/jars/specs2-scalaz-concurrent_2.10-7.0.0.jar" kind="lib"></classpathentry>
+  <classpathentry path="/home/ms/.ivy2/cache/org.specs2/scalaz-effect_2.10/jars/scalaz-effect_2.10-7.0.0.jar" kind="lib"></classpathentry>
+  <classpathentry path="/home/ms/.ivy2/cache/org.specs2/scalaz-core_2.10/jars/scalaz-core_2.10-7.0.0.jar" kind="lib"></classpathentry>
+  <classpathentry path="org.eclipse.jdt.launching.JRE_CONTAINER" kind="con"></classpathentry>
+  <classpathentry path="bin" kind="output"></classpathentry>
 </classpath>

@@ -2,5 +2,5 @@ Licence GNU AGPL
 see: http://www.gnu.org/licenses/agpl.html
 
 It is online book for teacher and their pupils. Teacher create lesson with online HTML5 slides (deck.js), quizes, online articles, attached files   
-It implemetns editor for slajds and can performs presentation in HTML in browser. Slides can contain vidoe (from YouTube), formula (mathtoascii.js)
+It implemetns editor for slides and can performs presentation in HTML in browser. Slides can contain video (from YouTube), formula (mathtoascii.js)
 Lesson can be public or private
