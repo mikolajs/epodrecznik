@@ -50,7 +50,8 @@
     	 else {
     		 prop = (h/610.0) ;
     	 }
-    	 $('#slides').css('transform', 'scale(' + prop + ', ' + prop + ') translateY(50px)' );
+    	 var translateY = h/14;
+    	 $('#slides').css('transform', 'scale(' + prop + ', ' + prop + ')' +' translateY('+ translateY +'px)' );
     }
     
     

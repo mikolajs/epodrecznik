@@ -53,7 +53,7 @@
     
   <div class="lift:DocumentsSn.subjectSelect theSelects" >
   <span>Wybierz przedmiot:</span>
-   <select id="subjectSelect" onchange="selectSubject(this)"></select>
+   <select id="subjectSelect" onchange="selectSubject(this)"><option></option></select>
  	<span>Wybierz poziom edukacyjny:</span>
    <select onchange="selectLevel(this)">
    <option value="0">Wszystkie</option>
@@ -69,10 +69,13 @@
 
   <div id="ebookList" class="lift:DocumentsSn.docList dataTable_wrapper">
             <table id="dataTable" class="display" >
-                <thead><tr><th>Tytuł</th><th>Opis</th><th>Właściciel</th><th>Edycja</th></tr></thead>
+                <thead><tr><th>Tytuł</th><th>Opis</th><th>Przedmiot</th><th>Poziom</th>
+                <th>Właściciel</th><th>Edycja</th></tr></thead>
                 <tbody><tr><td><a href="">To jest tytuł</a></td><td class="descriptBook"></td>
+                <td class="subject"></td><td class="level"></td>
                 <td class="ownerBook"></td><td class="editBook"></td></tr></tbody>
-                <tfoot><tr><th>Tytuł</th><th>Opis</th><th>Właściciel</th><th>Edycja</th></tr></tfoot>
+                <tfoot><tr><th>Tytuł</th><th>Opis</th><th>Przedmiot</th><th>Poziom</th>
+                <th>Właściciel</th><th>Edycja</th></tr></tfoot>
             </table>
             
    </div>

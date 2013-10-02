@@ -20,13 +20,13 @@ class SlidesSn extends  RoleChecker {
   
 
   def slidesList() = {
-    val idUser = User.currentUser.open_!.id.is 
+    val idUser = User.currentUser.openOrThrowException("No user").id.is 
     val q1 = JObject(JField("public", JBool(true))::Nil) // for $or in one query TODO
     val q2 = JObject(JField("authorId", JInt(idUser))::Nil) 
     val slides1 = Slide.findAll("public"->true)
     val slides2 = Slide.findAll(("authorId"-> idUser)~("public"->false))
     val slides = slides1 ::: slides2
-    "tbody *" #> slides.map(slide => {
+    "tbody tr" #> slides.map(slide => {
         val edit_? = slide.authorId == idUser
         <tr><td><a href={"/slide/"+slide._id.toString} target="_blank">{slide.title}</a></td>
     	<td>{slide.departmentInfo}</td><td>{slide.subjectInfo}</td>

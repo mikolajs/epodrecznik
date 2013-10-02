@@ -27,7 +27,7 @@ class LessonsSn extends BaseSlide with RoleChecker {
         case c::list => c
         case _ => Course.create
     })
-    val userID =  tryo(User.currentUserId.open_!.toLong).openOr(0L)
+    val userID =  tryo(User.currentUserId.openOrThrowException("No user").toLong).openOr(0L)
               
   def showLesson() = {
       var lessonId = ""
@@ -96,7 +96,7 @@ class LessonsSn extends BaseSlide with RoleChecker {
   def teacherLessons() = {
     
     val lessons = Lesson.findAll(("authorId"->userID)~("courseId" -> course._id.toString)) 
-    "tbody *" #> lessons.map(lesson => <tr id={lesson._id.toString}>
+    "tbody tr" #> lessons.map(lesson => <tr id={lesson._id.toString}>
     	<td>{lesson.nr.toString}</td><td  class="tit">{lesson.title}</td>
     	<td>{if(lesson.public) "Tak" else "Nie"}</td></tr>)
   }
@@ -104,7 +104,7 @@ class LessonsSn extends BaseSlide with RoleChecker {
   //for public view in main menu
   def publicLessons() = {
       val lessons = Lesson.findAll(("public"->true)~("courseId" -> course._id.toString))
-      "tbody *" #> lessons.map(lesson => <tr id={lesson._id.toString}>
+      "tbody tr" #> lessons.map(lesson => <tr id={lesson._id.toString}>
     	<td>{lesson.nr.toString}</td><td  class="tit">{lesson.title}</td>
     	</tr>)
   }

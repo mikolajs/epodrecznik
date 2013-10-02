@@ -16,14 +16,15 @@ import org.bson.types.ObjectId
 import Helpers._
 
 //for show list of all doc and create new doc
-class DocumentsSn extends BaseSlide {
+class DocumentsSn  {
 //edocuments => show edocuments list 
  def docList() = {
     val documents = Document.findAll   //all can view??
-    "tbody" #> documents.map(doc => "a" #> <a href={"/document/" + doc._id.toString} target="_blanck" >{ doc.title } </a> &
+    "tbody tr" #> documents.map(doc => "a" #> <a href={"/document/" + doc._id.toString} target="_blanck" >{ doc.title } </a> &
       ".descriptBook *" #> Text( doc.descript ) &
       ".ownerBook *" #> <em>{ doc.ownerName }</em> &
       ".subject *" #> Text(doc.subcjectName) &
+      ".level *" #> Text(doc.level.toString) &
       ".department *" #> Text(doc.departmentName) &
       ".editBook *" #> <a href={"/resources/editdocument/" + doc._id.toString}> Edytuj</a>
       )
@@ -43,5 +44,10 @@ class DocumentsSn extends BaseSlide {
          case _ => "article" #> <h1>Nie znaleziono dokumentu!</h1>
      }     
  }
+ 
+  def subjectSelect() = {
+    val subj = "Wszystkie"::Subject.findAll.map(s => s.full)
+    "#subjectSelect option" #> subj.map(s => <option value={s}>{s}</option>)
+  }
 
 }
