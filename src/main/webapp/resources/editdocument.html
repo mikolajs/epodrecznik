@@ -9,6 +9,7 @@
 <script type="text/javascript" src="/jquery/ckeditorresource.js"></script>
 <script type="text/javascript" src="/jquery/departmentselect.js"></script>
 <script type="text/javascript" src="/jquery/editdoc.js"></script>
+
 <script>
 var departmentSelect = new Object();
 var editDoc = new Object();
@@ -20,7 +21,7 @@ $(document).ready(function(){
 	
 	CKEDITOR.replace( 'docContent', {
 		height: 600,
-		extraPlugins : 'youTube,addImage,formula',
+		extraPlugins : 'youTube,addImage,formula,syntaxhighlight,symbol',
 		toolbar :[
 { name: 'clipboard', groups: [ 'clipboard', 'undo' ], 
 	items: [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
@@ -29,7 +30,7 @@ $(document).ready(function(){
 { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ], 
 			items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ] },
 { name: 'insert', 
-items: [ 'AddImage', 'Formula', 'YouTube', 'Table', 'HorizontalRule',  'SpecialChar', 'Iframe', 'Flash' ] },
+items: [ 'AddImage', 'Formula', 'YouTube', 'Table', 'HorizontalRule',  'Symbol', 'Iframe', 'Flash' ,'Syntaxhighlight'] },
 '/',
 { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ], 
 	items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl' ] },
