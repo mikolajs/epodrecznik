@@ -64,16 +64,13 @@
 						
 			this.$slideChoice.children().remove();
 			var self = this;
+			var  $detailsList = this.$detailsHTML.children('details');
 		    this.$slidesHTML.children('section').each(function(index){
 				var $this = $(this);
 				self.$slideChoice.append('<div class="lista"><span>' + (index + 1).toString()+ '</span>'
-						+ '<section>' + $this.get(0).innerHTML + '</section>' + '</div>');
-			});
-			
-			this.$detailsHTML.children('details').each(function(){
-				var $this = $(this); 
-				self.$slideChoice.children('div.lista').append('<details>' +
-						$this.get(0).innerHTML + '</details>');
+						+ '<section>' + $this.get(0).innerHTML + '</section>' + '<details>' +
+						$detailsList.get(index).innerHTML + '</details>'
+						+ '</div>');
 			});
 			
 			this.$slideChoice.children('div.lista').children('section').each(function() {

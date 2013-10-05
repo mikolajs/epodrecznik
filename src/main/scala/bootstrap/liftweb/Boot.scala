@@ -49,7 +49,7 @@ class Boot {
     LiftRules.addToPackages("pl.brosbit")
     Schemifier.schemify(true, Schemifier.infoF _ , User)
     
-    LiftRules.statelessDispatchTable.append({
+    LiftRules.statelessDispatch.append({
       case Req("image" :: id :: Nil, _, GetRequest) => () => ImageLoader.icon(id)
       case Req("file" :: id :: Nil, _, GetRequest) => () => FileLoader.file(id)
     })
@@ -60,11 +60,11 @@ class Boot {
       	superUser(true).validated(true).save
     }
 
-    val isAdmin = If(() => User.loggedIn_? && (User.currentUser.open_!.role.is == "a"),
+    val isAdmin = If(() => User.loggedIn_? && (User.currentUser.openOrThrowException("No user").role.is == "a"),
       () => RedirectResponse("/"))
     	
     val isTeacher = If(() => if(User.loggedIn_?) {
-         val r = User.currentUser.open_!.role.is
+         val r = User.currentUser.openOrThrowException("No user").role.is
         (r == "t" || r == "m" || r == "a") } 
     	else {false}, () => RedirectResponse("/"))
     	
@@ -94,6 +94,7 @@ class Boot {
         Menu("Quiz") / "quiz" / ** >> LocGroup("extra") >> Hidden,
         Menu("Wyszukiwanie") / "search"  >> LocGroup("extra") >> Hidden,
         Menu("Image upload") / "imgstorage" >> LocGroup("extra") >> Hidden >> isTeacher,
+        Menu("Thumb upload") / "thumbstorage" >> LocGroup("extra") >> Hidden >> isTeacher,
         Menu("Administrator") / "admin" / "admin" >> LocGroup("admin") >> isAdmin,
         Menu("Przedmioty") / "admin" / "subjects" >> LocGroup("admin") >> isAdmin,
         Menu("Działy") / "admin" / "departments" >> LocGroup("admin") >> isAdmin,

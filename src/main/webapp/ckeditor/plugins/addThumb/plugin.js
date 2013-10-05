@@ -1,19 +1,19 @@
 
 
-CKEDITOR.plugins.add( 'addImage',
+CKEDITOR.plugins.add( 'addThumb',
           {
             init: function( editor )
             {  
-              editor.addCommand( 'addImage', new CKEDITOR.dialogCommand( 'addImageDialog' ));
+              editor.addCommand( 'addThumb', new CKEDITOR.dialogCommand( 'addThumbDialog' ));
         
-              editor.ui.addButton( 'AddImage',
+              editor.ui.addButton( 'AddThumb',
               {
                 label: 'Wczytaj obrazek',
-                command: 'addImage',
+                command: 'addThumb',
                 icon: this.path + 'image.png'
               } );
         
-        CKEDITOR.dialog.add( 'addImageDialog', function( editor )
+        CKEDITOR.dialog.add( 'addThumbDialog', function( editor )
     {
       return {
         title : 'Dodaj obrazek',
@@ -34,7 +34,7 @@ CKEDITOR.plugins.add( 'addImage',
               },
 	          {
 	            type : 'html',
-	            html : '<iframe id="imageLoaderFrame" src="/imgstorage"  style="width:100%;min-height:100px;" frameborder="0" onload="getImageURLfromIFrame(this)" ></iframe>'
+	            html : '<iframe id="imageLoaderFrame" src="/thumbstorage"  style="width:100%;min-height:100px;" frameborder="0" onload="getImageURLfromIFrame(this)" ></iframe>'
 	          },
               {
                   type: 'html',

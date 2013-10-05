@@ -29,7 +29,11 @@ import java.io.ByteArrayOutputStream
       object linkpath extends RequestVar[String]("")
      
       
-      def addNewsImg() = {
+      def addBigImg() = addImg(800)
+      
+      def addSmallImg() = addImg(300)
+      
+      private def addImg(maxSize:Int)= {
         var fileHold: Box[FileParamHolder] = Empty
         var mimeType = ""
         var mimeTypeFull = ""
@@ -63,7 +67,7 @@ import java.io.ByteArrayOutputStream
            if (fileName.isEmpty) fileName = scala.util.Random.nextLong.toString
            var imageBuf: BufferedImage = ImageIO.read(new ByteArrayInputStream(fileHold.get.file))
            var mime = mimeType(1)
-           val imBox:Box[BufferedImage] = getImageBox(500, imageBuf,mime)
+           val imBox:Box[BufferedImage] = getImageBox(maxSize, imageBuf,mime)
            var outputStream = new ByteArrayOutputStream()
            ImageIO.write(imBox.get, mimeType.substring(1),outputStream)
            val inputStream = new ByteArrayInputStream(outputStream.toByteArray())
@@ -85,7 +89,8 @@ import java.io.ByteArrayOutputStream
         "#submit" #> SHtml.submit("Dodaj!", save) 
       } 
       
-      def getImageBox(maxSize:Int, imageBufIn: BufferedImage,mime:Char):Box[BufferedImage] = {
+      
+      private def getImageBox(maxSize:Int, imageBufIn: BufferedImage,mime:Char):Box[BufferedImage] = {
          var imageBuf: BufferedImage = imageBufIn
             //tutaj przeskalowanie
             var imBox: Box[BufferedImage] = Empty

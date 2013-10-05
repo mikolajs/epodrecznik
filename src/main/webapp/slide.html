@@ -40,44 +40,7 @@
     
     $(document).ready(function() {
     	
-        $.deck('.slide'); 
-        var arrayId = new Array();
-       
-       
-    $('#next-slide').click(function() {
-            $.deck('next');
-        }); 
-    $('#previous-slide').click(function() {
-            $.deck('prev');
-        }); 
     
-      $('#slides').css('width', 950 + 'px' );
-      $('#slides').css('height', 600 + 'px' );
-      
-      $(document).bind('deck.change', function(event, from, to) {
-    	  // window.setTimeout(rescaleSlide, 300);
-    	  
-    	});
-      
-      $.extend(true, $.deck.defaults, {
-        selectors: {
-        statusCurrent: '.deck-status-current',
-        statusTotal: '.deck-status-total'
-       },
-        countNested: true,
-      });      
- 
-     if(isMSIE()){  	
-    	alert("Twoja przeglądarka może nie wyświetlić wszystkich elementów prezentacji prawidłwo." + 
-    			"Użyj Firefox lub najnowszego Chrome.");
-     }
-     
-     $( "#detailsShow" ).dialog({
-    	 autoOpen: false ,
-    	 title: "Dodatkowy opis" ,
-    	 dialogClass: 'alert',
-     	modal: true
-     	});
     });
     
     
@@ -113,7 +76,7 @@ body { background: url(/images/background.png) repeat; margin: 0 auto; }
     <li><a href="/index">podrecznik.edu.pl</a></li>
     <li>Temat: <span id="title">Jakiś temat</span></li>
     <li id="change-slide"><img src="/images/change.png" onclick="changeTemplate()"/></li>
-    <li id="large-slide"><img src="/images/fullscreen.png" onclick="goFull()"/></li>
+    <li id="large-slide"><img src="/images/fullscreen.png"  /></li>
     <li>Przedmiot: <span id="subject">Fizyka liceum</span></li>
     <li>Etap:<span id="etap">3</span></li>
     <li>Dział: <span id="department">termodynamika</span></li>

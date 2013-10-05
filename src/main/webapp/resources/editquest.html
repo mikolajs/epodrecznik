@@ -25,16 +25,16 @@ $(document).ready(function() {
 	  });
 
 CKEDITOR.replace( 'questionQuest',{
-	width : 450, 
-	height: 200,
-	extraPlugins : 'addImage,formula',
+	width : 500, 
+	height: 240,
+	extraPlugins : 'addThumb,formula,symbol',
 	toolbar :[
 { name: 'clipboard', items: [ 'PasteText', 'PasteFromWord', 'Undo', 'Redo' ] },
-{ name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] },
-{ name: 'colors', items: [ 'TextColor', 'BGColor' ] },
-{ name: 'insert', items: [ 'AddImage', 'Formula', 'YouTube', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar',] },
+{ name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] }, 
+{ name: 'paragraph', items: [ 'NumberedList', 'BulletedList', 'Outdent', 'Indent', 'Blockquote', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'] },
+{ name: 'insert', items: [ 'AddThumb', 'Formula', 'YouTube', 'Table', 'HorizontalRule', 'Smiley', 'Symbol'] },
 { name: 'basicstyles',items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', 'RemoveFormat' ] },
-{ name: 'paragraph', items: [ 'NumberedList', 'BulletedList', 'Outdent', 'Indent', 'Blockquote', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'] }
+{ name: 'colors', items: [ 'TextColor', 'BGColor' ] }
  ]
 });
 CKEDITOR.config.disableNativeSpellChecker = false;
