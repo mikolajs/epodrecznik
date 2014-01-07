@@ -9,6 +9,8 @@
 <script type="text/javascript" src="/jquery/ckeditorresource.js"></script>
 <script type="text/javascript" src="/jquery/departmentselect.js"></script>
 <script type="text/javascript" src="/jquery/editdoc.js"></script>
+   <script src="/jquery/myvalidator.js" ></script>
+   <link href="/deckjs/themes/style/swiss_ckeditor.css" id="style-theme-link" type="text/css" rel="stylesheet">
 
 <script>
 var departmentSelect = new Object();
@@ -17,41 +19,54 @@ $(document).ready(function(){
 	departmentSelect = new DepartmentSelect();	
 	editDoc = new Document();
 	 
-	
-	
-	CKEDITOR.replace( 'docContent', {
-		height: 600,
-		extraPlugins : 'youTube,addImage,formula,syntaxhighlight,symbol',
-		toolbar :[
-{ name: 'clipboard', groups: [ 'clipboard', 'undo' ], 
-	items: [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
-{ name: 'editing', groups: [ 'find', 'selection', 'spellchecker' ],
-		items: [ 'Find', 'Replace', '-', 'SelectAll']},
-{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ], 
-			items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ] },
-{ name: 'insert', 
-items: [ 'AddImage', 'Formula', 'YouTube', 'Table', 'HorizontalRule',  'Symbol', 'Iframe', 'Flash' ,'Syntaxhighlight'] },
-'/',
-{ name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ], 
-	items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl' ] },
-{ name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] },
-{ name: 'styles', items: [ 'Format','Styles', 'Font', 'FontSize' ] },
-{ name: 'colors', items: [ 'TextColor', 'BGColor' ] },
-{ name: 'tools', items: [  'ShowBlocks' ] }
+	CKEDITOR.on( 'instanceCreated', function( event ) {
+            var editor = event.editor,
+                element = editor.element;
+                //editor.dataProcessor.writer.selfClosingEnd = '/>';
+                editor.config.disableNativeSpellChecker = false;
+                editor.config.language = 'pl';
+                editor.config.extraPlugins =  'youTube,addImage,syntaxhighlight,formula,symbol';
+                editor.config.toolbar = [
+                                  { name: 'document', groups: [ 'mode', 'document'], items: [ 'Source', '-', 'Save', 'NewPage', 'Preview', 'Print' ] },
+                                  { name: 'clipboard', groups: [ 'clipboard', 'undo' ], items: [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
+                                  { name: 'editing', groups: [ 'find', 'selection', 'spellchecker' ], items: [ 'Find', 'Replace', '-', 'SelectAll', '-', 'Scayt' ] },
+                                  { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ], items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ] },
+                                  { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align' ], items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'] },
+                                  '/',
+                                  { name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] },
+                                  { name: 'insert', items: [ 'AddImage', 'YouTube', 'Table', 'Syntaxhighlight',  'Formula',  'Symbol' ] },
+                                  { name: 'styles', items: [ 'Styles', 'Format', 'Font', 'FontSize' ] },
+                                  { name: 'colors', items: [ 'TextColor', 'BGColor' ] },
+                                  { name: 'tools', items: [ 'Maximize', 'ShowBlocks' ] },
+                                  { name: 'others', items: [ '-' ] }
+                              ];
 
-]
+                editor.config.toolbarGroups = [
+                                               { name: 'document', groups: [ 'mode', 'document' ] },
+                                               { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
+                                               { name: 'editing', groups: [ 'find', 'selection', 'spellchecker' ] },
+                                               { name: 'forms' },
+                                               '/',
+                                               { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+                                               { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ] },
+                                               { name: 'links' },
+                                               { name: 'insert' },
+                                               '/',
+                                               { name: 'styles' },
+                                               { name: 'colors' },
+                                               { name: 'tools' },
+                                               { name: 'others' }
+                                           ];
+        });
 	});
-	CKEDITOR.config.setStyles = [];
-	CKEDITOR.config.contentsCss = '/deckjs/themes/style/web-2.0.css';
-	CKEDITOR.config.disableNativeSpellChecker = false;
-});
 
 </script>
 <style>
 #articleWrapper {
 	margin-top: 100px;
 }
-
+#docEdit {width:950px; min-height:400px; padding: 20px;
+            border: 2px solid #ccc;}
 label { width: 100px; float: left;}
 select {width: 150px;}
 input[type=submit] { width: 200px;}
@@ -77,7 +92,8 @@ input[type=submit] { width: 200px;}
 						<input id="docDelete" class="deleteButton" onclick="return editDoc.deleteQuest()"/></p>
 						</div>
 						<div class="clear"></div>
-						<textarea id="docContent" ></textarea>
+						<input id="docContent" type="text" style="display:none;"/>
+						<div id="docEdit" class="slide" contenteditable="true" > Napis</div>
 						
 										
 				

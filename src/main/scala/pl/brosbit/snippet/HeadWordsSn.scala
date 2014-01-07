@@ -3,7 +3,7 @@ package pl.brosbit.snippet
 import pl.brosbit.model._
 import java.util.Date
 import scala.xml.{Text,XML,Unparsed}
-import _root_.net.liftweb._
+import 	_root_.net.liftweb._
 import http.{S,SHtml}
 import common._
 import util._
@@ -23,7 +23,7 @@ class HeadWordsSn extends  RoleChecker {
     val levPar = S.param("l").openOr("3")
     val subiectId = Subject.find(subjPar) match {
         case Some(sub) => subjPar
-        case _ => Subject.findAll.head._id.toString
+        case _ => Subject.findAll.head._id.toString //fail for empty subject list
     }
     
   def headWordsList() = {

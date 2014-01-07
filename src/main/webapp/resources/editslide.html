@@ -4,8 +4,8 @@
 	<script type="text/javascript" src="/jquery/ckeditorresource.js"></script>
 	<script type="text/javascript" src="/jquery/dejavu.js"></script>
 	<script type="text/javascript" src="/jquery/editslides.js"></script>
-	
-	<script type="text/javascript" src="/jquery/departmentselect.js"></script>
+    <script type="text/javascript" src="/jquery/departmentselect.js"></script>
+	<script type="text/javascript" src="/jquery/myvalidator.js"></script>
 	<script type="text/javascript" src="/jquery/ASCIIMathML.js"></script>
 	
 	<script>
@@ -33,12 +33,7 @@
 	{ name: 'tools', items: [ 'Maximize', 'ShowBlocks' ] }
 	]
 		});
-		
-		CKEDITOR.on( 'instanceReady', function( ev )
-			    {
-			        // Out self closing tags the HTML4 way, like <br>.
-			        ev.editor.dataProcessor.writer.selfClosingEnd = '/>';
-	 });
+	
 		
 		CKEDITOR.config.disableNativeSpellChecker = false;
 		
