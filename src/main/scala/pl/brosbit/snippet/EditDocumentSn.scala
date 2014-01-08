@@ -20,13 +20,13 @@ import http.js.JE._
 
 class EditDocumentSn extends BaseSlide {
 
-    val userId = User.currentUser.open_!.id.is
+    val userId = User.currentUser.openOrThrowException("Niezalogowny nauczyciel").id.is
     
     val id = S.param("id").openOr("0")
     var document = if (id != "0") Document.find(id).getOrElse(Document.create) else Document.create
     
     
-    val isOwner = document.ownerID == 0L || document.ownerID == userId || User.currentUser.open_!.role == "a"
+    val isOwner = document.ownerID == 0L || document.ownerID == userId || User.currentUser.openOrThrowException("Niezalogowany nauczyciel").role == "a"
 
     def editData() = {
     	
@@ -50,8 +50,8 @@ class EditDocumentSn extends BaseSlide {
                         document.subjectId = dep.subject
                         document.level = level.toInt
                         document.subcjectName = Subject.find(dep.subject).getOrElse(Subject.create).full
-                        val user = User.currentUser.open_!
-                        document.ownerID = user.id
+                        val user = User.currentUser.openOrThrowException("Niezalogowany nauczyciel")
+                        document.ownerID = user.id.is
                         document.ownerName = user.fullName
                         document.content = docContent
                         document.save                       
@@ -70,7 +70,6 @@ class EditDocumentSn extends BaseSlide {
         }
 
         val subjects = Subject.findAll.map(sub => (sub._id.toString, sub.full))
-        val levList = List(("1","I"),("2","II"),("3","III"),("4","IV"),("5","V"))
         "#docID" #> SHtml.text(docID, docID = _) &
             "#docTitle" #> SHtml.text(title, title = _) &
             "#docDescription" #> SHtml.textarea(descript, descript = _) &

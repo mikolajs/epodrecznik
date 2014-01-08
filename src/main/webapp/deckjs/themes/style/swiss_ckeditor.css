@@ -1,6 +1,6 @@
 .slide {
   font-family: "Helvetica Neue", sans-serif;
-  font-size: 1.2em;
+  font-size: 1.3em;
    background: #fff;
   position: relative;
   margin: 0 auto;
@@ -14,13 +14,20 @@
 
 .slide  h1 {
   color: #000;
+  margin-bottom: 10px;
 }
 .slide  h2 {
   color: #c00;
   border-bottom-color: #ccc;
+  margin-bottom: 20px;
 }
 .slide  h3 {
   color: #4a4;
+  margin-bottom: 10px;
+}
+.slide h4 {
+    color: #000099;
+    margin-bottom: 10px;
 }
 .slide  pre {
   border-color: #ccc;

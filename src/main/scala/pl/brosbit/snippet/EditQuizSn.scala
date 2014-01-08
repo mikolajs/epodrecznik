@@ -30,7 +30,6 @@ class EditQuizSn extends BaseSlide {
 
     def choiseQuest() = {
         val subjects = Subject.findAll.map(s => (s._id.toString, s.full))
-        val levels = List(("1", "I"), ("2", "II"), ("3", "III"), ("4", "IV"), ("5", "V"))
         def makeChoise() {
             S.redirectTo("/resources/editquiz?sub=" + subjectId + "&dep=" + departmentId + "&lev=" + level)
         }
@@ -38,12 +37,12 @@ class EditQuizSn extends BaseSlide {
         "#subjects" #> SHtml.select(subjects, Full(subjectId), subjectId = _) &
             "#departmentHidden" #> SHtml.text(departmentId, departmentId = _, "type" -> "hidden") &
             "#departments" #> departmentSelect() &
-            "#levels" #> SHtml.select(levels, Full(level), level = _) &
+            "#levels" #> SHtml.select(levList, Full(level), level = _) &
             "#choise" #> SHtml.submit("Wybierz", makeChoise)
     }
 
     def questionList() = {
-        val userId = User.currentUser.open_!.id.is
+        val userId = User.currentUser.openOrThrowException("Niezalogowany nauczyciel").id.is
 
         val questions = QuizQuestion.findAll(("authorId" -> userId) ~ ("subjectId" -> subjectId) ~
             ("departmentId" -> departmentId) ~ ("level" -> level.toInt))
@@ -67,7 +66,7 @@ class EditQuizSn extends BaseSlide {
         var public = false
         var description = ""
         var title = ""
-        val userId = User.currentUser.open_!.id.is
+        val userId = User.currentUser.openOrThrowException("Niezalogowany nauczyciel").id.is
 
         Quiz.find(idQuiz) match {
             case Some(quiz) => {
@@ -82,7 +81,8 @@ class EditQuizSn extends BaseSlide {
         def save(): JsCmd = {
              println("========= save quiz ========")
             val quiz = Quiz.find(id).getOrElse(Quiz.create)
-            if (quiz.authorId != 0L && quiz.authorId != userId && !User.currentUser.open_!.superUser)
+            if (quiz.authorId != 0L && quiz.authorId != userId &&
+                    !User.currentUser.openOrThrowException("Niezalogowany nauczyciel").superUser.is)
                 return Alert("To nie jest Twój test!")
 
             quiz.description = description
@@ -113,7 +113,8 @@ class EditQuizSn extends BaseSlide {
             println("========= delete quiz ========")
             Quiz.find(id) match {
                 case Some(quiz) => {
-                    if (quiz.authorId != 0L || userId == quiz.authorId || User.currentUser.open_!.superUser) {
+                    if (quiz.authorId != 0L || userId == quiz.authorId || 
+                            User.currentUser.openOrThrowException("Niezalogowany nauczyciel").superUser.is) {
                         quiz.delete
                         S.redirectTo("/resources/quizes")
                         Run("")

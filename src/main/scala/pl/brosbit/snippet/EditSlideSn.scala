@@ -51,7 +51,7 @@ class EditSlideSn extends BaseSlide with RoleChecker {
     
     //poprawić - uwzględnić fak, że new Slide już istnieje - chyba, że potrzebujemy kopi
     def saveData() {
-      val userId = User.currentUser.open_!.id.is
+      val userId = User.currentUser.openOrThrowException("Niezalogowany nauczyciel").id.is
       if(slide.authorId == 0L || slide.authorId == userId) {
           val slidesContentHtml = Unparsed(slidesString)
           
@@ -77,7 +77,7 @@ class EditSlideSn extends BaseSlide with RoleChecker {
     }
     
     def deleteData() {
-      val userId = User.currentUser.open_!.id.is
+      val userId = User.currentUser.openOrThrowException("Niezalogowany nauczyciel").id.is
      if (id != "0") Slide.find(id) match {
          case Some(slide) if slide.authorId == userId => {
            slideCont.delete
@@ -93,7 +93,6 @@ class EditSlideSn extends BaseSlide with RoleChecker {
       S.redirectTo("/resources/slides")
     }
     
-    val levList = List(("1","I"),("2","II"),("3","III"),("4","IV"),("5","V"))
     val publicList = List(("TAK","TAK"),("NIE","NIE"))
     "#id" #> SHtml.text(ID, ID = _, "type"->"hidden") &
     "#titleTheme" #> SHtml.text(title, title= _,"class"->"Name") &

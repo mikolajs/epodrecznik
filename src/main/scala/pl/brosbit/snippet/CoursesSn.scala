@@ -16,7 +16,7 @@ import Helpers._
 
 class CoursesSn extends BaseSlide {
 	def showMyCourses() = {
-	    val user = User.currentUser.open_!
+	    val user = User.currentUser.openOrThrowException("Niezalogowany nauczyciel")
 	    
 	     "tr" #> Course.findAll("authorId" -> user.id.is).map(course => {
 	        <tr id={course._id.toString}><td>{course.title}</td>
@@ -38,7 +38,7 @@ class CoursesSn extends BaseSlide {
         var public = false
 
         def save() {
-            val user = User.currentUser.open_!
+            val user = User.currentUser.openOrThrowException("Niezalogowany nauczyciel")
 
             val sub = Subject.find(subjectId).getOrElse(Subject.create)
 
@@ -49,7 +49,7 @@ class CoursesSn extends BaseSlide {
             course.subjectId = if(sub.full != "") sub._id else Subject.findAll.head._id
             course.subjectName = sub.full
             course.descript = descript
-            course.authorId = user.id
+            course.authorId = user.id.is
             course.public = public
             course.save
         }
@@ -67,12 +67,11 @@ class CoursesSn extends BaseSlide {
         }
 
         val subjects = Subject.findAll.map(sub => (sub._id.toString, sub.full))
-        val levels = List(("1", "I"), ("2", "II"), ("3", "III"), ("4", "IV"), ("5", "V"))
 	   
 	    "#courseId"  #> SHtml.text(id, id = _) &
 	    "#title" #> SHtml.text(title, x => title = x.trim) &
 	    "#subjects" #> SHtml.select(subjects, Full(subjects.head._1), subjectId = _) &
-	    "#level" #> SHtml.select(levels, Full(levels.head._1), level = _) &
+	    "#level" #> SHtml.select(levList, Full(levList.head._1), level = _) &
 	    "#public" #> SHtml.checkbox(public, public = _) &
 	    "#descript" #> SHtml.textarea(descript, x => descript = x.trim) &
 	    "#save" #> SHtml.submit("Dodaj", save) & 

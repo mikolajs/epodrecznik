@@ -30,7 +30,6 @@ class EditQuestSn extends BaseSlide {
     
     def choiseQuest() = {
          val subjects = Subject.findAll.map(s => (s._id.toString, s.full))
-         val levels = List(("1","I"),("2","II"),("3","III"),("4","IV"),("5","V"))
          def makeChoise() {
              S.redirectTo("/resources/editquest?sub="+subjectId+"&dep="+departmentId+"&lev="+level)
          }
@@ -38,12 +37,12 @@ class EditQuestSn extends BaseSlide {
         "#subjects" #> SHtml.select(subjects, Full(subjectId), subjectId = _) &
         "#departmentHidden" #> SHtml.text(departmentId, departmentId = _, "type"->"hidden") &
         "#departments" #> departmentSelect() &
-        "#levels" #> SHtml.select(levels, Full(level), level = _) &
+        "#levels" #> SHtml.select(levList, Full(level), level = _) &
         "#choise" #> SHtml.submit("Wybierz", makeChoise)
     }
     
     def showQuests() = {
-        val userId = User.currentUser.open_!.id.is
+        val userId = User.currentUser.openOrThrowException("Niezalogowany nauczyciel").id.is
         println("departmentId: " + departmentId + "   subjectId: " + subjectId + " level: ")
         "tr" #> QuizQuestion.findAll(("authorId"->userId)~("subjectId"->subjectId)~
                 ("departmentId"->departmentId)~("level"->level.toInt)).map(quest => {
@@ -68,7 +67,7 @@ class EditQuestSn extends BaseSlide {
             //println("+++++++++++++++++++ SAVE QUEST ")
             //printParam
             ///dodać test uprawnień
-            val userId = User.currentUser.open_!.id.is
+            val userId = User.currentUser.openOrThrowException("Niezalogowany nauczyciel").id.is
             val quest = QuizQuestion.find(id).getOrElse(QuizQuestion.create)
             if(quest.authorId != 0L && quest.authorId != userId) return Alert("To nie twoje pytanie!")
             quest.authorId = userId
@@ -86,7 +85,7 @@ class EditQuestSn extends BaseSlide {
         
         def delete():JsCmd = {
              println("+++++++++++++++++++ Del QUEST ")
-            val userId = User.currentUser.open_!.id.is 
+            val userId = User.currentUser.openOrThrowException("Niezalogowany nauczyciel").id.is 
             QuizQuestion.find(id) match {
                 case Some(quest) => {
                     if(quest.authorId == userId) {

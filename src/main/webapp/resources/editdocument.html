@@ -20,8 +20,9 @@ $(document).ready(function(){
 	editDoc = new Document();
 	 
 	CKEDITOR.on( 'instanceCreated', function( event ) {
-            var editor = event.editor,
+            var editor = event.editor;
                 element = editor.element;
+                 editor. config.format_tags = 'p;h2;h3;h4;h5;h6;pre;address';
                 //editor.dataProcessor.writer.selfClosingEnd = '/>';
                 editor.config.disableNativeSpellChecker = false;
                 editor.config.language = 'pl';
@@ -88,8 +89,8 @@ input[type=submit] { width: 200px;}
 						<input id="departmentHidden" type="text" /> 
 						<label>Poziom:</label><select id="docLevel"></select></p>
 						<p>
-						<input id="docSave" class="saveButton" /> 
-						<input id="docDelete" class="deleteButton" onclick="return editDoc.deleteQuest()"/></p>
+						<input id="docSave" class="saveButton"  onclick="return editDoc.saveDoc()"/> 
+						<input id="docDelete" class="deleteButton" onclick="return editDoc.deleteDoc()"/></p>
 						</div>
 						<div class="clear"></div>
 						<input id="docContent" type="text" style="display:none;"/>

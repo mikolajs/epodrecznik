@@ -88,7 +88,7 @@ class  EditHeadWordSn  extends BaseSlide with RoleChecker {
       S.redirectTo("/resources/headwords")
     }
     
-    val levList = List(("1","szkoła podstawowa"),("2","gimanzjum - podstawa LO"),("3","rozszerzenie - LO"),("4","studia"))
+   
     val publicList = List(("TAK","TAK"),("NIE","NIE"))
     "#id" #> SHtml.text(ID, ID = _, "type"->"hidden") &
     "#titleHeadWord" #> SHtml.text(title, title= _,"class"->"Name") &

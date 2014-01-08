@@ -38,7 +38,7 @@ class DocumentsSn  {
              "#subject *" #> document.subcjectName &
              "#level *" #> document.level.toString &
              "#department *" #> document.departmentName &
-             "article *" #> Unparsed(document.content)
+             "article *" #>  Unparsed("""<h1>%s</h1>""".format(document.title) + document.content)
              
          }
          case _ => "article" #> <h1>Nie znaleziono dokumentu!</h1>

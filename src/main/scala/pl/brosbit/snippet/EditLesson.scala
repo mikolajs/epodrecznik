@@ -39,7 +39,7 @@ class EditLesson extends BaseSlide {
         nr = lesson.nr.toString
         json = "[" + lesson.contents.map(cont => cont.forJSONStr).mkString(", ") + "]"
         
-        val userId = User.currentUser.open_!.id.is   
+        val userId = User.currentUser.openOrThrowException("Niezalogowany nauczyciel").id.is   
         
         def save() {
             

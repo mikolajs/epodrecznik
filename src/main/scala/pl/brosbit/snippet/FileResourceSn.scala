@@ -20,7 +20,7 @@ import com.mongodb.gridfs._
 
 class FileResourceSn extends BaseSlide {
 	def showMyFiles = {
-	    val user = User.currentUser.open_!
+	    val user = User.currentUser.openOrThrowException("Niezalogowany nauczyciel")
 	    
 	    val idToDel = S.param("del").openOr("")
 	    if(idToDel.length > 20){
@@ -71,7 +71,7 @@ class FileResourceSn extends BaseSlide {
         }
 
         def save():Unit = {
-            val user = User.currentUser.open_!
+            val user = User.currentUser.openOrThrowException("Niezalogowany nauczyciel")
           
             if (isCorrect) {
                 val sub = Subject.find(subjectId).getOrElse(Subject.create)
@@ -91,7 +91,7 @@ class FileResourceSn extends BaseSlide {
                 }
                
                  if(fileId == "0") return
-                val fileRes = FileResource.create(new ObjectId(fileId) , sub._id, dep._id, user.id)
+                val fileRes = FileResource.create(new ObjectId(fileId) , sub._id, dep._id, user.id.is)
                 fileRes.department = dep.name
                 fileRes.subject = sub.full
                 fileRes.title = title

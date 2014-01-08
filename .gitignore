@@ -2,6 +2,8 @@
 *.jar
 *~
 *.log
+.classpath
+.project
 
 target/
 project/target
