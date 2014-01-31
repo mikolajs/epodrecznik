@@ -85,13 +85,15 @@ class Boot {
         Menu("Testy") / "resources" / "quizes" >> LocGroup("resource") >> isTeacher,
         Menu("Zadania") / "resources" / "editquest" >> LocGroup("resource") >> isTeacher,
         Menu("Pliki") / "resources" / "files" >> LocGroup("resource") >> isTeacher,
-        Menu("Edycja lekcji") / "resources" / "editlesson" / ** >> LocGroup("extra") >> Hidden >> isTeacher,
+        Menu("Edycja lekcji") / "resources" / "editlesson" / ** >> LocGroup("extra") >> Hidden  >> isTeacher,
         Menu("Edycja tematów") / "resources" / "editheadword" / ** >> LocGroup("extra") >> Hidden >> isTeacher,
         Menu("Edycja Slajdów") / "resources" / "editslide" / ** >> LocGroup("extra") >> Hidden >> isTeacher,
         Menu("Edycja quizów") / "resources" / "editquiz" / ** >> LocGroup("extra") >> Hidden >> isTeacher,
         Menu("Edytuj książkę") / "resources" / "editdocument" / ** >> LocGroup("extra") >> Hidden >> isTeacher, 
-        //Menu("Wyszukiwanie") / "search" >> LocGroup("extra") >> Hidden, 
+        //Menu("Wyszukiwanie") / "search" >> LocGroup("extra") >> Hidden,
+         Menu("Pokaż lekcję") / "lesson" / ** >> LocGroup("extra") >> Hidden,
         Menu("Pokaz") / "slide" / ** >> LocGroup("extra") >> Hidden,
+        Menu("Zrób pokaz") / "slideshow" / ** >> LocGroup("extra") >> Hidden,
         Menu("Hasło") / "headword" / ** >> LocGroup("extra") >> Hidden,
         Menu("Czytaj dokument") / "document" / ** >> LocGroup("extra") >> Hidden,
         Menu("Quiz") / "quiz" / ** >> LocGroup("extra") >> Hidden,
@@ -104,6 +106,7 @@ class Boot {
         Menu("Użytkownicy") / "admin" / "users" >> LocGroup("admin") >> isAdmin,
         Menu("Aktualności") / "admin" / "news" >> LocGroup("admin") >> isAdmin,
         Menu("GC") / "admin" / "gc" >> LocGroup("admin") >> isAdmin,
+        Menu("test")  / "test" >> LocGroup("public") ,
         Menu("Static") / "static" / **) :::
         User.sitemap: _*)
 
@@ -135,6 +138,10 @@ class Boot {
         RewriteResponse(
           "slide" :: Nil, Map("id" -> subjectId))
       case RewriteRequest(
+        ParsePath("slideshow" :: lessonId :: Nil, _, _, _), _, _) =>
+        RewriteResponse(
+          "slideshow" :: Nil, Map("id" -> lessonId))
+      case RewriteRequest(
         ParsePath("headword" :: subjectId :: Nil, _, _, _), _, _) =>
         RewriteResponse(
           "headword" :: Nil, Map("id" -> subjectId))
@@ -146,7 +153,13 @@ class Boot {
         ParsePath("quiz" :: quizId :: Nil, _, _, _), _, _) =>
         RewriteResponse(
           "quiz" :: Nil, Map("id" -> quizId))
+      case RewriteRequest(
+        ParsePath("lesson" :: lessonId :: Nil, _, _, _), _, _) =>
+        RewriteResponse(
+          "lesson" :: Nil, Map("id" -> lessonId))
     })
+    
+    DataTable.init
     /*
      * Show the spinny image when an Ajax call starts
      */

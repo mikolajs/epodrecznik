@@ -3,54 +3,10 @@
     
 <div class="lift:surround?with=default-other;at=body">
     <head_merge> 
-     <script src="/jquery/jquery.dataTables.min.js" ></script>
-     <link rel="stylesheet" type="text/css" href="/style/jquery.dataTables.css" />
+    <script class="lift:LessonsPubSn.renderLinkAndScript"></script>
        <script>
            var oTable = $();
-           var oTablePrivate = $();
-           $(document).ready(function() {
-        	   $("#dataTable tbody tr").click(function(){
-	    			$('#hiddenAjaxText').val($(this).attr('id')).trigger('blur');
-	    			$('#ajaxLesson').empty();
-	    			$('#showLesson').dialog('open');
-	    		});
-        	   $('#showLesson').dialog({
-        		   modal:true,
-					autoOpen:false,
-					width:600,
-					height: 500
-        	   });
-        	   
-                oTable = $('#dataTable').dataTable({
-        			"sPaginationType": "two_button",
-        			"bFilter": true,
-        			"iDisplayLength": 20,
-        			"bLengthChange": true,
-        		    "oLanguage": {
-        		        "sSearch": "Filtruj wiersze: ",
-        		        "sZeroRecords": "Brak danych do wyświetlenia",
-        		        "sInfoEmpty": "Brak danych do wyświetlenia",
-        		        "sEmptyTable": "Brak danych do wyświetlenia",
-        		        "sInfo": "Widzisz wiersze od _START_ do _END_  z wszystkich _TOTAL_",
-        		        "oPaginate": {
-        		        	"sPrevious": "Poprzednie",
-        			        "sNext": "Następne",
-        			        "sFirst": "Początek",
-        			        "sLast": "Koniec",
-        		        },
-        		        "sInfoFiltered": " - odfiltrowano z _MAX_ wierszy",
-        		        "sLengthMenu": 'Pokaż <select>'+
-        		        '<option value="20">20</option>'+
-        		        '<option value="50">50</option>'+
-        		        '<option value="100">100</option>'+
-        		        '<option value="-1">całość</option>'+
-        		        '</select> wierszy'
-        		    }
-        		      });
-               
-                
-                
-             });
+        
              
            function courseSelect(elem){
           	 var val = $(elem).children(':selected').val();           	
@@ -75,34 +31,28 @@
     </head_merge>
    <h2>Wybór lekcji</h2> 
     
-  <div id="showLesson" class="lift:LessonsSn.showLessonPublic" title="Podgląd lekcji">
-  <input id="hiddenAjaxText" style="display:none;"/>
-  		<div id="ajaxLesson">
-  		<br/>
-   			
-   		</div>
-  </div>
   
  <div id="boxText">
-  <em style="color:#c44">* Kliknij na temat lekcji w tabelce, aby zobaczyć elementy lekcji.</em>
+  <em style="color:#c44">* Kliknij na temat lekcji w tabelce,aby ją zobaczyć.</em>
   <br/><br/>
-  <div class="lift:LessonsSn.courseSelectPublic theSelects" >
+  <div class="lift:LessonsPubSn.courseSelectPublic theSelects" >
   <span>Wybierz kurs:</span>
   <select id="courseSelect" onchange="courseSelect(this)"><option></select>
   </div>
-  <div id="courseInfo" class="lift:LessonsSn.courseDescription theSelects">
+  <div id="courseInfo" class="lift:LessonsPubSn.courseDescription theSelects">
   <span>Opis kursu:</span>
   <p></p>
   </div>
   <br/><br/>
-  <div id="themeList" class="lift:LessonsSn.publicLessons dataTable_wrapper">
-            <table id="dataTable" class="display" >
+  <div id="themeList" class="lift:LessonsPubSn.publicLessons dataTable_wrapper">
+            <table id="choiceTable" class="display" >
                 <thead><tr><th>LP</th><th>Tytuł</th></tr></thead>
                 <tbody><tr><td></td><td></td></tr></tbody>
                  <tfoot>
                  	<tr><th>LP</th><th>Tytuł</th></tr>
                  </tfoot>
             </table>
+            <script class="lift:LessonsPubSn.dataTableScript"></script>
         </div>
 </div>
 

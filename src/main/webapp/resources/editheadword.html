@@ -8,9 +8,12 @@
     <script type="text/javascript" src="/jquery/departmentselect.js"></script>
     <script type="text/javascript" src="/jquery/ASCIIMathML.js"></script>
      <link href="/deckjs/core/deck.core.css" rel="stylesheet">
-     <link href="/deckjs/themes/style/swiss.css" id="style-theme-link" type="text/css" rel="stylesheet">
+     <link href="/deckjs/themes/style/swiss_ckeditor.css" id="style-theme-link" type="text/css" rel="stylesheet">
     <script>
     var departmentSelect = new Object();
+    
+   
+    
     $(document).ready(function(){
     	
         window.setInterval("timerSaver()", 900000);
@@ -24,9 +27,9 @@
                 editor.config.language = 'pl';
                 editor.config.extraPlugins =  'youTube,addImage,syntaxhighlight,formula,symbol';
                 editor.config.toolbar = [
-                                  { name: 'document', groups: [ 'mode', 'document'], items: [ 'Source', '-', 'Save', 'NewPage', 'Preview', 'Print' ] },
+                                  { name: 'document', groups: [ 'mode'], items: [ 'Source' ] },
                                   { name: 'clipboard', groups: [ 'clipboard', 'undo' ], items: [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
-                                  { name: 'editing', groups: [ 'find', 'selection', 'spellchecker' ], items: [ 'Find', 'Replace', '-', 'SelectAll', '-', 'Scayt' ] },
+                                  { name: 'editing', groups: [ 'find', 'selection'], items: [ 'Find', 'Replace', '-', 'SelectAll' ] },
                                   { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ], items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ] },
                                   { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align' ], items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'] },
                                   '/',
@@ -39,7 +42,7 @@
                               ];
 
                 editor.config.toolbarGroups = [
-                                               { name: 'document', groups: [ 'mode', 'document' ] },
+                                               { name: 'document', groups: [  'mode' ] },
                                                { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
                                                { name: 'editing', groups: [ 'find', 'selection', 'spellchecker' ] },
                                                { name: 'forms' },
@@ -58,8 +61,9 @@
        
        var slide = new EditHeadWord(4);
         departmentSelect = new DepartmentSelect(); 
-        
-    });
+           
+            	});
+            
     
     function timerSaver() {
         if(confirm("Nie zapisano od 15 minut. Zapisać teraz?")) $("#save").trigger('click');
@@ -85,7 +89,7 @@
         .lista {display:inline-flex; padding: 8px !important; font-weight: bold; font-size: 15px; 
                         border: solid 1px black; background-image: none !important;}
                         
-        .slide{  margin: 20px 0px 20px 0px; padding: 15px; min-height:600px;  max-height: 600px; background-color: #fdfdfd; border:2px solid #aaa;}
+        .slide{  margin: 20px 0px 20px 0px; padding: 15px; min-height:600px;   background-color: #fdfdfd; border:2px solid #aaa;}
         </style>
     
    
@@ -99,6 +103,7 @@
     <input id="id" type="hidden" />
     <label for="headWord">Hasło:</label><input id="headWord" class="Name"/><br/>
      <label for="subjects">Przedmiot:</label><select id="subjects"></select>
+        <input id="departmentHidden" type="hidden" />
     <label for="departments">Dział:</label><select id="departments"><option>Pusty</option></select>
     <label for="subjectLevel">Etap edukacyjny:</label><select id="subjectLevel"></select>
     <label for="public">Publiczny:</label><input id="public" /> 
@@ -127,7 +132,7 @@
           
         
          <div>      <input type="image" src="/images/delico.png" id="delSlideAction"  style="float:left;"/>
-         <img  src="/images/addico.png"   id="addSlideAfterAction"  style="float:right;"/>  </div>
+         <img  src="/images/addico.png"   id="addSlideAction"  style="float:right;"/>  </div>
        
         <br /> 
         </div>

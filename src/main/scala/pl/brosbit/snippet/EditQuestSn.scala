@@ -20,13 +20,27 @@ class EditQuestSn extends BaseSlide {
     
     var subjectId = S.param("sub").openOr("0")
     var departmentId = S.param("dep").openOr("0")
+    var departmentInfo = ""
     var level = S.param("lev").openOr("4")
    if(subjectId == "0") {
-         subjectId = Subject.findAll.head._id.toString
+         subjectId = Subject.findAll match {
+             case x::rest => x._id.toString
+             case _ => ""
+         }
     }
    if(departmentId == "0") {
-       departmentId = Department.findAll(("subject" -> subjectId)).head._id.toString
-   } 
+            Department.findAll(("subject" -> subjectId)) match {
+               case dep::rest => {
+                 departmentId =  dep._id.toString
+                  departmentInfo = dep.name
+               }
+               case _ =>
+           } 
+   }  
+   else Department.find(departmentId) match {
+       case Some(dep) => departmentInfo = dep.name
+       case _ =>
+   }
     
     def choiseQuest() = {
          val subjects = Subject.findAll.map(s => (s._id.toString, s.full))
@@ -76,6 +90,7 @@ class EditQuestSn extends BaseSlide {
             quest.question = question
             quest.subjectId = new ObjectId(subjectId)
             quest.departmentId = new ObjectId(departmentId)
+            quest.departmentInfo = departmentInfo
             quest.dificult = tryo(dificult.toInt).openOr(9)
             quest.level = level.toInt
             quest.public = public

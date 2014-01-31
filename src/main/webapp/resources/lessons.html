@@ -1,53 +1,12 @@
 <!doctype HTML>
 <html>
     
-<div class="lift:surround?with=resource-datatable;at=body">
+<div class="lift:surround?with=resource;at=body">
     <head_merge> 
-     
+      <script class="lift:LessonsResSn.renderLinkAndScript"></script>
        <script>
            var oTable = $();
-           var oTablePrivate = $();
-           $(document).ready(function() {
-        	    $("#dataTable tbody tr").click(function(){
-        	    			$('#hiddenAjaxText').val($(this).attr('id')).trigger('blur');
-        	    			$('#lessonBox').dialog('open');
-        	    		});     	    		
-        	   $('#lessonBox').dialog({
-        		   modal:true,
-					autoOpen:false,
-					width:600,
-					height: 500
-        	   });
-                oTable = $('#dataTable').dataTable({
-        			"sPaginationType": "two_button",
-        			"bFilter": true,
-        			"iDisplayLength": 20,
-        			"bLengthChange": true,
-        		    "oLanguage": {
-        		        "sSearch": "Filtruj wiersze: ",
-        		        "sZeroRecords": "Brak danych do wyświetlenia",
-        		        "sInfoEmpty": "Brak danych do wyświetlenia",
-        		        "sEmptyTable": "Brak danych do wyświetlenia",
-        		        "sInfo": "Widzisz wiersze od _START_ do _END_  z wszystkich _TOTAL_",
-        		        "oPaginate": {
-        		        	"sPrevious": "Poprzednie",
-        			        "sNext": "Następne",
-        			        "sFirst": "Początek",
-        			        "sLast": "Koniec",
-        		        },
-        		        "sInfoFiltered": " - odfiltrowano z _MAX_ wierszy",
-        		        "sLengthMenu": 'Pokaż <select>'+
-        		        '<option value="20">20</option>'+
-        		        '<option value="50">50</option>'+
-        		        '<option value="100">100</option>'+
-        		        '<option value="-1">całość</option>'+
-        		        '</select> wierszy'
-        		    }
-        		      });
-                
-                
-                
-             });
+           
              
              function courseSelect(elem){
             	 var val = $(elem).children(':selected').val(); 
@@ -74,34 +33,29 @@
     
  <div id="boxText">
   <h2>Twoje lekcje</h2>
-  
-  <div class="lift:LessonsSn.showLesson" id="lessonBox" title="Podgląd lekcji">
-  <input id="hiddenAjaxText" style="display:none;"/>
-  <div id="ajaxLesson">
-   
-   </div>
-  </div>
+ 
   <br/> <hr/> <br/>
-  <div class="lift:LessonsSn.courseSelectTeacher theSelects" >
+  <div class="lift:LessonsResSn.courseSelectTeacher theSelects" >
   <span>Wybierz kurs:</span>
    <select id="courseSelect" onchange="courseSelect(this)"></select>
   </div>
-  <div id="courseInfo" class="lift:LessonsSn.courseDescription">
+  <div id="courseInfo" class="lift:LessonsResSn.courseDescription">
   <b>Publiczny: </b><span id="coursePublic"></span>
   <p></p>
   </div>
   <br/>
   <div id="addNewLesson"><a href="/resources/editlesson"><img src="/images/addico.png" /></a></div>
   <br/>
-  <div id="themeList" class="lift:LessonsSn.teacherLessons dataTable_wrapper">
-            <table id="dataTable" class="display" >
-                <thead><tr><th>LP</th><th>Tytuł</th><th>Publiczny?</th></tr></thead>
-                <tbody><tr><td>To jest tytu</td><td></td><td></td></tr></tbody>
+  <div id="themeList" class="lift:LessonsResSn.teacherLessons dataTable_wrapper">
+            <table id="choiceTable" class="display" >
+                <thead><tr><th>LP</th><th>Tytuł</th><th>Publiczny?</th><th>Edytuj</th></tr></thead>
+                <tbody><tr><td>To jest tytu</td><td></td><td></td><td></td></tr></tbody>
                  <tfoot>
-                 	<tr><th>LP</th><th>Tytuł</th><th>Publiczny?</th>
+                 	<tr><th>LP</th><th>Tytuł</th><th>Publiczny?</th><th>Edytuj</th>
                  	</tr>
                  </tfoot>
             </table>
+                <script class="lift:LessonsResSn.dataTableScript"></script>
         </div>
 </div>
 

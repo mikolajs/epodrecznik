@@ -1,0 +1,42 @@
+package pl.brosbit.snippet
+
+import java.util.Date
+import scala.xml.{ Text, Unparsed }
+import _root_.net.liftweb._
+import http.{ S, SHtml }
+import common._
+import util._
+import mapper.{ OrderBy, Descending }
+import pl.brosbit.model._
+import mapper.By
+import json.JsonDSL._
+import json.JsonAST.JObject
+import json.JsonParser
+import org.bson.types.ObjectId
+import Helpers._
+
+//for show list of all doc and create new doc
+class ShowHeadWordSn  {
+
+ 
+ def showHeadWord() = {
+     val id = S.param("id").openOr("0")
+     HeadWord.find(id) match {
+         case Some(headWord) => {
+             val hwc = HeadWordContent.find(headWord.content) match {
+                 case Some(hwc) => hwc
+                 case _ => HeadWordContent.create 
+             }
+             "#title *" #> headWord.title &
+             "#subject *" #> headWord.subjectInfo &
+             "#level *" #> headWord.subjectLev.toString &
+             "#department *" #> headWord.departmentInfo &
+             ".container *" #>  Unparsed("""<h1>%s</h1>""".format(headWord.title) + hwc.content)
+             
+         }
+         case _ => "article" #> <h1>Nie znaleziono dokumentu!</h1>
+     }     
+ }
+ 
+
+}

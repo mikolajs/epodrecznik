@@ -21,11 +21,10 @@ class HeadWordsSn extends  RoleChecker {
     val idUser = User.currentUser.openOrThrowException("No user").id.is 
     val subjPar = S.param("s").openOr("")
     val levPar = S.param("l").openOr("3")
-    val subiectId = Subject.find(subjPar) match {
-        case Some(sub) => subjPar
-        case _ => Subject.findAll.head._id.toString //fail for empty subject list
-    }
-    
+    val subiectId = if  (subjPar != "") subjPar else
+         Subject.findAll.head._id.toString //fail for empty subject list
+  
+    println("============== " + subjPar + " ========= " + levPar)
   def headWordsList() = {
    
     //val q1 = JObject(JField("public", JBool(true))::Nil) // for $or in one query TODO

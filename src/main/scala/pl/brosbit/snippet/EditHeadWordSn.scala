@@ -91,7 +91,7 @@ class  EditHeadWordSn  extends BaseSlide with RoleChecker {
    
     val publicList = List(("TAK","TAK"),("NIE","NIE"))
     "#id" #> SHtml.text(ID, ID = _, "type"->"hidden") &
-    "#titleHeadWord" #> SHtml.text(title, title= _,"class"->"Name") &
+    "#headWord" #> SHtml.text(title, title= _,"class"->"Name") &
     "#subjects" #> SHtml.select(listSubject, Full(subjectId),subjectId = _) &
     "#subjectLevel" #> SHtml.select(levList,Full(subjectLev),subjectLev = _) &
     "#public" #> SHtml.checkbox(public, public = _) &

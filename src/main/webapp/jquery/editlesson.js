@@ -1,160 +1,132 @@
 var LessonEditor = dejavu.Class.declare({
        		$name: "LessonEditor", 
-       		$editForm: null,
-       		$sendForm: null,
+       		$extra: null,
+       		sendFormId: "#send",
        		$listBody: null,
        		$json: null,
        		$window: null,
        		$edited: null,
+       		table:null,
        		
-       		initialize: function(){
-       			this._prepareVar();
+       		
+       		initialize : function(oTable) {
+       			this.table = oTable;
+       			//alert("prepare");
+    			this._prepareVar();
+    			this._bindBeforeSubmit();
+    			//alert("List");
+    			//alert("refresh");
+    			this.refreshDataTable("");
+    			
        			this._createList();
-       			this._bindInsertData();
-       			this._bindSortableList();
-       			this._bindAddNewData();
-       			this._bindBeforeSubmitCreateJSON();
-       			
-       		},
-       		_createList: function(){
-       			var map = {l:"Link",v:"Film",p:"Prezentacja",
-       					d:"Dokument",q:"Quiz",a:"Plik"};
-       			for(i in this.$json){
-       				var item = this.$json[i];
-       				var title = '<span class="title">' + item.title + '</span>';
-       				var link =  '<span class="link">' + item.link + '</span>';
-       				var desc =  '<br/><span class="desc">' + item.descript + '</span>';
-       				var type =  '<span class="type">' + map[item.what] + '</span>';
-       				var del =  '<img src="/images/delico_min.png" onclick="lessonEditor.deleteData(this);"/>';
-       				this.$listBody.append('<li>'+type+title+link+del+desc+'</li>');
-       				this.bindDbClickEdit();
-       			}
-       		},
+       			//alert("bindRefesh");
+       			this._bindRefreshData();
+				//alert("bindSortable");
+				this._bindSortableList();
+    		
+		},
        		_prepareVar: function(){
-       			this.$editForm = $('#edit').children('form').first();
-       			this.$sendForm = $('#send').first();
        			this.$listBody = $('#lessonList').first();
+       			$('#extraTextEdit').html($('#extraText').val());
        			var jsonStr = $('#json').val();
        			this.$json = eval('(' + jsonStr + ')');
-				this.$window = $('#edit').dialog({
-					modal:true,
-					autoOpen:false,
-					width:450,
-					height: 300
-				});
        		},
        		
-       		bindDbClickEdit: function(){
+       		_bindBeforeSubmit: function(){
        			var self = this;
-				this.$listBody.children('li').dblclick(function(){
-   					var $this =  $(this);
-   					self.$edited = $this;
-   					var title = $this.children('.title').first().text();
-       				var link =  $this.children('.link').first().text();
-       				var desc =  $this.children('.desc').first().text();
-       				var type =  $this.children('.type').first().text();
-       				self.$editForm.find('#isOld').val('y');
-       				self.$editForm.find('#Theme').val(title);
-       				self.$editForm.find('#Link').val(link);
-       				self.$editForm.find('#Desc').val(desc);
-       				self.$editForm.find('#Type option:selected').removeAttr('selected');
-       				self.$editForm.find('#Type option').each(function(){
-       					var $thisInner = $(this);
-       					if($thisInner.val() == type) $thisInner.attr('selected','selected');
-       				});
-       				self.$window.dialog('open');
-   				});
-       		},
-       		
-       		_bindBeforeSubmitCreateJSON: function(){
-       			var self = this;
-       			var map = {Link:"l",Film:"v",Prezentacja:"p",
-       					Dokument:"d","Quiz":"q",Plik:"a"};
-       			$(this.$sendForm).submit(function(){
+       			$(this.sendFormId).submit(function(){
+       				alert("before submit");
+       				self.copyFromEditorToInput();
+       				alert($('#extraText').val());
        				var jsonString = "[";
        				$('#lessonList').children('li').each(function(){
        					var $this = $(this);
-       					var title = $this.children('.title').first().text();
-           				var link =  $this.children('.link').first().text();
-           				var desc =  $this.children('.desc').first().text();
-           				var type =  $this.children('.type').first().text();
-           				jsonString += '{"what": "' + map[type] +  '", "link":"' + link + '", "title":"' 
-           				+ title +'", "descript":"' + desc + '"},';
+       					$title = $this.children('.title').first();
+       					var title = $title.text();
+           				var link =  $title.attr('name');
+           				var depart =  $this.children('.depart').first().text();
+           				var what =  $this.children('.what').children( 'img').first().attr('title');
+           				jsonString += '{"what": "' + what +  '", "link": "' + link + '", "title":"' 
+           				+ title +'", "depart":"' + depart + '"},';
        				});
        				jsonString += "]";
        				$('#json').val(jsonString);
+       				$('#extraText').val($('#extraTextEdit').html().toString());
+       				alert($('#extraText').val() + " J: " + jsonString );
        				return self.validate();
        			});
        		},
        		
-       		createNewItem: function(self){
-       			var titleIt = self.$editForm.find('#Theme').val();
-   				var linkIt = self.$editForm.find('#Link').val();
-   				var descIt = self.$editForm.find('#Desc').val();
-   				var typeIt = self.$editForm.find('#Type option:selected').val();
-       			var title = '<span class="title">' + titleIt + '</span>';
-   				var link =  '<span class="link">' + linkIt + '</span>';
-   				var desc =  '<br/><span class="desc">' + descIt + '</span>';
-   				var type =  '<span class="type">' + typeIt + '</span>';
-   				var del =  '<img src="/images/delico_min.png" onclick="lessonEditor.deleteData(this);"/>';
-   				self.$listBody.append('<li>'+type+title+link+del+desc+'</li>');
-   				self.$listBody.children('li').each(function(){
-   					$(this).unbind('dblclick');
-   				});
-   				self.bindDbClickEdit();
-   				self.$window.dialog('close');
+       		copyFromEditorToInput: function(){
+       			$('#extraText').val($('#extraTextEdit').html());     			
        		},
        		
-       		changeOldData: function(self){
-       			var titleIt = self.$editForm.find('#Theme').val();
-   				var linkIt = self.$editForm.find('#Link').val();
-   				var descIt = self.$editForm.find('#Desc').val();
-   				var typeIt = self.$editForm.find('#Type option:selected').val();
-   				self.$edited.children('.title').text(titleIt);
-   				self.$edited.children('.link').text(linkIt);
-   				self.$edited.children('.desc').text(descIt);
-   				self.$edited.children('.type').text(typeIt);
-   				self.$window.dialog('close');
+       		_createList: function(){
+       			var strItem = ""
+       			for(i in this.$json){
+       				strItem = this._createItem(this.$json[i]);
+       				this.$listBody.append(strItem);
+       			}
+       		},
+       		
+       		_createItem:function(item){
+       			var mapIco = {quest:"quiz.png", word:"document.png"};
+   				var title = '<span class="title" name="' + item.link +'">' + item.title + '</span>';
+   				var depart =  '<span class="depart">' + item.depart + '</span>';
+   				var what =  '<span class="what"><img src="/images/' + mapIco[item.what] + '" name="' +item.what + '" title="'  + item.what + '" /></span>';
+   				var del =  '<img class="imgDel" src="/images/delico_min.png" onclick="lessonEditor.deleteData(this);"/>';
+   				return '<li>'+what+depart + del  + '<br/>'+ title +'</li>';
+       		},
+       		
+       		_bindRefreshData:function(){
+       			$('#getItemType').change(function(){
+       				var $select = $(this);
+       				//alert("change select");
+       				var t = $select.children('option:selected').val();
+       				var ajaxT = $('#hiddenAjaxText');
+       				ajaxT.val(t);
+       				ajaxT.get(0).onblur();
+       			});
+       		},
+       		
+       		refreshDataTable: function(data){
+       			//alert("begin refresh " + this.$name);
+       			var str = "";
+       			if(data =="") str = $("#forDataTable").val();
+       			else str = data
+       			this.table.fnClearTable();
+       			var json = eval( '('+str+ ')');
+          	   this.table.fnAddData(json); 
+          	  this.table.fnDraw();
+          	  this._bindInsertData();
+       		},
+       		
+       		createNewItem: function(tr, self){
+       			//alert("createNewItem");
+       			var item = new Object();
+       			var aData = self.table.fnGetData(tr);
+       			item.title = aData[1] ;
+   				item.link= "id_" + aData[0];
+   				item.depart = aData[2];
+   				item.what = $('#getItemType option:selected').val();
+   				var str = self._createItem(item);
+   				self.$listBody.append(str);
        		},
        		
        		_bindInsertData: function(){
        			var self = this;
-       			this.$editForm.submit( function(){
-       				if(self.$edited != null) self.changeOldData(self);
-           			else self.createNewItem(self);
-           			return false;
+       			this.table.$('tr').each( function(){
+       				$(this).click(function(){self.createNewItem(this, self);});
        			});
        		},
        	
        		deleteData: function(elem){
        			$(elem).parent('li').remove();
        		},
-       		resetData: function(){
-       			this.$editForm.get(0).reset();
-       		},
        		
-       		_bindSortableList: function(){
-       			
+       		_bindSortableList: function(){ 			
        			this.$listBody.sortable();
        		},
        		
-       		_bindAddNewData: function(){
-       			var self = this;
-       			$('#addNewData').click(function(){
-       				self.resetData();
-       				self.$window.dialog('open');
-       				self.$window.dialog({'title':'Dodaj'});
-       				self.$edited = null;
-       			});
-       		}, 
-       		
-       		validate: function() {
-       			var title = $('#title').val();
-       			if(title.length < 3) {
-       				alert("Uzupełnij temat");
-       				return false
-       			}
-       			else return true;
-       		}
        		
        });

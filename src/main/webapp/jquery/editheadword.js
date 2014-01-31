@@ -9,10 +9,12 @@
 		
 		initialize : function(maxSize) {
 			this.slideMaxNr = maxSize;
-			this.$slidesHTML = $('#headWordsData');
+			this.$slidesHTML = jQuery($.parseHTML($('#headWordsData').val()));
+			//alert(this.$slidesHTML.html());
 			this.slideSize = this.$slidesHTML.children('section').length;
 			this.createPage();
-			
+			//alert(this.slideSize);
+			var self = this;
 			$('#save').click(function(){self.createData();});
 			$('#addSlideAction').click(function(){self.addSlideAction();});
 			$('#delSlideAction').click(function(){self.delSlide();});	
@@ -21,14 +23,18 @@
 			for( i = this.slideSize +1;  i <  5;  i++){
 		    	$('#section_'+ i).hide();
 		    	$('#slideInfo_'+ i).hide();
-		    }		  
+		    }		
 		},
 		
 		createPage : function(){	
 			var self = this;
 		    this.$slidesHTML.children('section').each(function(index){
 				var $this = $(this);
-				var html = $('#section_'+ index).html($this.html());
+				//alert($('#slideInfo_'+ (index + 1) +  ' input:first').attr('checked'));
+				if(!$this.hasClass('slide')) $('#slideInfo_'+ (index + 1) +  ' input:first').removeAttr('checked');
+				var html = $this.html();
+				//alert(html + "index: " + (index +1));
+			    $('#section_'+ (index + 1)).html(html);
 			}); 	
 		},
 		
@@ -37,9 +43,9 @@
 				alert("Maksmalna ilość slajdów to: " + this.slideMaxNr);
 				return;
 			}
-			$("#section_"+ this.slideSize +1 ).show();
-			$('#slideInfo_'+ his.slideSize +1).show();
-			 this.slidexSize++;
+			this.slideSize++;
+			$("#section_"+ this.slideSize ).show();
+			$('#slideInfo_'+ this.slideSize).show();		 
 		},
 		
 		delSlide : function(){
@@ -55,13 +61,26 @@
 		},
 			
 		createData :  function(){
-			if(!isValid(document.getElementById('save'))) return false;
-			var dataSlides = "";
-			for(i = 1; i < this.slideSize; i++){
-				var html = $('#section_'+i).html();
-				dataSlides += html.toString();
+			//if(!isValid(document.getElementById('save'))) return false;
+			var dataSlides = "<article>";
+			for(i = 1; i <= this.slideSize; i++){
+				var $section = $('#section_'+i);
+				var $checkbox = $('#slideInfo_'+ i + ' input:first');
+				if($section.height() > 600 && $checkbox.prop('checked') ) {
+					$checkbox.removeAttr('checked');
+					alert("Element za długi na slajd");
+				}
+				var html = $section.html();
+				
+				var isSlide = $checkbox.prop('checked');
+				var classStr = "";
+				if(isSlide) classStr = 'class="slide"';
+				dataSlides += '<section ' + classStr + '>' + html.toString() + '</section>';
 			}
-			this.$slidesHTML.val(dataSlides);
+			dataSlides += '</article>';
+			$('#headWordsData').val(dataSlides);
+		    
+			//alert(dataSlides);
 			return true;
 		}
 		

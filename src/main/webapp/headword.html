@@ -1,0 +1,88 @@
+<!DOCTYPE HTML>
+<html>
+<head_merged>
+<script type="text/javascript" src="/jquery/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter/shCore.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/shBrushBash.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/shBrushCpp.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/shBrushCss.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/shBrushJava.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/shBrushJScript.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/shBrushPhp.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/shBrushPlain.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/shBrushPython.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/shBrushRuby.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/shBrushScala.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/shBrushSql.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/shBrushXml.js"></script>
+    <link type="text/css" rel="stylesheet" href="/syntaxhighlighter/shCore.css"/>
+    <link type="text/css" rel="stylesheet" href="/syntaxhighlighter/shThemeDefault.css"/>
+    <link href="/deckjs/themes/style/swiss_ckeditor.css" id="style-theme-link" type="text/css" rel="stylesheet">
+    <script type="text/javascript">
+        SyntaxHighlighter.all();
+        
+        $(document).ready(function(){
+        	$('.container article section').each(function(){
+        		var $this = $(this);
+        		if(!$this.hasClass('slide')) $this.addClass('slide');
+        	});
+        });
+    </script>
+</head_merged>
+<head>
+
+    <meta name="viewport" content="width=1024, user-scalable=no">
+    <!-- Core and extension CSS files -->
+    
+   <style type="text/css">
+   body {
+        background: #f7f7f7;
+   }
+   #header { background: #1a1a1a; 
+            position: absolute;
+        top: 0; left: 0;font-weight: bold; 
+        text-align: center;
+        width: 100%;
+                color: #eee; margin: 0 auto; border 0 0 2px 0 solid red;
+                }
+#header  > ul { position: relative; top 0; margin: 0; padding: 0; }
+#header  > ul > li { display: inline; decoration: none; vertical-align: middle; 
+                            border: 0 3px 0 3px 0; padding: 0 5px 0 5px;
+                             font: 12px serif; color: green; }
+                                
+#header >  ul > li > span { font: 15px sans; color: #eee; padding:0;}
+#header > ul > li > a { color: orange; text-decoration: none; font: 16px sans; vertical-align: middle;}
+#header >  ul > li > img { vertical-align: middle; padding: 0; }
+.container {
+    top: 35px;
+    width:1015px; 
+    margin:0 auto;
+    position:relative;
+    padding: 5px 10px 5px 10px;
+    border: solid 1px #eee;
+    box-shadow: 1px 2px 4px #aaa;
+    background-color:white;
+}
+ 
+
+   
+   
+   
+   </style>
+</head>
+<body class="lift:ShowHeadWordSn.showHeadWord">
+<div id="header">
+   <ul>
+    <li><a href="/index">podrecznik.edu.pl</a></li>
+    <li>Hasło: <span id="title">Jakiś temat</span></li>
+    <li>Przedmiot: <span id="subject">Fizyka liceum</span></li>
+    <li>Etap:<span id="level">3</span></li>
+    <li>Dział: <span id="department">termodynamika</span></li>  
+   </ul>  
+</div>
+
+<div class="container">   
+</div>
+
+</body>
+</html>
