@@ -93,6 +93,7 @@ class Boot {
         //Menu("Wyszukiwanie") / "search" >> LocGroup("extra") >> Hidden,
          Menu("Pokaż lekcję") / "lesson" / ** >> LocGroup("extra") >> Hidden,
         Menu("Pokaz") / "slide" / ** >> LocGroup("extra") >> Hidden,
+        Menu("Pokaż lekcję") /  "showlesson" / ** >> LocGroup("extra") >> Hidden,
         Menu("Zrób pokaz") / "slideshow" / ** >> LocGroup("extra") >> Hidden,
         Menu("Hasło") / "headword" / ** >> LocGroup("extra") >> Hidden,
         Menu("Czytaj dokument") / "document" / ** >> LocGroup("extra") >> Hidden,
@@ -141,6 +142,10 @@ class Boot {
         ParsePath("slideshow" :: lessonId :: Nil, _, _, _), _, _) =>
         RewriteResponse(
           "slideshow" :: Nil, Map("id" -> lessonId))
+      case RewriteRequest(  
+        ParsePath("showlesson" :: lessonId :: Nil, _, _, _), _, _) =>
+        RewriteResponse(
+          "showlesson" :: Nil, Map("id" -> lessonId))
       case RewriteRequest(
         ParsePath("headword" :: subjectId :: Nil, _, _, _), _, _) =>
         RewriteResponse(

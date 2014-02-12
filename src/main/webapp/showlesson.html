@@ -1,0 +1,140 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta name="viewport" content="width=1024, user-scalable=no">
+    <!-- Core and extension CSS files -->
+    <link rel="stylesheet" href="/deckjs/core/deck.core.css">
+    <link rel="stylesheet" href="/deckjs/extensions/status/deck.status.css" >
+   
+ 
+    <link rel="stylesheet" id="transition-theme-link" href="/deckjs/themes/transition/horizontal-slide.css">
+    <script type="text/javascript" src="/shadowbox/shadowbox.js"></script>
+    <script type="text/javascript" src="/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/deckjs/extensions/status/deck.status.js"></script>
+     <script type="text/javascript" src="/syntaxhighlighter/shCore.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/shBrushBash.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/shBrushCpp.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/shBrushCss.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/shBrushJava.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/shBrushJScript.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/shBrushPhp.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/shBrushPlain.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/shBrushPython.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/shBrushRuby.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/shBrushScala.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/shBrushSql.js"></script>
+    <script type="text/javascript" src="/syntaxhighlighter/shBrushXml.js"></script>
+    <link type="text/css" rel="stylesheet" href="/syntaxhighlighter/shCore.css"/>
+    <link type="text/css" rel="stylesheet" href="/syntaxhighlighter/shThemeDefault.css"/>
+    <script type="text/javascript">
+        SyntaxHighlighter.all();
+    </script>
+    <script>  
+    
+    $(document).ready(function() {   
+    
+    });
+    
+    </script>
+    <style>
+    
+body { background: url(/images/background.png) repeat; margin: 0 auto; }
+
+#header  { 
+         background: #1a1a1a; 
+         position: absolute;
+         top: 0; font-weight: bold; 
+         text-align: center;
+         width: 100%;
+         color: #eee; margin: 0 auto; border 0 0 2px 0 solid red;
+                }
+#header  > ul { position: relative; top 0; margin: 0; padding: 0; }
+#header  > ul > li { display: inline; decoration: none; vertical-align: middle; 
+                            border: 0 3px 0 3px 0; padding: 0 5px 0 5px;
+                             font: 12px serif; color: green; }
+                                
+#header >  ul > li > span { font: 15px sans; color: #eee; padding:0;}
+#header > ul > li > a { color: orange; text-decoration: none; font: 16px sans; vertical-align: middle;}
+#header >  ul > li > img { vertical-align: middle; padding: 0; }
+#slides { position: relative; top: 35px;  min-height: 500px;}                                
+
+ .deck-container {
+  font-family: "Helvetica Neue", sans-serif;
+  font-size: 1em;
+  background: #fff;
+}
+.deck-container .slide {
+  background: #fff;
+}
+.deck-container .slide h1 {
+  color: #000;
+  font-size: 3em;
+}
+.deck-container .slide h2 {
+  color: #c00;
+  border-bottom-color: #ccc;
+}
+.deck-container .slide h3 {
+  color: #090;
+}
+
+.deck-container .slide h4 {
+  color: #009;
+}
+
+.deck-container .slide pre {
+  border-color: #ccc;
+}
+.deck-container .slide code {
+  color: #888;
+}
+.deck-container .slide blockquote {
+  font-size: 2em;
+  font-style: italic;
+  padding: 1em 2em;
+  color: #000;
+  border-left: 5px solid #ccc;
+}
+.deck-container .slide blockquote p {
+  margin: 0;
+}
+.deck-container .slide blockquote cite {
+  font-size: .5em;
+  font-style: normal;
+  font-weight: bold;
+  color: #888;
+}
+.deck-container .slide ::-moz-selection {
+  background: #c00;
+  color: #fff;
+}
+.deck-container .slide ::selection {
+  background: #c00;
+  color: #fff;
+}
+.deck-container .slide a, .deck-container .slide a:hover, .deck-container .slide a:focus, .deck-container .slide a:active, .deck-container .slide a:visited {
+  color: #c00;
+  text-decoration: none;
+}
+.deck-container .slide a:hover, .deck-container .slide a:focus {
+  text-decoration: underline;
+}
+
+
+    </style>
+</head>
+<body class="lift:ShowLessonSn.showAsDocument" id="thebody">
+<div id="header">
+   <ul>
+    <li><a href="/index">podrecznik.edu.pl</a></li>
+    <li id="run-as-slides"><img src="/images/fullscreen.png"  title="Pokaż jako prezentację"/></li>
+    <li><span id="course-info"></span></li>
+   </ul>  
+</div>
+<div id="slides" class="deck-container">   
+<h1 id="title"></h1>
+  <section></section>
+</div>
+
+</body>
+</html>

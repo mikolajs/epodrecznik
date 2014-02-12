@@ -1,1 +1,4 @@
 exit
+run
+containter:start
+exit
