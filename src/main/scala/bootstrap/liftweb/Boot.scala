@@ -93,8 +93,6 @@ class Boot {
         //Menu("Wyszukiwanie") / "search" >> LocGroup("extra") >> Hidden,
          Menu("Pokaż lekcję") / "lesson" / ** >> LocGroup("extra") >> Hidden,
         Menu("Pokaz") / "slide" / ** >> LocGroup("extra") >> Hidden,
-        Menu("Pokaż lekcję") /  "showlesson" / ** >> LocGroup("extra") >> Hidden,
-        Menu("Zrób pokaz") / "slideshow" / ** >> LocGroup("extra") >> Hidden,
         Menu("Hasło") / "headword" / ** >> LocGroup("extra") >> Hidden,
         Menu("Czytaj dokument") / "document" / ** >> LocGroup("extra") >> Hidden,
         Menu("Quiz") / "quiz" / ** >> LocGroup("extra") >> Hidden,
@@ -107,7 +105,7 @@ class Boot {
         Menu("Użytkownicy") / "admin" / "users" >> LocGroup("admin") >> isAdmin,
         Menu("Aktualności") / "admin" / "news" >> LocGroup("admin") >> isAdmin,
         Menu("GC") / "admin" / "gc" >> LocGroup("admin") >> isAdmin,
-        Menu("test")  / "test" >> LocGroup("public") ,
+       // Menu("test")  / "test" >> LocGroup("public") ,
         Menu("Static") / "static" / **) :::
         User.sitemap: _*)
 
@@ -138,14 +136,6 @@ class Boot {
         ParsePath("slide" :: subjectId :: Nil, _, _, _), _, _) =>
         RewriteResponse(
           "slide" :: Nil, Map("id" -> subjectId))
-      case RewriteRequest(
-        ParsePath("slideshow" :: lessonId :: Nil, _, _, _), _, _) =>
-        RewriteResponse(
-          "slideshow" :: Nil, Map("id" -> lessonId))
-      case RewriteRequest(  
-        ParsePath("showlesson" :: lessonId :: Nil, _, _, _), _, _) =>
-        RewriteResponse(
-          "showlesson" :: Nil, Map("id" -> lessonId))
       case RewriteRequest(
         ParsePath("headword" :: subjectId :: Nil, _, _, _), _, _) =>
         RewriteResponse(

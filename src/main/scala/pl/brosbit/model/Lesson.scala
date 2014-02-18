@@ -8,6 +8,7 @@ case class LessonContent(what:String, link:String, title:String, depart:String) 
     def forJSONStr = "{\"what\":\"" + what + "\",\"link\":\"" + link + "\",\"title\":\"" + 
     						title + "\",\"depart\":\"" + depart + "\"}"
 }
+// what: headword - h,  quest - q
 
 case class LessonItem(what:String, id:String, title:String)
 

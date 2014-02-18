@@ -23,18 +23,14 @@ class ShowHeadWordSn  {
      val id = S.param("id").openOr("0")
      HeadWord.find(id) match {
          case Some(headWord) => {
-             val hwc = HeadWordContent.find(headWord.content) match {
-                 case Some(hwc) => hwc
-                 case _ => HeadWordContent.create 
-             }
              "#title *" #> headWord.title &
              "#subject *" #> headWord.subjectInfo &
              "#level *" #> headWord.subjectLev.toString &
              "#department *" #> headWord.departmentInfo &
-             ".container *" #>  Unparsed("""<h1>%s</h1>""".format(headWord.title) + hwc.content)
+             ".container *" #>  Unparsed("""<h1>%s</h1>""".format(headWord.title) + headWord.content)
              
          }
-         case _ => "article" #> <h1>Nie znaleziono dokumentu!</h1>
+         case _ => ".container" #> <h1>Nie znaleziono dokumentu!</h1>
      }     
  }
  

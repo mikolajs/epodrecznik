@@ -19,9 +19,7 @@ class  EditHeadWordSn  extends BaseSlide with RoleChecker {
   
  val id = S.param("id").openOr("0")
  var headWord = if (id != "0") HeadWord.find(id).getOrElse(HeadWord.create) else HeadWord.create
- var headWordCont = HeadWordContent.find(headWord.content).getOrElse(HeadWordContent.create)
- if(headWord.content != headWordCont._id) headWord.content = headWordCont._id
-
+ 
  //for showheadWords - viewer 
   def headWordData() = {
       "#title" #> <span>{headWord.title}</span> &
@@ -40,7 +38,7 @@ class  EditHeadWordSn  extends BaseSlide with RoleChecker {
     var departmentId = if(headWord.departmentId != null) headWord.departmentId.toString else ""
     var departmentInfo = headWord.departmentInfo
     var public = headWord.public
-    var headWordsString = headWordCont.content
+    var headWordsString = headWord.content
     //println("------------headWords data -----------------\n" +headWordsData)
      
     val listSubject = Subject.findAll.map(s => {(s._id.toString ,s.full)})
@@ -61,9 +59,7 @@ class  EditHeadWordSn  extends BaseSlide with RoleChecker {
               getOrElse(Department.create(new ObjectId(subjectId))).name
           headWord.authorId = userId
           headWord.public = public
-          headWordCont.content = headWordsString
-          headWordCont.save
-          headWord.content = headWordCont._id      
+          headWord.content = headWordsString      
           headWord.save 
       }
        
@@ -75,7 +71,6 @@ class  EditHeadWordSn  extends BaseSlide with RoleChecker {
       val userId = User.currentUser.openOrThrowException("NOT LOGGED USER").id.is
      if (id != "0") HeadWord.find(id) match {
          case Some(headWord) if headWord.authorId == userId => {
-           headWordCont.delete
     	   headWord.delete
         } 
          case _ =>

@@ -81,15 +81,21 @@
    overflow: none;
 }
         #titleTheme {width: 300px;}
-        
+        body {background: #f7f7f7;}
         .highlightLi {  background-color: red !important; color:white;}
         #validationMassage { color: red; }
         #headwordsHTML { width: 4000px; height: 700px;}
         #imageLoaderFrame {width: 100%;}
         .lista {display:inline-flex; padding: 8px !important; font-weight: bold; font-size: 15px; 
-                        border: solid 1px black; background-image: none !important;}
-                        
-        .slide{  margin: 20px 0px 20px 0px; padding: 15px; min-height:600px;   background-color: #fdfdfd; border:2px solid #aaa;}
+                        border: solid 1px black; background-image: none !important;}          
+        .slide{ 
+        padding-top: 10px; 
+    min-height: 600px;
+    margin:0 auto;
+    border: solid 1px #eee;
+    box-shadow: 1px 2px 4px #aaa;
+    background-color:white;
+    }
         </style>
     
    
@@ -118,16 +124,19 @@
         <div id="slideEditor">
      
           <div id="slideInfo_1"><label>Slajd?:</label><input type="checkbox" checked="checked" /></div>
+          <br/>
           <div contenteditable="true"   id="section_1"   class="slide">Napis?</div>
             <br/>
           <div id="slideInfo_2"><label>Slajd?:</label><input type="checkbox" checked="checked" /></div> 
+          <br/>
           <div contenteditable="true"   id="section_2"   class="slide">Napis? </div>
             <br/>
           <div id="slideInfo_3"><label>Slajd?:</label><input type="checkbox" checked="checked" /></div> 
+          <br/>
           <div contenteditable="true"   id="section_3"   class="slide">Napis? </div>
             <br/>
-          <div id="slideInfo_4"><label>Slajd?:</label><input type="checkbox" checked="checked" />
-        </div> 
+          <div id="slideInfo_4"><label>Slajd?:</label><input type="checkbox" checked="checked" /></div>
+         <br/>
           <div contenteditable="true"   id="section_4"   class="slide">Napis? </div>
           
         

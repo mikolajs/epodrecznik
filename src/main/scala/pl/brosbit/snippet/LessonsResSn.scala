@@ -47,7 +47,7 @@ class LessonsResSn extends BaseSlide with RoleChecker {
     val lessons = Lesson.findAll(("authorId"->userID)~("courseId" -> course._id.toString)) 
     "tbody tr" #> lessons.map(lesson => <tr id={lesson._id.toString}>
     	<td>{lesson.nr.toString}</td><td  class="tit">
-    		<a href={"/showlesson/"+ lesson._id.toString} target="_blanck">{lesson.title}</a></td>
+    		<a href={"/lesson/"+ lesson._id.toString} target="_blanck">{lesson.title}</a></td>
     	<td>{if(lesson.public) "Tak" else "Nie"}</td><td
     		><a href={"/resources/editlesson/" + lesson._id.toString}>edytuj</a></td></tr>)
   }

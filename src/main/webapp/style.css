@@ -428,8 +428,7 @@ color: #358305;
 }
 /*===== content =====*/
 #content .indent {
-	padding:20px 10px 20px 10px;
-	min-height: 400px;
+	min-height: 600px;
 }
 	#content .article {
 		padding-bottom:40px;

@@ -21,7 +21,7 @@ class HeadWordsSn extends  RoleChecker {
     val idUser = User.currentUser.openOrThrowException("No user").id.is 
     val subjPar = S.param("s").openOr("")
     val levPar = S.param("l").openOr("3")
-    val subiectId = if  (subjPar != "") subjPar else
+    val subjectId = if  (subjPar != "") subjPar else
          Subject.findAll.head._id.toString //fail for empty subject list
   
     println("============== " + subjPar + " ========= " + levPar)
@@ -29,8 +29,8 @@ class HeadWordsSn extends  RoleChecker {
    
     //val q1 = JObject(JField("public", JBool(true))::Nil) // for $or in one query TODO
     //val q2 = JObject(JField("authorId", JInt(idUser))::Nil) 
-    val headWords1 = HeadWord.findAll(("public"->true)~("subjectLev"->levPar.toInt)~("subjectId"->subjPar))
-    val headWords2 = HeadWord.findAll(("authorId"-> idUser)~("public"->false)~("subjectLev"->levPar.toInt)~("subjectId"->subjPar))
+    val headWords1 = HeadWord.findAll(("public"->true)~("subjectLev"->levPar.toInt)~("subjectId"->subjectId))
+    val headWords2 = HeadWord.findAll(("authorId"-> idUser)~("public"->false)~("subjectLev"->levPar.toInt)~("subjectId"->subjectId))
     val headWords =headWords1 :::headWords2
     "tbody tr" #>headWords.map(headWord => {
         val edit_? = headWord.authorId == idUser
