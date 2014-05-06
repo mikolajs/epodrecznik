@@ -15,7 +15,7 @@ import json.JsonParser
 import org.bson.types.ObjectId
 import Helpers._
 
-class EditSlideSn extends BaseSlide with RoleChecker {
+class EditSlideSn extends BaseSnippet with RoleChecker {
   
  val id = S.param("id").openOr("0")
  var slide = if (id != "0") Slide.find(id).getOrElse(Slide.create) else Slide.create

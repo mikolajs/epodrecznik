@@ -7,7 +7,7 @@ import org.bson.types.ObjectId
 
 
 object Document extends MongoDocumentMeta[Document] {
-  override def collectionName = "articles"
+  override def collectionName = "documents"
   override def formats = super.formats + new ObjectIdSerializer + new DateSerializer
   def create = new Document(ObjectId.get,"","","", 0L, "", new ObjectId("000000000000000000000000"),
           "", new ObjectId("000000000000000000000000"), "", 0)

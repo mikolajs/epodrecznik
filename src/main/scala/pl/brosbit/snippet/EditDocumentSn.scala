@@ -18,7 +18,7 @@ import http.js.{JsCmds, JsCmd}
 import http.js.JsCmds.{ SetHtml, Alert, Run}
 import http.js.JE._
 
-class EditDocumentSn extends BaseSlide {
+class EditDocumentSn extends BaseSnippet {
 
     val userId = User.currentUser.openOrThrowException("Niezalogowny nauczyciel").id.is
     

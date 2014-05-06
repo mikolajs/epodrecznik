@@ -1,3 +1,5 @@
+//old version 
+
 var LessonEditor = dejavu.Class.declare({
        		$name: "LessonEditor", 
        		$editForm: null,
@@ -8,6 +10,7 @@ var LessonEditor = dejavu.Class.declare({
        		$edited: null,
        		
        		initialize: function(){
+       			alert("OLD");
        			this._prepareVar();
        			this._createList();
        			this._bindInsertData();

@@ -19,7 +19,7 @@ import pl.brosbit.lib.DataTable
 import pl.brosbit.lib.DataTableOption._
 
 
-class LessonsPubSn extends BaseSlide with RoleChecker {
+class LessonsPubSn extends BaseSnippet with RoleChecker {
     
               
     val courseId = S.param("c").openOr("0")
@@ -46,8 +46,9 @@ class LessonsPubSn extends BaseSlide with RoleChecker {
   def publicLessons() = {
       val lessons = Lesson.findAll(("public"->true)~("courseId" -> course._id.toString))
       "tbody tr" #> lessons.map(lesson => <tr id={lesson._id.toString}>
+      	<td>{lesson.nr.toString}</td>
     	<td><a href={"/lesson/"+ lesson._id.toString} target="_blanck">{lesson.title}</a>
-    				</td><td  class="tit">{lesson.title}</td>
+    				</td><td  class="tit">{lesson.descript}</td>
     	</tr>)
   }
   

@@ -1,0 +1,4 @@
+
+#update -> dodanie pola do wszystkich dokumentów kolekcji:
+
+db.courses.update({},{'$set': {'classInfo' : "I LO"}})

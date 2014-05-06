@@ -15,7 +15,7 @@ import json.JsonParser
 import org.bson.types.ObjectId
 import Helpers._
 
-class  EditHeadWordSn  extends BaseSlide with RoleChecker {
+class  EditHeadWordSn  extends BaseSnippet with RoleChecker {
   
  val id = S.param("id").openOr("0")
  var headWord = if (id != "0") HeadWord.find(id).getOrElse(HeadWord.create) else HeadWord.create
@@ -93,10 +93,10 @@ class  EditHeadWordSn  extends BaseSlide with RoleChecker {
     "#departmentHidden" #> SHtml.text(departmentId, departmentId = _, "type"->"hidden") &
     "#departments" #> departmentSelect() &
     "#headWordsData" #> SHtml.text(headWordsString, headWordsString = _, "type"->"hidden") &
-    "#save" #> SHtml.button(<img src="/images/saveico.png"/>, saveData,"title"->"Zapisz") &
-    "#delete" #> (if(isModerator) SHtml.button(<img src="/images/delico.png"/>, 
+    "#save" #> SHtml.button(Text("Zapisz") ++ <img src="/images/saveico.png"/>, saveData,"title"->"Zapisz") &
+    "#delete" #> (if(isModerator) SHtml.button(Text("Usuń ") ++ <img src="/images/delico.png"/>, 
         deleteData,"title"->"Usuń") else <span></span>) &
-    "#cancel" #> SHtml.button(<img src="/images/cancelico.png"/>, cancelAction,"title"->"Anuluj") 
+    "#cancel" #> SHtml.button(Text("Anuluj ") ++ <img src="/images/cancelico.png"/>, cancelAction,"title"->"Anuluj") 
   }
   
   def subjectList() = {

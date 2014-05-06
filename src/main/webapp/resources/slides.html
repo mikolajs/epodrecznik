@@ -59,29 +59,23 @@
  <div id="boxText">
   <h2>Wybór tematów</h2>
   
-  <div class="lift:SlidesSn.subjectSelect theSelects" >
+  <div class="lift:SlidesSn.selectors theSelects" >
   <span>Wybierz przedmiot:</span>
-   <select id="subjectSelect" onchange="selectSubject(this)"><option></option></select>
+   <select id="subjectSelect"  ><option></option></select>
  	<span>Wybierz poziom edukacyjny:</span>
-   <select onchange="selectLevel(this)">
-     <option value="0">Wszystkie</option>
-   <option value="1">szkoła podstawowa</option>
-   <option value="2">gimanzjum - LO podstawa</option>
-   <option value="3">LO rozszerzenie</option>
-   <option value="4">studia</option>
-   </select>
-   
+   <select id="levelSelect"  ></select>
+      <button onclick="redirectTo()">Wybierz</button>
   </div>
   
   <br/><br/>
   <div id="themeList" class="lift:SlidesSn.slidesList dataTable_wrapper">
             <table id="dataTable" class="display" >
                 <thead><tr><th>Tytuł</th><th>Dział</th><th>Przedmiot</th>
-                	<th>Poziom</th><th>Typ</th><th>Edytuj</th></tr></thead>
+                	<th>Poziom</th><th>Edytuj</th></tr></thead>
                 <tbody><tr><td><a href="">To jest tytuł</a></td><td></td><td></td></tr></tbody>
                  <tfoot>
                  	<tr><th>Tytuł</th><th>Dział</th><th>Przedmiot</th><th>Poziom</th>
-                 	<th>Typ</th><th>Edytuj</th></tr>
+                 	<th>Edytuj</th></tr>
                  </tfoot>
             </table>
         </div>

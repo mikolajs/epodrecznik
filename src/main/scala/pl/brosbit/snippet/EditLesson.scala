@@ -21,7 +21,7 @@ import Helpers._
 
 case class TestJ(l:String, t:String)
 
-class EditLesson extends BaseSlide {
+class EditLesson extends BaseSnippet {
      
  var idPar = S.param("id").openOr("0")
  val lesson = Lesson.find(idPar).getOrElse(Lesson.create)
@@ -83,7 +83,7 @@ class EditLesson extends BaseSlide {
         
         val publics = List(("TAK","TAK"),("NIE","NIE"))
         val courses = Course.findAll("authorId" -> userId).map(c => (c._id.toString, c.getInfo))
-          def getData(what:String) = {
+         /* def getData(what:String) = {
             if(what == "quest") {
                  val  str = QuizQuestion.findAll.map(h => "[ '" + h._id.toString + "',  '" + h.question + "', '"  +  h.departmentInfo  + "']").
                  mkString(",")
@@ -94,14 +94,14 @@ class EditLesson extends BaseSlide {
                  mkString(",")
                  "[" + str + "]"
             }
-        }
+        }*/
         "#ID" #> SHtml.text(id, id = _) &
         "#title" #> SHtml.text(title, x => title = x.trim) &
         "#nr" #> SHtml.text(nr, nr = _) &
         "#courses" #> SHtml.select(courses, Full(courseId), courseId = _) &
         "#public" #> SHtml.checkbox(public, public = _) &
         "#extraText" #> SHtml.text(extraText, extraText = _) &
-        "#forDataTable" #> SHtml.text(getData("word"), _ => Unit) &
+        //"#forDataTable" #> SHtml.text(getData("word"), _ => Unit) &
         "#description" #> SHtml.text(descript, descript = _) &
         "#json" #> SHtml.text(json, json = _) &
         "#save" #> SHtml.submit("Zapisz", save ) &
@@ -109,18 +109,29 @@ class EditLesson extends BaseSlide {
     }
     
     def ajaxText =  {
-          def getData(what:String) = {
-            if(what == "quest") {
-                 val  str = QuizQuestion.findAll.map(h => "[ '" + h._id.toString + "',  '" + h.question + "', '"  +  h.departmentInfo  + "']").
+          def getData(what:String) = what match {
+              case "quest" => {
+                  val  str = QuizQuestion.findAll.map(h => "[ '" + h._id.toString + "',  '" + h.question + "', '"  +  h.departmentInfo  + "']").
                  mkString(",")
                  "[" + str + "]"
-            } 
-            else {
-                 val  str = HeadWord.findAll.map(h => "[ '" + h._id.toString + "',  '" + h.title + "', '"  +  h.departmentInfo  + "']").
+              }
+              case "word" => {
+                  val  str = HeadWord.findAll.map(h => "[ '" + h._id.toString + "',  '" + h.title + "', '"  +  h.departmentInfo  + "']").
                  mkString(",")
                  "[" + str + "]"
-            }
-        }
+              }
+              case "video" => {
+                  val  str = Video.findAll.map(h => "[ '" + h._id.toString + "',  '" + h.title + "', '"  +  h.department  + "']").
+                 mkString(",")
+                 "[" + str + "]"
+              }
+              case "doc" => {
+                  val str = Document.findAll.map(d => "['" + d._id.toString + "', '" + d.title + "', '" + d.departmentName + "']"  ).
+                  mkString(",")
+                  "[" + str + "]"
+              }
+              case _ => "error"
+          }
         "#hiddenAjaxText" #> SHtml.ajaxText("",  what => {
             	println("Ajax Hidden text refresh")
             	Run("refreshTab(\"" +  getData(what) +  "\");"  )})

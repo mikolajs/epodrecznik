@@ -9,7 +9,7 @@
 		
 		initialize : function(maxSize) {
 			this.slideMaxNr = maxSize;
-			this.$slidesHTML = jQuery($.parseHTML($('#headWordsData').val()));
+			this.$slidesHTML = jQuery($.parseHTML('<div>'+$('#headWordsData').val()+'</div>'));
 			//alert(this.$slidesHTML.html());
 			this.slideSize = this.$slidesHTML.children('section').length;
 			this.createPage();
@@ -22,7 +22,6 @@
 			if(this.slideSize == 0) this.slideSize = 1;
 			for( i = this.slideSize +1;  i <  5;  i++){
 		    	$('#section_'+ i).hide();
-		    	$('#slideInfo_'+ i).hide();
 		    }		
 		},
 		
@@ -31,7 +30,6 @@
 		    this.$slidesHTML.children('section').each(function(index){
 				var $this = $(this);
 				//alert($('#slideInfo_'+ (index + 1) +  ' input:first').attr('checked'));
-				if(!$this.hasClass('slide')) $('#slideInfo_'+ (index + 1) +  ' input:first').removeAttr('checked');
 				var html = $this.html();
 				//alert(html + "index: " + (index +1));
 			    $('#section_'+ (index + 1)).html(html);
@@ -45,7 +43,6 @@
 			}
 			this.slideSize++;
 			$("#section_"+ this.slideSize ).show();
-			$('#slideInfo_'+ this.slideSize).show();		 
 		},
 		
 		delSlide : function(){
@@ -55,14 +52,13 @@
 			}
 			if(confirm('Na pewno chcesz usunąć slajd nr ' + this.slideSize + ' ?')){
 				$("#section_"+ this.slideSize ).html("").hide();
-				$("#slideInfo_"+ this.slideSize ).hide();
 				this.slideSize--;
 			}
 		},
 			
 		createData :  function(){
 			//if(!isValid(document.getElementById('save'))) return false;
-			var dataSlides = "<article>";
+			var dataSlides = "";
 			for(i = 1; i <= this.slideSize; i++){
 				var $section = $('#section_'+i);
 				var $checkbox = $('#slideInfo_'+ i + ' input:first');
@@ -73,11 +69,8 @@
 				var html = $section.html();
 				
 				var isSlide = $checkbox.prop('checked');
-				var classStr = "";
-				if(isSlide) classStr = 'class="slide"';
-				dataSlides += '<section ' + classStr + '>' + html.toString() + '</section>';
+				dataSlides += '<section  class="slide">' + html.toString() + '</section>';
 			}
-			dataSlides += '</article>';
 			$('#headWordsData').val(dataSlides);
 		    
 			//alert(dataSlides);

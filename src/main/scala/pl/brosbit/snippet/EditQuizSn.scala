@@ -16,7 +16,7 @@ import _root_.net.liftweb.http.js.JsCmds._
 import _root_.net.liftweb.http.js.JsCmd
 import _root_.net.liftweb.http.js.JE._
 
-class EditQuizSn extends BaseSlide {
+class EditQuizSn extends BaseSnippet {
 
     var subjectId = S.param("sub").openOr("0")
     var departmentId = S.param("dep").openOr("0")

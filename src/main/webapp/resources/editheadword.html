@@ -96,46 +96,51 @@
     box-shadow: 1px 2px 4px #aaa;
     background-color:white;
     }
+    #editContent  {width: 950px; margin:auto;}
+    label { width: 100px; float: left;}
+select {width: 150px;}
+input[type=submit] { width: 200px;}
+
         </style>
     
    
     </head_merge>
  
- <div id="boxText">
-  <h2>Edycja haseł</h2>
-  <hr/>
+ <div id="editContent">
   
+    <h2>Edycja haseł</h2>
   <form class="lift:EditHeadWordSn.formEdit?form=POST">
+
     <input id="id" type="hidden" />
-    <label for="headWord">Hasło:</label><input id="headWord" class="Name"/><br/>
-     <label for="subjects">Przedmiot:</label><select id="subjects"></select>
+    <p style="float:right">
+     <label for="subjects">Przedmiot:</label><select id="subjects"></select><br/>
         <input id="departmentHidden" type="hidden" />
-    <label for="departments">Dział:</label><select id="departments"><option>Pusty</option></select>
-    <label for="subjectLevel">Etap edukacyjny:</label><select id="subjectLevel"></select>
-    <label for="public">Publiczny:</label><input id="public" /> 
+    <label for="departments">Dział:</label><select id="departments"><option>Pusty</option></select><br/>
+    <label for="subjectLevel">Poziom:</label><select id="subjectLevel"></select>
+    </p>
+    
+    <p style="float:left;"> 
+    <label for="headWord">Hasło:</label><input id="headWord" class="Name"/><br/>
+     <label for="public">Upublicznij:</label><input id="public" /> <br/>
+      <button id="save" >Zapisz</button><input id="cancel"/><input id="delete"/>
+    </p>
+   <div style="clear:both"></div>
     <input id="headWordsData" type="hidden" />
-    <input id="save" /><input id="cancel"/><input id="delete"/>
+   
   </form>
-  
-  <hr/>
- 
-  <br/>
     
         <div id="slideEditor">
      
-          <div id="slideInfo_1"><label>Slajd?:</label><input type="checkbox" checked="checked" /></div>
+
           <br/>
           <div contenteditable="true"   id="section_1"   class="slide">Napis?</div>
             <br/>
-          <div id="slideInfo_2"><label>Slajd?:</label><input type="checkbox" checked="checked" /></div> 
           <br/>
           <div contenteditable="true"   id="section_2"   class="slide">Napis? </div>
             <br/>
-          <div id="slideInfo_3"><label>Slajd?:</label><input type="checkbox" checked="checked" /></div> 
           <br/>
           <div contenteditable="true"   id="section_3"   class="slide">Napis? </div>
             <br/>
-          <div id="slideInfo_4"><label>Slajd?:</label><input type="checkbox" checked="checked" /></div>
          <br/>
           <div contenteditable="true"   id="section_4"   class="slide">Napis? </div>
           

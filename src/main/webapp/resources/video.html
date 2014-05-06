@@ -1,0 +1,92 @@
+<!doctype HTML>
+<html>
+    
+<div class="lift:surround?with=resource-datatable;at=body">
+    <head_merge> 
+    <script src="/jquery/dejavu.js"></script>
+    <script src="/jquery/departmentselect.js"></script>
+       <script>
+       $(document).ready(function(){
+           $('#addNewItem').dialog({
+               autoOpen:false,
+               modal:true,
+               width:600,
+               height:400
+           });
+           
+           $('#addTrigger').click(function(){
+              $('#addNewItem').dialog('open'); 
+           });
+           
+           oTable = $('#dataTable').dataTable({
+            "sPaginationType": "two_button",
+            "bFilter": true,
+            "iDisplayLength": 20,
+            "bLengthChange": true,
+            "oLanguage": {
+                "sSearch": "Filtruj wiersze: ",
+                "sZeroRecords": "Brak danych do wyświetlenia",
+                "sInfoEmpty": "Brak danych do wyświetlenia",
+                "sEmptyTable": "Brak danych do wyświetlenia",
+                "sInfo": "Widzisz wiersze od _START_ do _END_  z wszystkich _TOTAL_",
+                "oPaginate": {
+                    "sPrevious": "Poprzednie",
+                    "sNext": "Następne",
+                    "sFirst": "Początek",
+                    "sLast": "Koniec",
+                },
+                "sInfoFiltered": " - odfiltrowano z _MAX_ wierszy",
+                "sLengthMenu": 'Pokaż <select>'+
+                '<option value="20">20</option>'+
+                '<option value="50">50</option>'+
+                '<option value="100">100</option>'+
+                '<option value="-1">całość</option>'+
+                '</select> wierszy'
+            }
+              });
+           
+           var dep = new DepartmentSelect();
+           
+       });
+       
+       function cutLink(){
+           var $this = $("#link");
+           var str = $this.val();
+           var array = str.split("/");
+           var toInsert = $this.val(array[array.length - 1]);
+       }
+        
+       </script>
+       <style>
+       #addNewItem form p {margin-bottom: 5px;}
+       #addNewItem form p input {width:300px}
+        #addNewItem form p label {float: left;width: 150px;}
+       #addNewItem form p select {width:300px}
+       </style>
+    </head_merge>
+  <h2>Twoje filmy</h2>
+ <div><img id="addTrigger" src="/images/addico.png" /></div>
+
+<div >
+     <table id="dataTable"><thead><tr><th>Tytuł</th><th>Przedmiot</th><th>Dział</th>
+            <th>Opis</th><th>Usuń?</th></tr></thead>
+     <tbody class="lift:VideoSn.showVideos"><tr><td></td><td></td><td></td><td></td><td></td></tr></tbody>
+     <tfoot><tr><th>Tytuł</th><th>Przedmiot</th><th>Dział</th>
+            <th>Opis</th><th>Usuń?</th></tr></tfoot>
+     </table>
+</div>
+   
+   <div id="addNewItem" title="Dodaj nowy plik">
+   <form class="lift:VideoSn.add?form=POST"  enctype="multipart/form-data">
+   <p><label for="title">Tytuł:</label> <input id="title" /></p>
+    <p><label for="link">Link do YouTube:</label> <input id="link" onchange="cutLink()" /></p>
+   <p><label for="subjects">Przedmiot: </label> <select id="subjects"></select></p>
+   <input id="departmentHidden" type="text" style="display:none;"/>
+   <p><label for="departments">Dział: </label> <select id="departments"></select></p>
+   <p><label for="descript">Opis:</label> <textarea id="descript"></textarea></p>
+   <p><input type="submit" id="save" /></p>
+   </form>
+   </div>
+   
+   </div>
+</html>

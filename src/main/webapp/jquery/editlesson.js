@@ -35,9 +35,9 @@ var LessonEditor = dejavu.Class.declare({
        		_bindBeforeSubmit: function(){
        			var self = this;
        			$(this.sendFormId).submit(function(){
-       				alert("before submit");
+       				//alert("before submit");
        				self.copyFromEditorToInput();
-       				alert($('#extraText').val());
+       				//alert($('#extraText').val());
        				var jsonString = "[";
        				$('#lessonList').children('li').each(function(){
        					var $this = $(this);
@@ -52,7 +52,7 @@ var LessonEditor = dejavu.Class.declare({
        				jsonString += "]";
        				$('#json').val(jsonString);
        				$('#extraText').val($('#extraTextEdit').html().toString());
-       				alert($('#extraText').val() + " J: " + jsonString );
+       				//alert($('#extraText').val() + " J: " + jsonString );
        				return self.validate();
        			});
        		},
@@ -70,7 +70,7 @@ var LessonEditor = dejavu.Class.declare({
        		},
        		
        		_createItem:function(item){
-       			var mapIco = {quest:"quiz.png", word:"document.png"};
+       			var mapIco = {quest:"quiz.png", word:"presentation.png", video:"video.png", doc:"document.png"};
    				var title = '<span class="title" name="' + item.link +'">' + item.title + '</span>';
    				var depart =  '<span class="depart">' + item.depart + '</span>';
    				var what =  '<span class="what"><img src="/images/' + mapIco[item.what] + '" name="' +item.what + '" title="'  + item.what + '" /></span>';

@@ -16,9 +16,9 @@ import org.bson.types.ObjectId
 import Helpers._
 
 
-class HeadWordsSn extends  RoleChecker {
+class HeadWordsSn extends   BaseSnippet {
   
-    val idUser = User.currentUser.openOrThrowException("No user").id.is 
+    val user =  User.currentUser.openOrThrowException("No user")
     val subjPar = S.param("s").openOr("")
     val levPar = S.param("l").openOr("3")
     val subjectId = if  (subjPar != "") subjPar else
@@ -30,12 +30,13 @@ class HeadWordsSn extends  RoleChecker {
     //val q1 = JObject(JField("public", JBool(true))::Nil) // for $or in one query TODO
     //val q2 = JObject(JField("authorId", JInt(idUser))::Nil) 
     val headWords1 = HeadWord.findAll(("public"->true)~("subjectLev"->levPar.toInt)~("subjectId"->subjectId))
-    val headWords2 = HeadWord.findAll(("authorId"-> idUser)~("public"->false)~("subjectLev"->levPar.toInt)~("subjectId"->subjectId))
+    val headWords2 = HeadWord.findAll(("authorId"-> user.id.is)~("public"->false)~("subjectLev"->levPar.toInt)~("subjectId"->subjectId))
     val headWords =headWords1 :::headWords2
     "tbody tr" #>headWords.map(headWord => {
-        val edit_? = headWord.authorId == idUser
+        val edit_? = (headWord.authorId == user.id.is || user.role == "a") 
         <tr><td><a href={"/headword/"+headWord._id.toString} target="_blank">{headWord.title}</a></td>
-    	<td>{if(edit_?) { if(headWord.public) "Publiczny" else "Prywatny"} else "Udostępniony"}</td>
+        <td>{headWord.departmentInfo}</td>
+    	<td> {if(headWord.public) "TAK" else "NIE"}</td>
     	<td>{if(edit_?)
     	<a href={"/resources/editheadword/"+headWord._id.toString}>edytuj</a> else <i></i>}</td></tr>
     })
@@ -43,7 +44,6 @@ class HeadWordsSn extends  RoleChecker {
   
   def selectors() = {
     val subj = Subject.findAll.map(s => (s._id.toString,  s.full))
-     val levList = List(("1","szkoła podstawowa"),("2","gimanzjum - podstawa LO"),("3","rozszerzenie - LO"),("4","studia"))
     "#subjectSelect" #>SHtml.select(subj, Full(subjPar) , x => Unit) &
     "#levelSelect" #> SHtml.select(levList, Full(levPar) , x => Unit)
     

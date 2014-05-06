@@ -16,30 +16,33 @@ import org.bson.types.ObjectId
 import Helpers._
 
 
-class SlidesSn extends  RoleChecker {
+class SlidesSn extends  BaseSnippet  {
   
+  val user =  User.currentUser.openOrThrowException("No user")
+    val subjPar = S.param("s").openOr("")
+    val levPar = S.param("l").openOr("3")
+    val subjectId = if  (subjPar != "") subjPar else
+         Subject.findAll.head._id.toString //fail for empty subject list   
 
   def slidesList() = {
-    val idUser = User.currentUser.openOrThrowException("No user").id.is 
-    val q1 = JObject(JField("public", JBool(true))::Nil) // for $or in one query TODO
-    val q2 = JObject(JField("authorId", JInt(idUser))::Nil) 
-    val slides1 = Slide.findAll("public"->true)
-    val slides2 = Slide.findAll(("authorId"-> idUser)~("public"->false))
-    val slides = slides1 ::: slides2
+    val idUser =user.id.is 
+    //val q1 = JObject(JField("public", JBool(true))::Nil) // for $or in one query TODO
+    //val q2 = JObject(JField("authorId", JInt(idUser))::Nil)  
+    val slides = Slide.findAll(("authorId"-> idUser)~("subjectLev"->levPar.toInt)~("subjectId"->subjectId))
     "tbody tr" #> slides.map(slide => {
-        val edit_? = slide.authorId == idUser
         <tr><td><a href={"/slide/"+slide._id.toString} target="_blank">{slide.title}</a></td>
     	<td>{slide.departmentInfo}</td><td>{slide.subjectInfo}</td>
     	<td>{slide.subjectLev.toString}</td>
-    	<td>{if(edit_?) { if(slide.public) "Publiczny" else "Prywatny"} else "Udostępniony"}</td>
-    	<td>{if(edit_?)
-    	<a href={"/resources/editslide/"+slide._id.toString}>edytuj</a> else <i></i>}</td></tr>
+    	<td><a href={"/resources/editslide/"+slide._id.toString}>edytuj</a> </td></tr>
     })
   }
   
-  def subjectSelect() = {
-    val subj = "Wszystkie"::Subject.findAll.map(s => s.full)
-    "#subjectSelect option" #> subj.map(s => <option value={s}>{s}</option>)
+    def selectors() = {
+    val subj = Subject.findAll.map(s => (s._id.toString,  s.full))
+    "#subjectSelect" #>SHtml.select(subj, Full(subjPar) , x => Unit) &
+    "#levelSelect" #> SHtml.select(levList, Full(levPar) , x => Unit)
+    
   }
+  
   
 }

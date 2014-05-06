@@ -96,8 +96,8 @@
 		label {font-weight: bold; padding-right: 10px;}
 		#title {width: 300px;}
 		#nr {width: 30px;}
-		.leftCol { width: 50%; float:left;}
-		.rightCol { width: 50%; float:left;}
+		.leftCol { width: 40%; float:left;}
+		.rightCol { width: 60%; float:left;}
 		  .slide{  margin: 20px 0px 20px 0px; padding: 15px; min-height:600px;   background-color: #fdfdfd; border:2px solid #aaa;}
        </style>
     </head_merge>
@@ -110,13 +110,11 @@
   <input id="nr" maxlength="3" 
   onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 0 " />
   <label for="title">Temat:</label><input id="title" />
-  <label>Publiczny:</label><select id="public"></select>
-  </p>
-    <p><label>Opis:</label> <input type="text"  id="description" /></p>
+  <label>Udostępnij:</label><select id="public"></select>
+  <label>Opis:</label> <input type="text"  id="description" /></p>
   <p>
   <label>kurs:</label><select id="courses"></select>
-  
-  <input id="save" type="submit"/><input id="delete" type="submit"/></p>
+   <input id="save" type="submit"/><input id="delete" type="submit"/></p>
   <input id="extraText" style="display:none;" value="" />
   <input id="forDataTable" style="display:none;" value="" />
   <input id="json" style="display:none;" value="[]"/>
@@ -133,15 +131,16 @@
         <div class="rightCol">
             <h2>Elementy</h2>
             <div id="inputContent"  class="lift:EditLesson.ajaxText">
-                   <p><label>Rodzaj:</label> <select id="getItemType"  ><option value="word">Hasło</option>
-                   <option value="quest">Zadanie</option></select></p>  <input id="hiddenAjaxText" style="display:none;" value="" /> </div>
+                   <p><label>Rodzaj:</label> <select id="getItemType"  >
+                    <option value="word">Hasło</option>
+                   <option value="quest">Zadanie</option>
+                   <option value="doc">Artykuł</option>
+                   <option value="video">Film</option></select></p>  
+                   <input id="hiddenAjaxText" style="display:none;" value="" /> </div>
                      <table id="choiceTable"  class="datatable">
-        <thead>
-        </thead>
-        <tbody>
-           
-        </tbody>
-    </table>
+                             <thead></thead>
+                              <tbody> </tbody>
+                     </table>
               <script class="lift:EditLesson.dataTableScript"></script>
         </div>
  
@@ -150,7 +149,7 @@
   <br/>
   <div class="row" >
   <h2>Dodatkowe informacje</h2>
-   <div contenteditable="true"   id="extraTextEdit"   class="slide">Napis?</div>
+   <div style="width:1000px;" contenteditable="true"   id="extraTextEdit"   class="slide">Napis?</div>
    <p>Elementy takie jak prezentacje, artykuły i pliki dodaj jako linki w edytorze kopiując z osobnej karty przeglądarki adres danego zasobu</p>
   </div>
    

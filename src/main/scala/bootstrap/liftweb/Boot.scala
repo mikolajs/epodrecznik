@@ -80,11 +80,12 @@ class Boot {
         Menu("Kursy") / "resources" / "courses" >> LocGroup("resource") >> isTeacher,  
         Menu("Lekcje") / "resources" / "lessons" >> LocGroup("resource") >> isTeacher,  
         Menu("Hasła") / "resources" / "headwords"  >> LocGroup("resource") >> isTeacher,
-        Menu("Prezentacje") / "resources" / "slides" >> LocGroup("resource") >> isTeacher,
-        Menu("Artykuły") / "resources" / "documents" >> LocGroup("resource") >> isTeacher,
+        Menu("Dokumenty") / "resources" / "documents" >> LocGroup("resource") >> isTeacher,
         Menu("Testy") / "resources" / "quizes" >> LocGroup("resource") >> isTeacher,
         Menu("Zadania") / "resources" / "editquest" >> LocGroup("resource") >> isTeacher,
         Menu("Pliki") / "resources" / "files" >> LocGroup("resource") >> isTeacher,
+        Menu("Filmy") / "resources" / "video" >> LocGroup("resource") >> isTeacher,
+        Menu("Prezentacje") / "resources" / "slides" >> LocGroup("resource") >> isTeacher,
         Menu("Edycja lekcji") / "resources" / "editlesson" / ** >> LocGroup("extra") >> Hidden  >> isTeacher,
         Menu("Edycja tematów") / "resources" / "editheadword" / ** >> LocGroup("extra") >> Hidden >> isTeacher,
         Menu("Edycja Slajdów") / "resources" / "editslide" / ** >> LocGroup("extra") >> Hidden >> isTeacher,
@@ -93,6 +94,7 @@ class Boot {
         //Menu("Wyszukiwanie") / "search" >> LocGroup("extra") >> Hidden,
          Menu("Pokaż lekcję") / "lesson" / ** >> LocGroup("extra") >> Hidden,
         Menu("Pokaz") / "slide" / ** >> LocGroup("extra") >> Hidden,
+        Menu("Slajdy") / "lesson-slides" / ** >> LocGroup("extra") >> Hidden,
         Menu("Hasło") / "headword" / ** >> LocGroup("extra") >> Hidden,
         Menu("Czytaj dokument") / "document" / ** >> LocGroup("extra") >> Hidden,
         Menu("Quiz") / "quiz" / ** >> LocGroup("extra") >> Hidden,
@@ -137,6 +139,10 @@ class Boot {
         RewriteResponse(
           "slide" :: Nil, Map("id" -> subjectId))
       case RewriteRequest(
+        ParsePath("lesson-slides" :: lessonId :: Nil, _, _, _), _, _) =>
+        RewriteResponse(
+          "lesson-slides" :: Nil, Map("id" -> lessonId))
+      case RewriteRequest(
         ParsePath("headword" :: subjectId :: Nil, _, _, _), _, _) =>
         RewriteResponse(
           "headword" :: Nil, Map("id" -> subjectId))
@@ -152,6 +158,10 @@ class Boot {
         ParsePath("lesson" :: lessonId :: Nil, _, _, _), _, _) =>
         RewriteResponse(
           "lesson" :: Nil, Map("id" -> lessonId))
+        case RewriteRequest(
+        ParsePath("resources" :: "index" :: Nil, _, _, _), _, _) =>
+        RewriteResponse(
+          "resources" :: "courses" ::Nil, Map(""->""))
     })
     
     DataTable.init

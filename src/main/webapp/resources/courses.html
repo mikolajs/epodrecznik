@@ -40,11 +40,14 @@
     					 $("#level option[value='" + level + "']").attr('selected', 'selected');
     					 break;
     				 case 3:
+    					 var classInfo = this.innerHTML;
+    					 $("#classInfo").val(classInfo);
+    				 case 4:
     					 var isPublic = false;
     					 if(this.innerHTML == "TAK") isPublic = true;
     					  $("input[type='checkbox']").prop('checked', isPublic);
     					 break;
-    				 case 4:
+    				 case 5:
     					 $('#descript').val(this.innerHTML);
     					 break;
     				 default:
@@ -104,11 +107,11 @@ Usunięcie zadziała tylko po usunięciu wszystkich lekcji w kursie.');
  <div><img id="addTrigger" src="/images/addico.png" /></div>
 
 <div >
-	 <table id="dataTable"><thead><tr><th>Tytuł</th><th>Przedmiot</th><th>Poziom</th>
-	 		<th>Publiczny?</th><th>Opis</th></tr></thead>
+	 <table id="dataTable"><thead><tr><th>Tytuł</th><th>Przedmiot</th><th>Poziom</th><th>Klasa</th>
+	 		<th>Udostępniony?</th><th>Opis</th></tr></thead>
 	 <tbody class="lift:CoursesSn.showMyCourses"><tr><td></td><td></td><td></td><td></td><td></td></tr></tbody>
-	 <tfoot><tr><tr><th>Tytuł</th><th>Przedmiot</th><th>Poziom</th>
-	 		<th>Publiczny?</th><th>Opis</th></tr></tr></tfoot>
+	 <tfoot><tr><tr><th>Tytuł</th><th>Przedmiot</th><th>Poziom</th><th>Klasa</th>
+	 		<th>Udostępniony?</th><th>Opis</th></tr></tr></tfoot>
 	 </table>
 </div>
    
@@ -118,7 +121,8 @@ Usunięcie zadziała tylko po usunięciu wszystkich lekcji w kursie.');
    <p><label for="title">Tytuł:</label> <input id="title" /></p>
    <p><label for="subjects">Przedmiot: </label> <select id="subjects"></select></p>
    <p><label for="level">Poziom: </label> <select id="level"></select></p>
-   <p><label for="public">Publiczny:</label><input type="checkbox" id="public"/></label></p>
+    <p><label for="classInfo">Klasa: </label> <input  id="classInfo" /></p>
+   <p><label for="public">Udostępnij:</label><input type="checkbox" id="public"/></p>
    <p><label for="descript">Opis:</label> <textarea id="descript"></textarea></p>
    <p><input type="submit" id="save" />
    <input type="submit" value="Usuń" id="fakeDelete" onclick="return makeDelete();"/>

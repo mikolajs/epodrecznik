@@ -18,7 +18,7 @@ import Helpers._
 import mongodb._
 import com.mongodb.gridfs._
 
-class FileResourceSn extends BaseSlide {
+class FileResourceSn extends BaseSnippet {
 	def showMyFiles = {
 	    val user = User.currentUser.openOrThrowException("Niezalogowany nauczyciel")
 	    
