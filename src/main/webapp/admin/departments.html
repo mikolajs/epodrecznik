@@ -1,7 +1,7 @@
 <!doctype HTML>
 <html>
     
-<div class="lift:surround?with=admin;at=boxText">
+<div class="lift:surround?with=admin;at=content">
     <head_merge>
         <script>
         var oTable = $();
@@ -53,15 +53,20 @@
         </style>
     </head_merge>
    
-  <h2>Administracja - Działy</h2>
+  <div class="well"><h2>Administracja - Działy</h2></div>
   
+  <div class="row">
   <div id="departmentList" class="lift:Administration.departmentList dataTable_wrapper" >
             <table id="dataTable" class="display">
                 <thead><tr><th>Nazwa</th><th>Przedmiot</th></tr></thead>
                 <tbody><tr><td></td><td></td></tr></tbody>
             </table>
-        <input id="mkAddDepartment" type="image" src="/images/addico.png" onclick="mkAddDepartment();"/>
+  
   </div>
+  </div>
+  <div class="row"><button type="button" class="btn btn-success btn-lg"  id="mkAddDepartment"  onclick="mkAddDepartment();">
+  <span class="glyphicon glyphicon-plus-sign"></span> Dodaj dział
+</button></div>
   
   <div id="departmentForm" style="display:none;" title="Edycja działów">
       <form class="lift:Administration.departmentForm?form=POST">

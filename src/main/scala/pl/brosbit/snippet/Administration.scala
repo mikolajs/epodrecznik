@@ -19,50 +19,6 @@ import pl.brosbit.lib.MailConfig
 
 class Administration {
 
-  def usersList() = {
-    val users = User.findAll.filter(u => isTeacher(u))
-    "tbody" #> users.map(u => {
-      <tr>
-        <td id={"id" + u.id.toString}>{ u.lastName.is }</td><td>{ u.firstName.is }</td><td>{ u.email.is }</td>
-        <td>{ u.role.is}</td>
-      </tr>
-    })
-  }
-
-  def usersForm() = {
-    var lastName = ""
-    var firstName = ""
-    var email = ""
-    var role = "t"
-
-    def deleteData() {
-      val users = User.findAll(By(User.email, email)).filter(u => isTeacher(u))
-      if (users.nonEmpty) {
-        users.foreach(u => {
-          u.delete_!
-        })
-      }
-    }
-
-    def saveData() {
-      val users = User.findAll(By(User.email, email)).filter(u => isTeacher(u))
-      if (users.nonEmpty) {
-        val u = users.head
-        u.firstName(firstName).lastName(lastName).email(email).role(role).save
-      } else {
-        val u = User.create
-        u.firstName(firstName).lastName(lastName).email(email).role(role).save
-      }
-    }
-    val users = List(("t","nauczyciel"))
-    "#usersFormLastName" #> SHtml.text(lastName, lastName = _, "class" -> "Name", "maxlenght" -> "40") &
-      "#usersFormFirstName" #> SHtml.text(firstName, firstName = _, "class" -> "Name", "maxlenght" -> "40") &
-      "#usersFormEmail" #> SHtml.text(email, email = _, "class" -> "email", "maxlenght" -> "50") &
-      "#usersFormLevel" #> SHtml.select(users, Full(role), role = _) &
-      "#usersFormSubmit" #> SHtml.button(<img src="/images/saveico.png"/>, saveData, 
-              "onclick" -> "return isValid(this);") &
-      "#usersFormDelete" #> SHtml.button(<img src="/images/delico.png"/>, deleteData)
-  }
 
   def departmentList() = {
     val depart = Department.findAll
@@ -100,9 +56,9 @@ class Administration {
       "#departmentFormName" #> SHtml.text(name, name = _, "class" -> "name", "maxlenght" -> "20") &
       "#departmentFormSubject" #> SHtml.select(subjects,
         Full(if (subjects.isEmpty) "brak" else subjects.head._2), subject = _) &
-        "#departmentFormSubmit" #> SHtml.button(<img src="/images/saveico.png"/>, saveData, 
+        "#departmentFormSubmit" #> SHtml.button(<span class="glyphicon glyphicon-floppy-save">Zapisz</span>, saveData, 
                 "onclick" -> "return isValid(this);") &
-        "#departmentFormDelete" #> SHtml.button(<img src="/images/delico.png"/>, deleteData)
+        "#departmentFormDelete" #> SHtml.button(<span class="glyphicon glyphicon-floppy-remove">Usuń</span>, deleteData)
   }
 
   def subjectList() = {
@@ -130,9 +86,9 @@ class Administration {
 
     "#subjectFormName" #> SHtml.text(full, full = _, "class" -> "name", "maxlenght" -> "30") &
       "#subjectFormId" #> SHtml.text(id, id = _, "type" -> "hidden") &
-      "#subjectFormSubmit" #> SHtml.button(<img src="/images/saveico.png"/>, saveData,
+      "#subjectFormSubmit" #> SHtml.button(<span class="glyphicon glyphicon-floppy-save">Zapisz</span>, saveData,
               "onclick" -> "return isValid(this);") &
-      "#subjectFormDelete" #> SHtml.button(<img src="/images/delico.png"/>, deleteData)
+      "#subjectFormDelete" #> SHtml.button(<span class="glyphicon glyphicon-floppy-remove">Usuń</span>, deleteData)
 
   }
 
@@ -156,56 +112,11 @@ class Administration {
             "class" -> "password", "maxlenght" -> "20") &
       "#adminEmail" #> SHtml.text(email, email = _, "class" -> "required email", 
               "maxlenght" -> "50", "class" -> "email") &
-      "#adminSubmit" #> SHtml.button(<span>ZAPISZ! <img src="/images/saveico.png"/></span>, 
+      "#adminSubmit" #> SHtml.button(<span class="glyphicon glyphicon-floppy-save">Zapisz</span>, 
               saveData, "onclick" -> "return isValid(this);")
 
   }
 
-  def editLink() = {
-    var id = ""
-    var title = ""
-    var content = ""
-    var imgPath = ""
-    var link = ""
-
-    def deleteLink() {
-      var news = Link.find(id).getOrElse(Link.create)
-      if (id != "0") news.delete
-      S.notice("Usunięto id=" + id)
-    }
-
-    def saveLink() {
-      var news = Link.find(id).getOrElse(Link.create)
-      if (title != "" && content != "") {
-        val d = new Date()
-        if (id == "" || id == "0") {
-          news._id = d.getTime.toString
-        }
-        news.title = title
-        news.content = Unparsed(content).toString()
-        news.imgPath = imgPath
-        news.link = link
-        news.save
-      }
-    }
-
-    "#editId" #> SHtml.text(id, id = _, "type" -> "hidden") &
-      "#editTitle" #> SHtml.text(title, title = _) &
-      "#pathImg" #> SHtml.text(imgPath, imgPath = _, "type" -> "hidden") &
-      "#editContent" #> SHtml.textarea(content, content = _) &
-      "#editLink" #> SHtml.text(link, link = _) &
-      "#editDelete" #> SHtml.submit("Usuń", deleteLink) &
-      "#editSave" #> SHtml.submit("Zapisz", saveLink)
-
-  }
-
-  def shortLink() = {
-    val news = Link.findAll //OrderBy(Link.date, Descending)
-    "tbody" #> news.map(item => {
-      "tr" #> <tr id={ item._id.toString() }><td>{ item.title }</td><td><img src={ item.imgPath }/></td>
-      		<td>{ Unparsed(item.content) }</td><td>{ item.link }</td></tr>
-    })
-  }
 
  def mailConfigure() = {
     var host = ""

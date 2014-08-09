@@ -53,7 +53,7 @@ class LessonsPubSn extends BaseSnippet with RoleChecker {
   }
   
   def courseDescription() = {
-      "#coursePublic *" #> (if(course.public) "TAK" else "NIE") &
+      "#coursePublic *" #> ("NIE") &
       "p *" #> course.descript
   }
   

@@ -1,7 +1,7 @@
 <!doctype HTML>
 <html>
     
-<div class="lift:surround?with=resource-datatable;at=body">
+<div class="lift:surround?with=resource-datatable;at=content">
     <head_merge> 
      
        <script>
@@ -40,42 +40,43 @@
            
             
        </script>
-       <style>
-       .theSelects span { font-weight: bold; padding: 2px, 10px, 2px, 10px; font-size: 25px;  
-        font-family: "Times New Roman", Times, serif; font-style: italic; }
-        .theSelects select {min-width: 200px; height: 30px; font-weight: bold;  font-size: 20px;  
-        font-family: "Times New Roman", Times, serif; font-style: italic; }
-        .theSelects select option {font-weight: bold;  font-size: 20px;  
-        font-family: "Times New Roman", Times, serif; font-style: italic;}
-        .theSelects img { vertical-align: middle;}
-       </style>
+      
     </head_merge>
     
  <div id="boxText">
-  <h2>Wybór przedmiotu i poziomu</h2>
+  <div class="well"><h2>Wybór przedmiotu i poziomu</h2></div>
   
-  <div class="lift:HeadWordsSn.selectors theSelects" >
-  <span>Przedmiot:</span>
-   <select id="subjectSelect" ><option></option></select>
-    <span>Poziom edukacyjny:</span>
-   <select id="levelSelect"  ><option></option> </select>
-   <button onclick="redirectTo()">Wybierz</button>
+  <div class="lift:HeadWordsSn.selectors form-inline" >
+  <div class="input-group">
+  <div class="input-group-addon">Przedmiot</div>
+   <select id="subjectSelect"  class="form-control"><option></option></select>
+
+   </div>
+    <div class="input-group">
+  <div class="input-group-addon">Poziom edukacyjny:</div>
+   <select id="levelSelect"   class="form-control"><option></option> </select>
+   </div>
+   <div class="form-group"> <button onclick="redirectTo()"  class="btn btn-success">Wybierz</button></div>
   </div>
+  <br/><br/>
+  <div><a href="/resources/editheadword/0"> <button type="button" class="btn btn-success btn-lg"  id="mkAddDepartment"  onclick="mkAddDepartment();">
+  <span class="glyphicon glyphicon-plus-sign"></span> Dodaj nowe hasło
+</button></a></div>
   
   <br/><br/>
   <div id="headWordsList" class="lift:HeadWordsSn.headWordsList dataTable_wrapper">
             <table id="dataTable" class="display" >
                 <thead>
-                <tr><th>Hasło</th><th>Dział</th><th>Publiczny</th><th>Edytuj</th></tr>
+                <tr><th>Hasło</th><th>Dział</th>><th>Edytuj</th></tr>
                 </thead>
                 <tbody><tr><td><a href=""></a></td><td></td><td></td></tr></tbody>
                  <tfoot>
-                    <tr><th>Hasło</th><th>Dział</th><th>Publiczny</th><th>Edytuj</th></tr>
+                    <tr><th>Hasło</th><th>Dział</th>><th>Edytuj</th></tr>
                  </tfoot>
             </table>
         </div>
         <br/><br/>
-         <span>Dodaj nowy temat: <a href="/resources/editheadword/0"> <img src="/images/addico.png" /> </a></span>
+        
    <br/>
 </div>
 

@@ -1,7 +1,7 @@
 <!doctype HTML>
 <html>
     
-<div class="lift:surround?with=resource-datatable;at=body">
+<div class="lift:surround?with=resource-datatable;at=content">
     <head_merge> 
        <script>
            var oTable = $();
@@ -50,17 +50,27 @@
        </script>
     </head_merge>
     
+    <div class="well"><h2>Twoje artykuły</h2> </div>
     
-  <div class="lift:DocumentsSn.selectors theSelects" >
-  <span>Wybierz przedmiot:</span>
-   <select id="subjectSelect" ><option></option></select>
- 	<span>Wybierz poziom edukacyjny:</span>
-   <select id="levelSelect"  ></select>
-      <button onclick="redirectTo()">Wybierz</button>
-  </div>  
- <div id="boxText">
   
-
+  <div class="lift:DocumentsSn.selectors form-inline" >
+  <div class="input-group">
+  <div class="input-group-addon">Wybierz przedmiot:</div>
+   <select id="subjectSelect"  class="form-control" ><option></option></select>
+   </div>
+   <div class="input-group">
+      <button class="btn btn-success"  onclick="redirectTo()">Wybierz</button>
+      </div>
+  </div>  
+    <br/> <br/>
+  
+    <div><a href="/resources/editdocument/0"> <button type="button" class="btn btn-success btn-lg"    id="iconAddBook" >
+  <span class="glyphicon glyphicon-plus-sign"></span> Dodaj nowy artykuł
+</button></a></div>
+<br/><br/>  
+    
+ <div id="boxText">
+ 
   <div id="ebookList" class="lift:DocumentsSn.docList dataTable_wrapper">
             <table id="dataTable" class="display" >
                 <thead><tr><th>Tytuł</th><th>Opis</th><th>Dział</th><th>Przedmiot</th><th>Poziom</th>
@@ -74,7 +84,8 @@
             
    </div>
     <br/> <br/>
-        <a href="/resources/editdocument/0"><img src="/images/addico.png" id="iconAddBook" /></a>
+     
+     
         
   <br/>
 </div>

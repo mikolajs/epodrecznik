@@ -1,7 +1,7 @@
 <!doctype HTML>
 <html>
     
-<div class="lift:surround?with=admin;at=boxText">
+<div class="lift:surround?with=admin;at=content">
     <head_merge>
         <script>
                     
@@ -24,7 +24,7 @@
   
   
   
-        <h2>Administracja - Dane administratora</h2>
+       <div class="well"> <h2>Administracja - Dane administratora</h2></div>
   <div id="dataAdmin" >
       <fieldset style="width:400px;">
       <legend>Zmiana danych logowania administratora</legend>
@@ -32,7 +32,7 @@
       <label for="adminEmail">Email:</label><input id="adminEmail"/><br/>
       <label for="adminPassword">Hasło:</label><input id="adminPassword" class="pass1" type="password"/><br/>
       <label for="adminPassword2">Powtórz:</label><input id="adminPassword2" class="pass2" type="password"/><br/>
-      <input id="adminSubmit" style="float:rigth;"/>
+      <input id="adminSubmit"   class="btn btn-success" />
       </form>
       </fieldset>
   </div>
@@ -45,7 +45,7 @@
       <label for="email">Email:</label><input id="email"/><br/>
       <label for="password">Hasło:</label><input id="password" class="pass1" type="password"/><br/>
       <label for="password2">Powtórz:</label><input id="password2" class="pass2" type="password"/><br/>
-       <input id="submit"style="float:rigth;"/>
+       <input id="submit"   class="btn btn-success"/>
       </form>
       </fieldset>
   </div>

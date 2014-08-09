@@ -1,7 +1,7 @@
 <!doctype HTML>
 <html>
     
-<div class="lift:surround?with=resource-datatable;at=body">
+<div class="lift:surround?with=resource-datatable;at=content">
     <head_merge> 
      
        <script>
@@ -57,15 +57,20 @@
     </head_merge>
     
  <div id="boxText">
-  <h2>Wybór tematów</h2>
+ <div class="well"> <h2>Twoje prezentacje</h2></div>
   
-  <div class="lift:SlidesSn.selectors theSelects" >
-  <span>Wybierz przedmiot:</span>
-   <select id="subjectSelect"  ><option></option></select>
- 	<span>Wybierz poziom edukacyjny:</span>
-   <select id="levelSelect"  ></select>
-      <button onclick="redirectTo()">Wybierz</button>
+  <div class="lift:SlidesSn.selectors theSelects form-inline" >
+  <div class="input-group">
+  <div class="input-group-addon">Wybierz przedmiot:</div>
+   <select id="subjectSelect"  class="form-control"><option></option></select>
+   </div>
+      <div class="input-group"><button class="btn btn-success"   onclick="redirectTo()">Wybierz</button>
   </div>
+  </div>
+  <br/><br/>
+   <div class="row"  style="margin-left:20px;"><a href="/resources/editslide/0"><button type="button" class="btn btn-success btn-lg"  id="addTrigger">
+  <span class="glyphicon glyphicon-plus-sign"></span> Stwórz prezentację</button></a>
+</div>
   
   <br/><br/>
   <div id="themeList" class="lift:SlidesSn.slidesList dataTable_wrapper">
@@ -79,8 +84,8 @@
                  </tfoot>
             </table>
         </div>
-        <br/><br/>
-         <span>Dodaj nowy slajd: <a href="/resources/editslide/0"> <img src="/images/addico.png" /> </a></span>
+        
+       
    <br/>
 </div>
 

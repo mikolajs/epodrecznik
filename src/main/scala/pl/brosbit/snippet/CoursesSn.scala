@@ -20,9 +20,9 @@ class CoursesSn extends BaseSnippet {
 	    
 	     "tr" #> Course.findAll("authorId" -> user.id.is).map(course => {
 	        <tr id={course._id.toString}><td>{course.title}</td>
-	        <td>{course.subjectName}</td><td>{course.level}</td>
+	        <td>{course.subjectName}</td><td>{course.img}</td>
 	        <td>{course.classInfo}</td>
-	        <td>{if(course.public) "TAK" else "NIE"}</td>
+	        <td></td>
 	        <td>{course.descript}</td>
 	        </tr>
 	    })
@@ -32,12 +32,11 @@ class CoursesSn extends BaseSnippet {
         
 
         var id = ""
-        var level = ""
+        var img = ""
         var title = ""
         var descript = ""
         var subjectId = ""
         var classInfo = ""
-        var public = false
 
         def save() {
             val user = User.currentUser.openOrThrowException("Niezalogowany nauczyciel")
@@ -46,14 +45,13 @@ class CoursesSn extends BaseSnippet {
 
             val course = Course.find(id).getOrElse(Course.create)
             
-            course.level = tryo(level.toInt).openOr(1)
+            course.img = img
             course.title = title
             course.subjectId = if(sub.full != "") sub._id else Subject.findAll.head._id
             course.subjectName = sub.full
             course.descript = descript
             course.classInfo = classInfo
             course.authorId = user.id.is
-            course.public = public
             course.save
         }
         
@@ -74,9 +72,8 @@ class CoursesSn extends BaseSnippet {
 	    "#courseId"  #> SHtml.text(id, id = _) &
 	    "#title" #> SHtml.text(title, x => title = x.trim) &
 	    "#subjects" #> SHtml.select(subjects, Full(subjects.head._1), subjectId = _) &
-	    "#level" #> SHtml.select(levList, Full(levList.head._1), level = _) &
+	    "#img" #> SHtml.text(img,  img = _) &
 	    "#classInfo" #> SHtml.text(classInfo, x => classInfo = x.trim) &
-	    "#public" #> SHtml.checkbox(public, public = _) &
 	    "#descript" #> SHtml.textarea(descript, x => descript = x.trim) &
 	    "#save" #> SHtml.submit("Dodaj", save) & 
 	    "#delete" #> SHtml.submit("Usuń", delete)

@@ -1,7 +1,7 @@
 <!doctype HTML>
 <html>
     
-<div class="lift:surround?with=admin;at=boxText">
+<div class="lift:surround?with=admin;at=content">
     <head_merge>
         <script>
           var oTable = $();
@@ -53,16 +53,19 @@
         </style>
     </head_merge>
    
-  <h2>Administracja - Lista przedmiotów</h2>
-   
+  <div class="well"><h2>Administracja - Lista przedmiotów</h2></div>
+   <div class="row">
         <div id="subjectList" class="lift:Administration.subjectList dataTable_wrapper">
             
             <table id="dataTable" class="display">
                 <thead><tr><th>Nazwa</th></tr></thead>
                 <tbody><tr><td></td></tr></tbody>
             </table>
-            <input id="mkAddSubject" type="image" src="/images/addico.png" onclick="mkAddSubject();"/>
         </div>
+  </div>
+  <div class="row"><button type="button" class="btn btn-success btn-lg"  id="mkAddSubject"  onclick="mkAddSubject();">
+  <span class="glyphicon glyphicon-plus-sign"></span> Dodaj przedmiot
+</button></div>
   
   <div id="subjectForm" style="display:none;" title="Edycja przedmiotów">
       <form class="lift:Administration.subjectForm?form=POST" type="image">

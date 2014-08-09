@@ -73,14 +73,12 @@ class Boot {
     // Build SiteMap
     def sitemap() = SiteMap(
       List(
-        Menu("Wiadomości") / "index" >> LocGroup("public"),
-        Menu("Lekcje") / "lessons" >> LocGroup("public"),
-        Menu("Kontakt") / "contact" >> LocGroup("public"),
-        Menu("Nauczyciel") / "resources" / "index" >> LocGroup("public") >> isTeacher,
-        Menu("Kursy") / "resources" / "courses" >> LocGroup("resource") >> isTeacher,  
+        Menu("Kursy") / "index" >> LocGroup("public"),
+        Menu("Lekcje") / "course" / ** >> LocGroup("extra"),
+        Menu("Kursy") / "resources" / "index" >> LocGroup("resource") >> isTeacher,
         Menu("Lekcje") / "resources" / "lessons" >> LocGroup("resource") >> isTeacher,  
         Menu("Hasła") / "resources" / "headwords"  >> LocGroup("resource") >> isTeacher,
-        Menu("Dokumenty") / "resources" / "documents" >> LocGroup("resource") >> isTeacher,
+        Menu("Artykuły") / "resources" / "documents" >> LocGroup("resource") >> isTeacher,
         Menu("Testy") / "resources" / "quizes" >> LocGroup("resource") >> isTeacher,
         Menu("Zadania") / "resources" / "editquest" >> LocGroup("resource") >> isTeacher,
         Menu("Pliki") / "resources" / "files" >> LocGroup("resource") >> isTeacher,
@@ -104,8 +102,6 @@ class Boot {
         Menu("Administrator") / "admin" / "admin" >> LocGroup("admin") >> isAdmin,
         Menu("Przedmioty") / "admin" / "subjects" >> LocGroup("admin") >> isAdmin,
         Menu("Działy") / "admin" / "departments" >> LocGroup("admin") >> isAdmin,
-        Menu("Użytkownicy") / "admin" / "users" >> LocGroup("admin") >> isAdmin,
-        Menu("Aktualności") / "admin" / "news" >> LocGroup("admin") >> isAdmin,
         Menu("GC") / "admin" / "gc" >> LocGroup("admin") >> isAdmin,
        // Menu("test")  / "test" >> LocGroup("public") ,
         Menu("Static") / "static" / **) :::
@@ -155,13 +151,9 @@ class Boot {
         RewriteResponse(
           "quiz" :: Nil, Map("id" -> quizId))
       case RewriteRequest(
-        ParsePath("lesson" :: lessonId :: Nil, _, _, _), _, _) =>
+        ParsePath("course" :: lessonId :: Nil, _, _, _), _, _) =>
         RewriteResponse(
-          "lesson" :: Nil, Map("id" -> lessonId))
-        case RewriteRequest(
-        ParsePath("resources" :: "index" :: Nil, _, _, _), _, _) =>
-        RewriteResponse(
-          "resources" :: "courses" ::Nil, Map(""->""))
+          "course" :: Nil, Map("id" -> lessonId))
     })
     
     DataTable.init
